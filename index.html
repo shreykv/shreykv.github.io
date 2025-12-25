@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name | Portfolio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth;}
+        body { font-family: 'Poppins', sans-serif; background: #fff; color: #111; overflow-x: hidden; }
+        header { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: #fafafa; }
+        header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+        header p { font-size: 1.2rem; color: #555; }
+
+        nav { position: fixed; top: 0; width: 100%; padding: 1rem 2rem; display: flex; justify-content: space-between; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); z-index: 10;}
+        nav a { margin: 0 1rem; text-decoration: none; color: #222; font-weight: 500;}
+
+        section { padding: 6rem 2rem; }
+        .container { max-width: 1100px; margin: auto; }
+
+        h2 { font-size: 2rem; margin-bottom: 1rem; text-align: center; }
+        .about p { text-align: center; line-height: 1.7;}
+        
+        /* Projects */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; }
+        .proj-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); overflow: hidden; transition: transform .3s;}
+        .proj-card:hover { transform: translateY(-8px); }
+        .proj-card img { width: 100%; height: 180px; object-fit: cover;}
+        .proj-card h3 { padding: 0.8rem; font-size: 1.2rem;}
+        
+        /* Footer */
+        footer { text-align: center; padding: 1rem; color: #666; margin-top: 3rem; border-top: 1px solid #eee;}
+
+        /* Cursor */
+        .cursor {
+            width: 18px; height: 18px; border: 2px solid #111; border-radius: 50%;
+            position: fixed; transform: translate(-50%, -50%); pointer-events: none; transition: transform .15s ease-out;
+            z-index: 9999;
+        }
+        .cursor.hover { transform: translate(-50%, -50%) scale(1.7); background: rgba(0,0,0,0.1);}
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><strong>YourName</strong></div>
+    <div class="menu">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<header id="home">
+    <div>
+        <h1>Hello, I'm Your Name</h1>
+        <p>Web Developer | Designer | Builder of Cool Stuff</p>
+    </div>
+</header>
+
+<section id="about">
+    <div class="container about">
+        <h2>About Me</h2>
+        <p>I’m a passionate developer focused on creating interactive and responsive web experiences that solve real problems.</p>
+    </div>
+</section>
+
+<section id="projects">
+    <div class="container">
+        <h2>Portfolio & Projects</h2>
+        <div class="projects-grid">
+            <div class="proj-card">
+                <img src="assets/project1.jpg" alt="Project 1">
+                <h3>Project Title 1</h3>
+            </div>
+            <div class="proj-card">
+                <img src="assets/project2.jpg" alt="Project 2">
+                <h3>Project Title 2</h3>
+            </div>
+            <div class="proj-card">
+                <img src="assets/project3.jpg" alt="Project 3">
+                <h3>Project Title 3</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="container">
+        <h2>Contact Me</h2>
+        <p style="text-align:center;">Want to work together? <br> Email: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+    </div>
+</section>
+
+<footer>© 2025 Your Name. All Rights Reserved.</footer>
+
+<!-- Custom Cursor -->
+<div class="cursor"></div>
+
+<!-- Scripts -->
+<script>
+    // Cursor Script
+    const cursor = document.querySelector('.cursor');
+    document.addEventListener('mousemove', e => {
+        cursor.style.left = e.pageX + 'px';
+        cursor.style.top = e.pageY + 'px';
+    });
+
+    document.querySelectorAll('a, .proj-card').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+</script>
+
+</body>
+</html>
