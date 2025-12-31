@@ -1,332 +1,589 @@
--<!DOCTYPE html>
--<html lang="en"><!DOCTYPE html>
-<html lang="en" class="dark">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shrey Vasisht | Digital Architect</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="components/navbar.js"></script>
-    <script src="components/footer.js"></script>
-    <script src="components/cursor.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shrey Vasisht — Product Engineer • Sensor Engineer • Data Scientist</title>
+  <meta name="description" content="Portfolio of Shrey Vasisht — Product Engineer, Sensor Engineer, Data Scientist." />
+  <style>
+    :root{
+      --bg:#070A10;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --muted2: rgba(255,255,255,.52);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --accent: #6EE7FF;
+      --accent2:#A78BFA;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(110,231,255,.08), transparent 55%),
+                  radial-gradient(900px 700px at 80% 35%, rgba(167,139,250,.10), transparent 55%),
+                  radial-gradient(900px 700px at 55% 95%, rgba(110,231,255,.05), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(7,10,16,.55);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:14px 24px; max-width:var(--max); margin:0 auto;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(110,231,255,.9), rgba(167,139,250,.9));
+      box-shadow: 0 10px 24px rgba(110,231,255,.12);
+    }
+    .brand span{opacity:.95}
+    .nav-links{display:flex; gap:16px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .nav-links a{
+      padding:8px 10px; border-radius:12px; color:var(--muted);
+      transition: .18s ease;
+    }
+    .nav-links a:hover{color:var(--text); background:rgba(255,255,255,.06)}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 14px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      box-shadow: var(--shadow);
+      color:var(--text);
+      transition:.18s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .btn.primary{
+      border:none;
+      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+      color:#071018;
+      font-weight:700;
+    }
+    .btn.primary:hover{filter:saturate(1.05) brightness(1.02)}
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .hero{
+      padding:64px 0 26px;
+      position:relative;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:28px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr; gap:18px}
+      .nav-links{display:none}
+    }
+    .card{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{
+      padding:26px;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 400px at 25% 15%, rgba(110,231,255,.20), transparent 60%),
+                  radial-gradient(700px 400px at 75% 65%, rgba(167,139,250,.18), transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+      filter: blur(0px);
+    }
+    .hero-card > *{position:relative}
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height:1.5;
+      max-width: 62ch;
+    }
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+    .meta-row{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:16px;
+    }
+    .side{
+      padding:22px;
+      display:flex; flex-direction:column; gap:14px;
+    }
+    .side h3{margin:0; font-size:16px; letter-spacing:.2px}
+    .side p{margin:0; color:var(--muted); line-height:1.5}
+    .kpi{
+      display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;
+      margin-top:6px;
+    }
+    .mini{
+      border-radius:16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      padding:12px;
+    }
+    .mini .label{color:var(--muted2); font-size:12px}
+    .mini .value{font-size:14px; margin-top:6px}
+    section{padding:22px 0}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:0 0 12px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.2px;
+    }
+    .section-title p{margin:0; color:var(--muted); font-size:14px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr)} }
+    @media (max-width: 640px){ .grid{grid-template-columns: 1fr} }
+    .project{
+      overflow:hidden;
+      position:relative;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .project:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.22)}
+    .thumb{
+      height:160px;
+      background:
+        linear-gradient(135deg, rgba(110,231,255,.18), rgba(167,139,250,.14)),
+        radial-gradient(700px 220px at 30% 20%, rgba(255,255,255,.12), transparent 65%),
+        rgba(255,255,255,.05);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,.72);
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    .project .body{padding:14px}
+    .project h3{margin:0 0 6px; font-size:16px}
+    .project p{margin:0 0 12px; color:var(--muted); font-size:14px; line-height:1.5}
+    .tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px}
+    .tag{
+      font-size:12px; color:rgba(255,255,255,.76);
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      padding:6px 8px; border-radius:999px;
+    }
+    .link{
+      display:inline-flex; align-items:center; gap:8px;
+      color: rgba(110,231,255,.95);
+      font-weight:600;
+      font-size:13px;
+    }
+    .link:hover{filter:brightness(1.05)}
+    .two-col{
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+    }
+    @media (max-width: 980px){ .two-col{grid-template-columns: 1fr} }
+    .about, .skills, .contact{
+      padding:18px;
+    }
+    .about p{color:var(--muted); line-height:1.6; margin:0}
+    .skills ul{
+      margin:10px 0 0; padding:0; list-style:none;
+      display:flex; flex-wrap:wrap; gap:10px;
+    }
+    .skills li{
+      padding:10px 12px; border-radius:14px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      color:rgba(255,255,255,.80);
+      font-size:13px;
+    }
+
+    form{display:grid; gap:10px; margin-top:10px}
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color:var(--text);
+      outline:none;
+      transition:.18s ease;
+    }
+    input:focus, textarea:focus{border-color: rgba(110,231,255,.55)}
+    textarea{min-height:120px; resize:vertical}
+    .footer{
+      margin-top:24px;
+      padding:22px 0 36px;
+      color:var(--muted2);
+      border-top:1px solid rgba(255,255,255,.10);
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    }
+    .social{display:flex; gap:10px; flex-wrap:wrap}
+    .social a{
+      padding:8px 10px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color:rgba(255,255,255,.80);
+      font-size:13px;
+    }
+    .social a:hover{border-color: rgba(255,255,255,.22)}
+
+    /* Cursor-follow UI */
+    .cursor-blob, .cursor-ring{
+      position: fixed; left:0; top:0;
+      pointer-events:none;
+      z-index:9999;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+    .cursor-blob{
+      width: 46px; height: 46px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(110,231,255,.65), rgba(167,139,250,.35));
+      filter: blur(2px);
+      opacity: .85;
+      mix-blend-mode: screen;
+    }
+    .cursor-ring{
+      width: 26px; height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.30);
+      opacity: .75;
+    }
+    @media (pointer: coarse){
+      .cursor-blob, .cursor-ring{display:none;}
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans overflow-x-hidden">
-    <custom-cursor></custom-cursor>
-    <custom-navbar></custom-navbar>
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 z-0"></div>
-        <div class="container mx-auto px-6 z-10">
-            <div class="text-center">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-                    Crafting <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Digital Experiences</span>
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
-                    I design and build immersive digital solutions that push boundaries and create impact.
-                </p>
-                <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 transform hover:scale-105">
-                    Let's Connect
-                </a>
+<body>
+  <!-- Cursor UI -->
+  <div class="cursor-blob" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Nav -->
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Home">
+        <div class="logo"></div>
+        <span>Shrey Vasisht</span>
+      </a>
+      <div class="nav-links">
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="btn" href="#contact">Let’s talk →</a>
+    </div>
+  </div>
+
+  <main id="top" class="wrap">
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-grid">
+        <div class="card hero-card">
+          <div class="pill">Product Engineer • Sensor Engineer • Data Scientist</div>
+          <h1>Building practical systems that sense, decide, and ship.</h1>
+          <p class="sub">
+            I’m Shrey Vasisht — I blend product engineering + sensing/measurement + analytics to
+            turn messy real-world signals into reliable, scalable solutions.
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#contact">Contact Me</a>
+            <a class="btn" href="#portfolio">View Projects</a>
+          </div>
+          <div class="meta-row">
+            <span class="pill">🛠️ Rapid prototyping</span>
+            <span class="pill">📈 Data-driven iteration</span>
+            <span class="pill">🧪 Testing & validation</span>
+          </div>
+        </div>
+
+        <div class="card side">
+          <h3>Snapshot</h3>
+          <p>
+            Focused on sensor-driven products, experimentation, and analytics workflows—from
+            concept to validation to deployment.
+          </p>
+          <div class="kpi">
+            <div class="mini">
+              <div class="label">Core areas</div>
+              <div class="value">Product • Sensors • ML</div>
             </div>
+            <div class="mini">
+              <div class="label">Strengths</div>
+              <div class="value">Testing • Automation</div>
+            </div>
+            <div class="mini">
+              <div class="label">Tooling</div>
+              <div class="value">Python • CAD • Git</div>
+            </div>
+            <div class="mini">
+              <div class="label">Style</div>
+              <div class="value">Fast, structured, clean</div>
+            </div>
+          </div>
+          <a class="btn" href="#portfolio">Explore portfolio →</a>
         </div>
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <i data-feather="chevron-down" class="w-8 h-8"></i>
+      </div>
+    </div>
+
+    <!-- Portfolio -->
+    <section id="portfolio">
+      <div class="section-title">
+        <div>
+          <h2>Portfolio</h2>
+          <p>Swap in your real images + links as you publish projects.</p>
         </div>
+        <a class="btn" href="#contact">Hire / Collaborate</a>
+      </div>
+
+      <div class="grid">
+        <!-- Project 1 -->
+        <article class="card project">
+          <div class="thumb">Project Image (add /assets/p1.jpg)</div>
+          <div class="body">
+            <h3>Sensor Fusion Dashboard</h3>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">Time Series</span><span class="tag">Viz</span>
+            </div>
+            <p>Unified multi-sensor telemetry into a clean pipeline + live dashboard for faster debugging and decisions.</p>
+            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="card project">
+          <div class="thumb">Project Image (add /assets/p2.jpg)</div>
+          <div class="body">
+            <h3>Design of Experiments Toolkit</h3>
+            <div class="tags">
+              <span class="tag">DOE</span><span class="tag">ANOVA</span><span class="tag">Optimization</span>
+            </div>
+            <p>Reusable templates for structured experimentation to improve yield, throughput, and robustness.</p>
+            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="card project">
+          <div class="thumb">Project Image (add /assets/p3.jpg)</div>
+          <div class="body">
+            <h3>Embedded Sensing Prototype</h3>
+            <div class="tags">
+              <span class="tag">MCU</span><span class="tag">Signal</span><span class="tag">Validation</span>
+            </div>
+            <p>Built a sensor prototype with logging + calibration workflow to quantify performance and drift.</p>
+            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+          </div>
+        </article>
+
+        <!-- Project 4 -->
+        <article class="card project">
+          <div class="thumb">Project Image (add /assets/p4.jpg)</div>
+          <div class="body">
+            <h3>Production Automation Upgrade</h3>
+            <div class="tags">
+              <span class="tag">Process</span><span class="tag">Automation</span><span class="tag">KPIs</span>
+            </div>
+            <p>Automated a manual workflow to increase speed/output and improve consistency with better visibility.</p>
+            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+          </div>
+        </article>
+
+        <!-- Project 5 -->
+        <article class="card project">
+          <div class="thumb">Project Image (add /assets/p5.jpg)</div>
+          <div class="body">
+            <h3>Predictive Quality Model</h3>
+            <div class="tags">
+              <span class="tag">ML</span><span class="tag">Feature Eng</span><span class="tag">QA</span>
+            </div>
+            <p>Modeled drivers of defects and created an interpretable scoring approach for earlier intervention.</p>
+            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+          </div>
+        </article>
+
+        <!-- Project 6 -->
+        <article class="card project">
+          <div class="thumb">Project Image (add /assets/p6.jpg)</div>
+          <div class="body">
+            <h3>Data Product: Metrics & Alerts</h3>
+            <div class="tags">
+              <span class="tag">ETL</span><span class="tag">Monitoring</span><span class="tag">Ops</span>
+            </div>
+            <p>Defined a metric hierarchy and alert thresholds to catch regressions and keep systems healthy.</p>
+            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+          </div>
+        </article>
+      </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-20 bg-gray-800/50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
-                Selected <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Works</span>
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1 -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
-                    <div class="overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/1" alt="Project 1" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">AI Dashboard</h3>
-                        <p class="text-gray-300 mb-4">Interactive analytics platform with real-time data visualization</p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
-                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
-                    <div class="overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/2" alt="Project 2" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">E-Commerce Platform</h3>
-                        <p class="text-gray-300 mb-4">Scalable online store with personalized recommendations</p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
-                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
-                    <div class="overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/3" alt="Project 3" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Mobile Banking App</h3>
-                        <p class="text-gray-300 mb-4">Secure financial management application with biometric auth</p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
-                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
-                    <div class="overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/4" alt="Project 4" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">AR Navigation System</h3>
-                        <p class="text-gray-300 mb-4">Augmented reality wayfinding for complex environments</p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
-                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 5 -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
-                    <div class="overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/5" alt="Project 5" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Health Tracker</h3>
-                        <p class="text-gray-300 mb-4">Comprehensive wellness monitoring with AI insights</p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
-                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 6 -->
-                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
-                    <div class="overflow-hidden">
-                        <img src="http://static.photos/technology/640x360/6" alt="Project 6" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">Smart Home Controller</h3>
-                        <p class="text-gray-300 mb-4">Unified interface for IoT home automation</p>
-                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
-                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- About + Skills -->
+    <section class="two-col">
+      <div id="about" class="card about">
+        <div class="section-title">
+          <h2>About</h2>
+          <p>Short, credible, engineering-forward.</p>
         </div>
+        <p>
+          I’m a product-focused engineer who likes tight feedback loops: prototype → measure → learn → ship.
+          My work sits at the intersection of sensors, validation, and data—building systems that collect
+          signals reliably, turn them into insights, and drive better decisions in the real world.
+        </p>
+        <div style="height:10px"></div>
+        <p>
+          I care about practical outcomes: test plans, clear metrics, traceable experiments, and robust implementations.
+          If it can’t be measured, it can’t be improved.
+        </p>
+      </div>
+
+      <div id="skills" class="card skills">
+        <div class="section-title">
+          <h2>Skills / Services</h2>
+          <p>(You’ll expand this later.)</p>
+        </div>
+        <ul>
+          <li>Sensor test & validation</li>
+          <li>Experimental design (DOE)</li>
+          <li>Data pipelines & dashboards</li>
+          <li>Predictive modeling</li>
+          <li>Automation & process optimization</li>
+          <li>Product engineering execution</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row items-center">
-                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-8">
-                        About <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Me</span>
-                    </h2>
-                    <p class="text-lg text-gray-300 mb-6">
-                        I'm a passionate digital architect with over 8 years of experience crafting exceptional web experiences. My journey began with simple HTML pages and has evolved into building complex, interactive applications.
-                    </p>
-                    <p class="text-lg text-gray-300 mb-6">
-                        I specialize in creating intuitive user interfaces and scalable architectures that stand the test of time. My approach combines technical excellence with creative problem-solving.
-                    </p>
-                    <p class="text-lg text-gray-300">
-                        When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or mentoring aspiring developers.
-                    </p>
-                </div>
-                <div class="lg:w-1/2 relative">
-                    <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-1">
-                        <img src="http://static.photos/people/640x360/1" alt="Profile" class="rounded-2xl w-full h-auto">
-                    </div>
-                    <div class="absolute -bottom-6 -right-6 bg-gray-800 p-4 rounded-xl shadow-xl">
-                        <div class="flex items-center">
-                            <div class="bg-blue-500 p-3 rounded-lg mr-4">
-                                <i data-feather="award" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">8+ Years</h4>
-                                <p class="text-sm text-gray-400">Experience</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Contact -->
+    <section id="contact">
+      <div class="card contact">
+        <div class="section-title">
+          <div>
+            <h2>Contact</h2>
+            <p>Use the form (static) or link out to email/LinkedIn.</p>
+          </div>
         </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-gray-800/50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
-                My <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Expertise</span>
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="code" class="w-6 h-6 text-purple-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Frontend</h3>
-                    <p class="text-gray-400">React, Vue, Angular, Tailwind</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="server" class="w-6 h-6 text-blue-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Backend</h3>
-                    <p class="text-gray-400">Node.js, Python, Ruby, PHP</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="smartphone" class="w-6 h-6 text-green-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Mobile</h3>
-                    <p class="text-gray-400">React Native, Flutter</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-yellow-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="database" class="w-6 h-6 text-yellow-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Database</h3>
-                    <p class="text-gray-400">MongoDB, PostgreSQL, Firebase</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-red-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="cpu" class="w-6 h-6 text-red-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">DevOps</h3>
-                    <p class="text-gray-400">Docker, AWS, CI/CD</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-pink-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="figma" class="w-6 h-6 text-pink-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Design</h3>
-                    <p class="text-gray-400">Figma, Adobe XD, UI/UX</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-indigo-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="bar-chart-2" class="w-6 h-6 text-indigo-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Analytics</h3>
-                    <p class="text-gray-400">GA, Mixpanel, Hotjar</p>
-                </div>
-                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
-                    <div class="w-12 h-12 bg-teal-600/20 rounded-lg flex items-center justify-center mb-4">
-                        <i data-feather="lock" class="w-6 h-6 text-teal-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Security</h3>
-                    <p class="text-gray-400">OWASP, Pen Testing</p>
-                </div>
-            </div>
+        <!-- Note: This form is static unless you wire it to a service (Formspree/Netlify Forms/etc.) -->
+        <form onsubmit="return handleSubmit(event)">
+          <input id="name" name="name" placeholder="Your name" required />
+          <input id="email" name="email" type="email" placeholder="Your email" required />
+          <textarea id="message" name="message" placeholder="What are you building?" required></textarea>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <button class="btn primary" type="submit">Send Message</button>
+            <span id="status" style="color:var(--muted); font-size:13px;"></span>
+          </div>
+        </form>
+
+        <div class="footer">
+          <div>© <span id="year"></span> Shrey Vasisht</div>
+          <div class="social">
+            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:your.email@example.com">Email</a>
+          </div>
         </div>
+      </div>
     </section>
+  </main>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gray-900">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
-                Get In <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Touch</span>
-            </h2>
-            <div class="flex flex-col lg:flex-row">
-                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
-                    <h3 class="text-2xl font-bold mb-6">Let's build something amazing together</h3>
-                    <p class="text-gray-300 mb-8">
-                        Have a project in mind or want to discuss potential opportunities? I'd love to hear from you. Fill out the form or reach out directly through any of the channels below.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <div class="bg-blue-600/20 p-3 rounded-lg mr-4">
-                                <i data-feather="mail" class="w-5 h-5 text-blue-400"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium">Email</h4>
-                                <p class="text-gray-400">contact@shreyvasisht.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="bg-purple-600/20 p-3 rounded-lg mr-4">
-                                <i data-feather="phone" class="w-5 h-5 text-purple-400"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium">Phone</h4>
-                                <p class="text-gray-400">+1 (555) 123-4567</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="bg-green-600/20 p-3 rounded-lg mr-4">
-                                <i data-feather="map-pin" class="w-5 h-5 text-green-400"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium">Location</h4>
-                                <p class="text-gray-400">San Francisco, CA</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex mt-8 space-x-4">
-                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
-                            <i data-feather="github" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
-                            <i data-feather="linkedin" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
-                            <i data-feather="twitter" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
-                            <i data-feather="dribbble" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="lg:w-1/2">
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium mb-2">Name</label>
-                                <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="Your name">
-                            </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                                <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="your@email.com">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="subject" class="block text-sm font-medium mb-2">Subject</label>
-                            <input type="text" id="subject" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="What's this about?">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
-                            <textarea id="message" rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="Your message here..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+  <script>
+    // ===== Cursor-follow UI (smooth) =====
+    const blob = document.querySelector('.cursor-blob');
+    const ring = document.querySelector('.cursor-ring');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let blobX = mouseX, blobY = mouseY;
+    let ringX = mouseX, ringY = mouseY;
 
-    <custom-footer></custom-footer>
+    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
-    <script src="script.js"></script>
-    <script>
-        feather.replace();
-    </script>
+    function animate(){
+      // Blob lags more than ring for a soft “inertia” feel
+      blobX += (mouseX - blobX) * 0.12;
+      blobY += (mouseY - blobY) * 0.12;
+      ringX += (mouseX - ringX) * 0.22;
+      ringY += (mouseY - ringY) * 0.22;
+
+      blob.style.transform = `translate(${blobX}px, ${blobY}px) translate(-50%, -50%)`;
+      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    // Hover “magnet” feel on interactive elements
+    const hoverables = document.querySelectorAll('a, button, .project');
+    hoverables.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        blob.style.opacity = '1';
+        ring.style.opacity = '0.95';
+        ring.style.width = '34px';
+        ring.style.height = '34px';
+      });
+      el.addEventListener('mouseleave', () => {
+        blob.style.opacity = '0.85';
+        ring.style.opacity = '0.75';
+        ring.style.width = '26px';
+        ring.style.height = '26px';
+      });
+    });
+
+    // ===== Contact form: simple mailto fallback =====
+    function handleSubmit(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const status = document.getElementById('status');
+
+      // Static site: open user's email client
+      const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+      window.location.href = `mailto:your.email@example.com?subject=${subject}&body=${body}`;
+
+      status.textContent = 'Opening your email client…';
+      return false;
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
+
