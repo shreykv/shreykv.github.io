@@ -1,431 +1,332 @@
 -<!DOCTYPE html>
--<html lang="en">
--<head>
--    <meta charset="UTF-8">
--    <meta name="viewport" content="width=device-width, initial-scale=1.0">
--    <title>Shrey Vasisht | Portfolio</title>
--
--    <!-- Google Fonts -->
--    <link rel="preconnect" href="https://fonts.gstatic.com">
--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
--
--    <!-- Styles -->
--    <style>
--        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth;}
--        body { font-family: 'Poppins', sans-serif; background: #fff; color: #111; overflow-x: hidden; }
--        header { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: #fafafa; }
--        header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
--        header p { font-size: 1.2rem; color: #555; }
--
--        nav { position: fixed; top: 0; width: 100%; padding: 1rem 2rem; display: flex; justify-content: space-between; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); z-index: 10;}
--        nav a { margin: 0 1rem; text-decoration: none; color: #222; font-weight: 500;}
--
--        section { padding: 6rem 2rem; }
--        .container { max-width: 1100px; margin: auto; }
--
--        h2 { font-size: 2rem; margin-bottom: 1rem; text-align: center; }
--        .about p { text-align: center; line-height: 1.7;}
--        
--        /* Projects */
--        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; }
--        .proj-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); overflow: hidden; transition: transform .3s;}
--        .proj-card:hover { transform: translateY(-8px); }
--        .proj-card img { width: 100%; height: 180px; object-fit: cover;}
--        .proj-card h3 { padding: 0.8rem; font-size: 1.2rem;}
--        
--        /* Footer */
--        footer { text-align: center; padding: 1rem; color: #666; margin-top: 3rem; border-top: 1px solid #eee;}
--
--        /* Cursor */
--        .cursor {
--            width: 18px; height: 18px; border: 2px solid #111; border-radius: 50%;
--            position: fixed; transform: translate(-50%, -50%); pointer-events: none; transition: transform .15s ease-out;
--            z-index: 9999;
--        }
--        .cursor.hover { transform: translate(-50%, -50%) scale(1.7); background: rgba(0,0,0,0.1);}
--    </style>
--</head>
--<body>
--
--<nav>
--    <div class="logo"><strong>YourName</strong></div>
--    <div class="menu">
--        <a href="#home">Home</a>
--        <a href="#about">About</a>
--        <a href="#projects">Projects</a>
--        <a href="#contact">Contact</a>
--    </div>
--</nav>
--
--<header id="home">
--    <div>
--        <h1>Hello, I'm Your Name</h1>
--        <p>Product Engineer | Dawg | Builder of Cool Stuff</p>
--    </div>
--</header>
--
--<section id="about">
--    <div class="container about">
--        <h2>About Me</h2>
--        <p>I’m a dawg</p>
--    </div>
--</section>
--
--<section id="projects">
--    <div class="container">
--        <h2>Portfolio & Projects</h2>
--        <div class="projects-grid">
--            <div class="proj-card">
--                <img src="assets/project1.jpg" alt="Project 1">
--                <h3>Project Title 1</h3>
--            </div>
--            <div class="proj-card">
--                <img src="assets/project2.jpg" alt="Project 2">
--                <h3>Project Title 2</h3>
--            </div>
--            <div class="proj-card">
--                <img src="assets/project3.jpg" alt="Project 3">
--                <h3>Project Title 3</h3>
--            </div>
--        </div>
--    </div>
--</section>
--
--<section id="contact">
--    <div class="container">
--        <h2>Contact Me</h2>
--        <p style="text-align:center;">Want to work together? <br> Email: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
--    </div>
--</section>
--
--<footer>© 2025 Your Name. All Rights Reserved.</footer>
--
--<!-- Custom Cursor -->
--<div class="cursor"></div>
--
--<!-- Scripts -->
--<script>
--    // Cursor Script
--    const cursor = document.querySelector('.cursor');
--    document.addEventListener('mousemove', e => {
--        cursor.style.left = e.pageX + 'px';
--        cursor.style.top = e.pageY + 'px';
--    });
--
--    document.querySelectorAll('a, .proj-card').forEach(el => {
--        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
--        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
--    });
--</script>
--
--</body>
--</html>
--
-+<!DOCTYPE html>
-+<html lang="en">
-+<head>
-+    <meta charset="UTF-8">
-+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+    <title>Shrey Vasisht | Portfolio</title>
-+
-+    <!-- Google Fonts -->
-+    <link rel="preconnect" href="https://fonts.gstatic.com">
-+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-+
-+    <style>
-+        :root {
-+            --bg: #0b0d14;
-+            --panel: #101422;
-+            --card: #13192b;
-+            --text: #e8ecf4;
-+            --muted: #9aa4bf;
-+            --accent: #6cf1c5;
-+            --accent-2: #5bc0f8;
-+            --border: rgba(255,255,255,0.05);
-+            --shadow: 0 30px 60px rgba(0,0,0,0.45);
-+            --radius: 18px;
-+        }
-+
-+        * { box-sizing: border-box; margin: 0; padding: 0; }
-+        body {
-+            font-family: 'Space Grotesk', sans-serif;
-+            background: radial-gradient(circle at 20% 20%, rgba(108,241,197,0.07), transparent 25%),
-+                        radial-gradient(circle at 80% 0%, rgba(91,192,248,0.08), transparent 22%),
-+                        var(--bg);
-+            color: var(--text);
-+            overflow-x: hidden;
-+            line-height: 1.6;
-+        }
-+
-+        a { color: inherit; text-decoration: none; }
-+
-+        nav {
-+            position: fixed;
-+            top: 0; left: 0; right: 0;
-+            padding: 1.1rem 3rem;
-+            display: flex;
-+            align-items: center;
-+            justify-content: space-between;
-+            background: rgba(11,13,20,0.7);
-+            backdrop-filter: blur(16px);
-+            border-bottom: 1px solid var(--border);
-+            z-index: 100;
-+        }
-+        .logo { font-weight: 700; letter-spacing: 0.06em; color: var(--accent); }
-+        .menu { display: flex; gap: 1.25rem; align-items: center; }
-+        .menu a { color: var(--muted); font-weight: 500; transition: color 0.2s ease, transform 0.2s ease; }
-+        .menu a:hover { color: var(--accent); transform: translateY(-2px); }
-+
-+        main { padding-top: 90px; }
-+        section { padding: 4.5rem 3rem; }
-+        .container { max-width: 1100px; margin: 0 auto; }
-+        h2.section-title { font-size: 2.1rem; text-align: center; margin-bottom: 1rem; letter-spacing: -0.02em; }
-+        p.section-sub { text-align: center; color: var(--muted); max-width: 680px; margin: 0 auto 3rem; }
-+
-+        /* Hero */
-+        .hero { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; align-items: center; }
-+        .hero-copy h1 { font-size: clamp(2.6rem, 5vw, 3.6rem); line-height: 1.15; margin-bottom: 1rem; }
-+        .hero-copy p { color: var(--muted); margin-bottom: 1.5rem; }
-+        .hero-tags { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-bottom: 1.8rem; }
-+        .pill { background: rgba(108,241,197,0.08); color: var(--accent); padding: 0.45rem 0.85rem; border-radius: 999px; font-size: 0.95rem; border: 1px solid rgba(108,241,197,0.2); }
-+        .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
-+        .btn { padding: 0.9rem 1.4rem; border-radius: 12px; border: 1px solid var(--border); font-weight: 600; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-+        .btn-primary { background: linear-gradient(120deg, var(--accent), var(--accent-2)); color: #041223; box-shadow: var(--shadow); border: none; }
-+        .btn-ghost { color: var(--text); background: rgba(255,255,255,0.05); }
-+        .btn:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(91,192,248,0.25); }
-+
-+        .hero-visual { position: relative; padding: 1.6rem; border-radius: var(--radius); background: var(--panel); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
-+        .hero-visual::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(91,192,248,0.12), transparent 30%), radial-gradient(circle at 80% 80%, rgba(108,241,197,0.12), transparent 26%); z-index: 0; }
-+        .hero-grid { position: relative; z-index: 1; display: grid; gap: 1rem; }
-+        .hero-card { background: var(--card); border: 1px solid var(--border); padding: 1rem; border-radius: 14px; display: flex; align-items: center; gap: 0.9rem; }
-+        .hero-card .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 0 6px rgba(91,192,248,0.12); }
-+        .hero-card small { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; }
-+
-+        /* About */
-+        .about { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--shadow); }
-+        .about p { color: var(--muted); font-size: 1.05rem; }
-+
-+        /* Projects */
-+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.4rem; }
-+        .project-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; }
-+        .project-card:hover { transform: translateY(-6px); border-color: rgba(108,241,197,0.35); }
-+        .project-media { height: 180px; background: linear-gradient(140deg, rgba(91,192,248,0.35), rgba(108,241,197,0.18)); display: flex; align-items: flex-end; justify-content: flex-start; padding: 1rem; color: #041223; font-weight: 700; letter-spacing: 0.04em; }
-+        .project-body { padding: 1.2rem; display: grid; gap: 0.7rem; flex: 1; }
-+        .project-title { font-size: 1.1rem; }
-+        .project-desc { color: var(--muted); font-size: 0.98rem; }
-+        .project-footer { padding: 0 1.2rem 1.2rem; }
-+        .link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--accent); font-weight: 600; }
-+        .link span { font-size: 1.2rem; }
-+
-+        /* Services */
-+        .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
-+        .service-card { padding: 1.3rem; border-radius: 14px; border: 1px solid var(--border); background: var(--panel); box-shadow: var(--shadow); display: grid; gap: 0.4rem; }
-+        .service-card small { color: var(--muted); }
-+
-+        /* Contact */
-+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
-+        form { display: grid; gap: 0.9rem; }
-+        input, textarea { width: 100%; padding: 0.85rem 1rem; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--text); }
-+        textarea { min-height: 120px; resize: vertical; }
-+        input:focus, textarea:focus { outline: 2px solid rgba(108,241,197,0.4); }
-+        .contact-links { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem; box-shadow: var(--shadow); display: grid; gap: 0.8rem; }
-+        .contact-links a { color: var(--accent); font-weight: 600; }
-+
-+        footer { text-align: center; color: var(--muted); padding: 2rem 1rem; border-top: 1px solid var(--border); margin-top: 2rem; }
-+
-+        @media (max-width: 640px) {
-+            nav { padding: 1rem 1.3rem; }
-+            section { padding: 3.5rem 1.4rem; }
-+        }
-+    </style>
-+</head>
-+<body>
-+    <nav>
-+        <div class="logo">SHREY VASISHT</div>
-+        <div class="menu">
-+            <a href="#home">Home</a>
-+            <a href="#about">About</a>
-+            <a href="#projects">Portfolio</a>
-+            <a href="#services">Services</a>
-+            <a href="#contact">Contact</a>
-+        </div>
-+    </nav>
-+
-+    <main>
-+        <section id="home">
-+            <div class="container hero">
-+                <div class="hero-copy">
-+                    <p class="pill">Product Engineer · Sensor Engineer · Data Scientist</p>
-+                    <h1>Designing resilient products that sense, learn, and ship to scale.</h1>
-+                    <p>I blend hands-on hardware intuition with data-driven decision making to deliver products that feel crafted and perform reliably.</p>
-+                    <div class="hero-tags">
-+                        <span class="pill">ML for sensing</span>
-+                        <span class="pill">Embedded prototyping</span>
-+                        <span class="pill">Product strategy</span>
-+                        <span class="pill">Systems thinking</span>
-+                    </div>
-+                    <div class="cta-row">
-+                        <a class="btn btn-primary" href="#contact">Work with me</a>
-+                        <a class="btn btn-ghost" href="#projects">View portfolio</a>
-+                    </div>
-+                </div>
-+                <div class="hero-visual">
-+                    <div class="hero-grid">
-+                        <div class="hero-card">
-+                            <div class="dot"></div>
-+                            <div>
-+                                <small>End-to-end delivery</small>
-+                                <p>From proof-of-concept firmware to data pipelines and launch.</p>
-+                            </div>
-+                        </div>
-+                        <div class="hero-card">
-+                            <div class="dot" style="background: var(--accent);"></div>
-+                            <div>
-+                                <small>Human-centered</small>
-+                                <p>Experiences shaped by field research, usability tests, and rigorous metrics.</p>
-+                            </div>
-+                        </div>
-+                        <div class="hero-card">
-+                            <div class="dot" style="background: #ffb74a; box-shadow: 0 0 0 6px rgba(255,183,74,0.18);"></div>
-+                            <div>
-+                                <small>Reliable sensing</small>
-+                                <p>Sensor fusion, calibration, and health monitoring built for real-world noise.</p>
-+                            </div>
-+                        </div>
-+                    </div>
-+                </div>
-+            </div>
-+        </section>
-+
-+        <section id="about">
-+            <div class="container">
-+                <h2 class="section-title">About Shrey</h2>
-+                <p class="section-sub">Product engineer who bridges hardware, software, and data to ship thoughtful connected experiences.</p>
-+                <div class="about">
-+                    <p>With a background across sensor engineering, ML, and product strategy, I lead multidisciplinary teams to deliver devices and platforms that earn trust. I love prototyping quickly, designing experiments that uncover signal, and translating insights into robust systems ready for production.</p>
-+                </div>
-+            </div>
-+        </section>
-+
-+        <section id="projects">
-+            <div class="container">
-+                <h2 class="section-title">Portfolio</h2>
-+                <p class="section-sub">Selected work across sensing, data products, and end-to-end experiences.</p>
-+                <div class="projects-grid">
-+                    <article class="project-card">
-+                        <div class="project-media">Sensor Fusion Lab</div>
-+                        <div class="project-body">
-+                            <h3 class="project-title">Multi-modal health monitoring platform</h3>
-+                            <p class="project-desc">Built firmware, calibration routines, and analytics to merge inertial, environmental, and biometric data into actionable insights.</p>
-+                        </div>
-+                        <div class="project-footer">
-+                            <a class="link" href="#">View Project <span>↗</span></a>
-+                        </div>
-+                    </article>
-+                    <article class="project-card">
-+                        <div class="project-media" style="background: linear-gradient(140deg, rgba(108,241,197,0.35), rgba(91,192,248,0.18));">Predictive Ops</div>
-+                        <div class="project-body">
-+                            <h3 class="project-title">Edge ML for industrial sensors</h3>
-+                            <p class="project-desc">Deployed on-device anomaly detection with lightweight models, improving uptime while reducing cloud dependency.</p>
-+                        </div>
-+                        <div class="project-footer">
-+                            <a class="link" href="#">View Project <span>↗</span></a>
-+                        </div>
-+                    </article>
-+                    <article class="project-card">
-+                        <div class="project-media" style="background: linear-gradient(140deg, rgba(255,183,74,0.35), rgba(108,241,197,0.18));">Human Factors</div>
-+                        <div class="project-body">
-+                            <h3 class="project-title">User-centric environmental console</h3>
-+                            <p class="project-desc">Led discovery, prototypes, and UX for a console that visualizes air quality trends and drives healthier spaces.</p>
-+                        </div>
-+                        <div class="project-footer">
-+                            <a class="link" href="#">View Project <span>↗</span></a>
-+                        </div>
-+                    </article>
-+                    <article class="project-card">
-+                        <div class="project-media" style="background: linear-gradient(140deg, rgba(91,192,248,0.32), rgba(255,183,74,0.18));">Data Pipeline</div>
-+                        <div class="project-body">
-+                            <h3 class="project-title">Telemetry & observability stack</h3>
-+                            <p class="project-desc">Designed ingestion, feature stores, and dashboards for sensor fleets with privacy-first data governance.</p>
-+                        </div>
-+                        <div class="project-footer">
-+                            <a class="link" href="#">View Project <span>↗</span></a>
-+                        </div>
-+                    </article>
-+                    <article class="project-card">
-+                        <div class="project-media" style="background: linear-gradient(140deg, rgba(108,241,197,0.25), rgba(91,192,248,0.22));">Prototyping Kit</div>
-+                        <div class="project-body">
-+                            <h3 class="project-title">Rapid sensor prototyping toolkit</h3>
-+                            <p class="project-desc">Created modular hardware and templates so teams can validate new sensing concepts in days, not weeks.</p>
-+                        </div>
-+                        <div class="project-footer">
-+                            <a class="link" href="#">View Project <span>↗</span></a>
-+                        </div>
-+                    </article>
-+                    <article class="project-card">
-+                        <div class="project-media" style="background: linear-gradient(140deg, rgba(91,192,248,0.35), rgba(108,241,197,0.25));">Insight Engine</div>
-+                        <div class="project-body">
-+                            <h3 class="project-title">Data storytelling for execs</h3>
-+                            <p class="project-desc">Built interactive narratives translating sensor performance and customer outcomes into confident decisions.</p>
-+                        </div>
-+                        <div class="project-footer">
-+                            <a class="link" href="#">View Project <span>↗</span></a>
-+                        </div>
-+                    </article>
-+                </div>
-+            </div>
-+        </section>
-+
-+        <section id="services">
-+            <div class="container">
-+                <h2 class="section-title">Services & Skills</h2>
-+                <p class="section-sub">A toolkit for building thoughtful, measurable, and scalable products.</p>
-+                <div class="services">
-+                    <div class="service-card">
-+                        <h3>Product Leadership</h3>
-+                        <small>Roadmapping, research synthesis, and stakeholder alignment for complex launches.</small>
-+                    </div>
-+                    <div class="service-card">
-+                        <h3>Sensor Systems</h3>
-+                        <small>Architecture, calibration, and fusion strategies for reliable signals in noisy environments.</small>
-+                    </div>
-+                    <div class="service-card">
-+                        <h3>Data Science & ML</h3>
-+                        <small>Model design, MLOps, and experimentation that tie performance to real outcomes.</small>
-+                    </div>
-+                    <div class="service-card">
-+                        <h3>Prototyping & Validation</h3>
-+                        <small>Rapid firmware, dashboards, and pilots to derisk decisions early.</small>
-+                    </div>
-+                </div>
-+            </div>
-+        </section>
-+
-+        <section id="contact">
-+            <div class="container">
-+                <h2 class="section-title">Let’s build together</h2>
-+                <p class="section-sub">Have an opportunity or question? Reach out and I’ll respond promptly.</p>
-+                <div class="contact-grid">
-+                    <form>
-+                        <input type="text" name="name" placeholder="Your name" required>
-+                        <input type="email" name="email" placeholder="Email" required>
-+                        <textarea name="message" placeholder="Project details, goals, or timeline" required></textarea>
-+                        <button class="btn btn-primary" type="submit">Send message</button>
-+                    </form>
-+                    <div class="contact-links">
-+                        <h3>Prefer direct?</h3>
-+                        <p class="section-sub" style="margin:0; text-align:left;">Email: <a href="mailto:shrey@example.com">shrey@example.com</a></p>
-+                        <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn ↗</a>
-+                        <a href="https://www.github.com" target="_blank" rel="noreferrer">GitHub ↗</a>
-+                    </div>
-+                </div>
-+            </div>
-+        </section>
-+    </main>
-+
-+    <footer>
-+        © 2025 Shrey Vasisht. Built with care and curiosity.
-+    </footer>
-+</body>
-+</html>
+-<html lang="en"><!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shrey Vasisht | Digital Architect</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="components/cursor.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans overflow-x-hidden">
+    <custom-cursor></custom-cursor>
+    <custom-navbar></custom-navbar>
 
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 z-0"></div>
+        <div class="container mx-auto px-6 z-10">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                    Crafting <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Digital Experiences</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+                    I design and build immersive digital solutions that push boundaries and create impact.
+                </p>
+                <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 transform hover:scale-105">
+                    Let's Connect
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-feather="chevron-down" class="w-8 h-8"></i>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-gray-800/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
+                Selected <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Works</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                    <div class="overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/1" alt="Project 1" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">AI Dashboard</h3>
+                        <p class="text-gray-300 mb-4">Interactive analytics platform with real-time data visualization</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
+                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                    <div class="overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/2" alt="Project 2" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">E-Commerce Platform</h3>
+                        <p class="text-gray-300 mb-4">Scalable online store with personalized recommendations</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
+                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                    <div class="overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/3" alt="Project 3" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Mobile Banking App</h3>
+                        <p class="text-gray-300 mb-4">Secure financial management application with biometric auth</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
+                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                    <div class="overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/4" alt="Project 4" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">AR Navigation System</h3>
+                        <p class="text-gray-300 mb-4">Augmented reality wayfinding for complex environments</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
+                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                    <div class="overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/5" alt="Project 5" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Health Tracker</h3>
+                        <p class="text-gray-300 mb-4">Comprehensive wellness monitoring with AI insights</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
+                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="portfolio-item group relative overflow-hidden rounded-xl bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                    <div class="overflow-hidden">
+                        <img src="http://static.photos/technology/640x360/6" alt="Project 6" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Smart Home Controller</h3>
+                        <p class="text-gray-300 mb-4">Unified interface for IoT home automation</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium flex items-center">
+                            View Project <i data-feather="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8">
+                        About <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Me</span>
+                    </h2>
+                    <p class="text-lg text-gray-300 mb-6">
+                        I'm a passionate digital architect with over 8 years of experience crafting exceptional web experiences. My journey began with simple HTML pages and has evolved into building complex, interactive applications.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-6">
+                        I specialize in creating intuitive user interfaces and scalable architectures that stand the test of time. My approach combines technical excellence with creative problem-solving.
+                    </p>
+                    <p class="text-lg text-gray-300">
+                        When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or mentoring aspiring developers.
+                    </p>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-1">
+                        <img src="http://static.photos/people/640x360/1" alt="Profile" class="rounded-2xl w-full h-auto">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-gray-800 p-4 rounded-xl shadow-xl">
+                        <div class="flex items-center">
+                            <div class="bg-blue-500 p-3 rounded-lg mr-4">
+                                <i data-feather="award" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">8+ Years</h4>
+                                <p class="text-sm text-gray-400">Experience</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-800/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
+                My <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Expertise</span>
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="code" class="w-6 h-6 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Frontend</h3>
+                    <p class="text-gray-400">React, Vue, Angular, Tailwind</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="server" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Backend</h3>
+                    <p class="text-gray-400">Node.js, Python, Ruby, PHP</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="smartphone" class="w-6 h-6 text-green-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Mobile</h3>
+                    <p class="text-gray-400">React Native, Flutter</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-yellow-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="database" class="w-6 h-6 text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Database</h3>
+                    <p class="text-gray-400">MongoDB, PostgreSQL, Firebase</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-red-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="cpu" class="w-6 h-6 text-red-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">DevOps</h3>
+                    <p class="text-gray-400">Docker, AWS, CI/CD</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-pink-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="figma" class="w-6 h-6 text-pink-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Design</h3>
+                    <p class="text-gray-400">Figma, Adobe XD, UI/UX</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-indigo-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="bar-chart-2" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Analytics</h3>
+                    <p class="text-gray-400">GA, Mixpanel, Hotjar</p>
+                </div>
+                <div class="skill-card bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300">
+                    <div class="w-12 h-12 bg-teal-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-feather="lock" class="w-6 h-6 text-teal-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Security</h3>
+                    <p class="text-gray-400">OWASP, Pen Testing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">
+                Get In <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Touch</span>
+            </h2>
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
+                    <h3 class="text-2xl font-bold mb-6">Let's build something amazing together</h3>
+                    <p class="text-gray-300 mb-8">
+                        Have a project in mind or want to discuss potential opportunities? I'd love to hear from you. Fill out the form or reach out directly through any of the channels below.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="bg-blue-600/20 p-3 rounded-lg mr-4">
+                                <i data-feather="mail" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-400">contact@shreyvasisht.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-purple-600/20 p-3 rounded-lg mr-4">
+                                <i data-feather="phone" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-400">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-green-600/20 p-3 rounded-lg mr-4">
+                                <i data-feather="map-pin" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Location</h4>
+                                <p class="text-gray-400">San Francisco, CA</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex mt-8 space-x-4">
+                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
+                            <i data-feather="github" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
+                            <i data-feather="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
+                            <i data-feather="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="social-icon bg-gray-800 hover:bg-gray-700 p-3 rounded-lg transition-all duration-300">
+                            <i data-feather="dribbble" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium mb-2">Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="Your name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="your@email.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="What's this about?">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300" placeholder="Your message here..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <custom-footer></custom-footer>
+
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
