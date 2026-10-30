@@ -63,7 +63,9 @@ CREATE INDEX IF NOT EXISTS idx_screener_prices_ticker_date
 
 -- View: always returns picks from the most recent snapshot.
 -- The site queries this so it doesn't need to know snapshot IDs.
-CREATE OR REPLACE VIEW screener_latest_picks AS
+DROP VIEW IF EXISTS screener_latest_picks;
+
+CREATE VIEW screener_latest_picks AS
 SELECT
   p.*,
   s.created_at AS snapshot_created_at

@@ -1079,7 +1079,7 @@ class API {
       const supabase = this.getSupabase();
       const { data, error } = await supabase
         .from('screener_latest_picks')
-        .select('*')
+        .select('criteria_met, criteria_total, price_to_book, free_cash_flow, revenue_growth_1y, revenue_growth_5y, earnings_growth_1y, earnings_growth_5y')
         .order('strategy_key', { ascending: true })
         .order('rank', { ascending: true });
 
