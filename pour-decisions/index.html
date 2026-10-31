@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pour Decisions · Start or join a crawl</title>
+<meta name="description" content="A shared drink board and bar crawl tracker for your crew. Start a crawl or join one with a code.">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pour Decisions">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/mona-sans-latin.5ea3740633.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Mona Sans";font-style:normal;font-weight:200 900;font-stretch:75% 125%;font-display:swap;src:url(fonts/mona-sans-latin-ext.5658cdeea6.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Mona Sans";font-style:normal;font-weight:200 900;font-stretch:75% 125%;font-display:swap;src:url(fonts/mona-sans-latin.5ea3740633.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Martian Mono";font-style:normal;font-weight:100 800;font-stretch:75% 112.5%;font-display:swap;src:url(fonts/martian-mono-latin.f9c1655c2c.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* The board's dark set, so the front door and the room behind it match. */
+:root {
+  color-scheme: dark;
+  --bg: #000000; --s1: #0e0e10; --s2: #18181b; --s3: #232327;
+  --line: #222226; --line-2: #35353b; --line-3: #62626d;
+  --ink: #ffffff; --ink-2: #dedee3; --ink-3: #b1b1bb; --ink-4: #8a8a95;
+  --amber: #ffb000; --amber-hi: #ffc53d; --amber-soft: rgba(255, 176, 0, .14); --amber-line: rgba(255, 176, 0, .62);
+  --red: #ff867c;
+  --f-sans: "Mona Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --f-mono: "Martian Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --ease: cubic-bezier(.2, .9, .25, 1);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  min-height: 100vh; min-height: 100dvh;
+  display: grid; place-items: center; padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  background: radial-gradient(60rem 30rem at 50% -10%, rgba(255, 176, 0, .09), transparent 60%), var(--bg);
+  color: var(--ink); font: 450 1rem/1.45 var(--f-sans);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+::selection { background: var(--amber); color: #000; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.wrap { width: 100%; max-width: 470px; display: grid; gap: 16px; }
+.card { position: relative; display: grid; gap: 20px; padding: 36px 34px 34px; border-radius: 18px; border: 1px solid var(--line); background: var(--s1); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 30px 70px -30px rgba(0, 0, 0, .95); }
+@media (max-width: 420px) { .card { padding: 28px 20px 24px; } }
+
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.wm { display: flex; align-items: center; flex-wrap: wrap; gap: .3em; margin: 0; font: 900 1.55rem/1 var(--f-sans); font-stretch: 125%; letter-spacing: .012em; text-transform: uppercase; }
+.wm b { font-weight: 900; background: var(--amber); color: #000; padding: .3em .42em .26em; border-radius: .34em; }
+.sub { margin: 12px 0 0; color: var(--ink-3); font-size: .98rem; max-width: 32ch; }
+.iconbtn { position: relative; flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-2); background: var(--s2); color: var(--ink-2); transition: background-color .15s, border-color .15s, transform .12s var(--ease); }
+.iconbtn:hover { background: var(--s3); border-color: var(--line-3); }
+.iconbtn:active { transform: scale(.95); }
+.iconbtn[aria-expanded="true"] { background: var(--amber-soft); border-color: var(--amber-line); color: var(--amber); }
+.iconbtn .count { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--amber); color: #000; font: 800 .7rem/18px var(--f-sans); text-align: center; }
+
+.stack { display: grid; gap: 12px; }
+.field { display: grid; gap: 7px; }
+.field > span { font: 650 .84rem/1.2 var(--f-sans); color: var(--ink-2); }
+.field small { font-weight: 450; color: var(--ink-3); }
+.input { display: block; width: 100%; height: 56px; padding: 0 18px; border-radius: 13px; border: 1px solid var(--line-2); background: #000; color: var(--ink); font: 500 1rem/1.3 var(--f-sans); -webkit-appearance: none; appearance: none; transition: border-color .15s; }
+.input:hover { border-color: var(--line-3); }
+.input::placeholder { color: var(--ink-4); opacity: 1; }
+.input--code { font: 500 1.05rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; }
+.input--code::placeholder { letter-spacing: .02em; text-transform: none; }
+
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 58px; padding: 0 20px; border-radius: 13px; border: 1px solid transparent; font: 750 1.08rem/1.1 var(--f-sans); font-stretch: 112%; text-decoration: none; transition: background-color .15s, border-color .15s, color .15s, transform .12s var(--ease); }
+.btn:active:not(:disabled) { transform: scale(.98); }
+.btn--light { background: #fafafa; color: #000; }
+.btn--light:hover:not(:disabled) { background: #fff; }
+.btn--light:disabled { background: #808080; color: #1a1a1a; }
+.btn--amber { background: var(--amber); border-color: var(--amber); color: #000; }
+.btn--amber:hover:not(:disabled) { background: var(--amber-hi); }
+.btn--amber:disabled { opacity: .55; }
+.btn--quiet { background: transparent; border-color: var(--line-2); color: var(--ink-2); min-height: 50px; font-size: .98rem; }
+.btn--quiet:hover { background: var(--s2); border-color: var(--line-3); }
+
+.or { display: flex; align-items: center; gap: 14px; margin: 6px 0; color: var(--ink-4); font: 500 .85rem/1 var(--f-mono); }
+.or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+.msg { margin: 0; min-height: 1.3em; font-size: .9rem; color: var(--ink-3); }
+.msg.is-err { color: var(--red); }
+
+.panel { display: grid; gap: 10px; padding-top: 4px; }
+.panel h2 { margin: 0; font: 800 .8rem/1.2 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.recent { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.recent a { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 13px; border: 1px solid var(--line-2); background: var(--s2); color: inherit; text-decoration: none; transition: background-color .15s, border-color .15s; }
+.recent a:hover { background: var(--s3); border-color: var(--line-3); }
+.recent .t { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.recent b { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent small { color: var(--ink-3); font-size: .84rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent code { flex: none; font: 600 .8rem/1 var(--f-mono); letter-spacing: .1em; color: var(--amber); }
+.empty { margin: 0; color: var(--ink-3); font-size: .92rem; }
+
+.step-head { display: flex; align-items: center; gap: 10px; }
+.back { display: grid; place-items: center; width: 40px; height: 40px; margin-left: -8px; border-radius: 50%; border: 0; background: transparent; color: var(--ink-2); }
+.back:hover { background: var(--s2); }
+.step-head h2 { margin: 0; font: 850 1.3rem/1.15 var(--f-sans); font-stretch: 112%; }
+
+.foot { text-align: center; color: var(--ink-4); font-size: .82rem; }
+.foot a { color: var(--ink-3); }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="card" aria-labelledby="title">
+    <div class="head">
+      <div>
+        <h1 class="wm" id="title"><span>Pour</span><b>Decisions</b></h1>
+        <p class="sub" id="sub">Join an existing crawl or start a new one to get going.</p>
+      </div>
+      <button type="button" class="iconbtn" id="recent-toggle" aria-expanded="false" aria-controls="recent-panel" aria-label="Your crawls">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="count" id="recent-count" hidden></span>
+      </button>
+    </div>
+
+    <div class="panel" id="recent-panel" hidden>
+      <h2>Your crawls</h2>
+      <ul class="recent" id="recent-list"></ul>
+      <p class="empty" id="recent-empty">Crawls you start or join on this phone will show up here.</p>
+    </div>
+
+    <!-- Step one: join with a code, or choose to start a crawl -->
+    <div class="stack" id="step-home">
+      <form class="stack" id="join-form" novalidate>
+        <label class="sr" for="code">Crawl code</label>
+        <input class="input input--code" id="code" name="code" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="8" placeholder="Enter crawl code">
+        <button type="submit" class="btn btn--light" id="join-btn" disabled>Join Crawl</button>
+      </form>
+      <p class="msg" id="join-msg" role="status" aria-live="polite"></p>
+      <div class="or" aria-hidden="true">or</div>
+      <button type="button" class="btn btn--amber" id="create-open">Start a Crawl</button>
+    </div>
+
+    <!-- Step two: name the crawl and say where it is -->
+    <form class="stack" id="step-create" hidden novalidate>
+      <div class="step-head">
+        <button type="button" class="back" id="create-back" aria-label="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <h2>Start a crawl</h2>
+      </div>
+      <label class="field"><span>Crawl name</span>
+        <input class="input" id="trip-title" type="text" maxlength="60" autocomplete="off" placeholder="Saturday Night Crawl" required>
+      </label>
+      <label class="field"><span>Location <small>(optional)</small></span>
+        <input class="input" id="trip-place" type="text" maxlength="60" autocomplete="off" placeholder="City or neighborhood">
+      </label>
+      <button type="submit" class="btn btn--amber" id="create-btn" disabled>Create Crawl</button>
+      <p class="msg" id="create-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+  <p class="foot">No accounts. Anyone with the code can join and log drinks.</p>
+</main>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  var pd = window.PourDecisions;
+  var rest = pd.backend.url.replace(/\/+$/, '') + '/rest/v1/';
+  var $ = function (id) { return document.getElementById(id); };
+
+  function api(method, endpoint, body, prefer) {
+    var headers = { apikey: pd.backend.anonKey, authorization: 'Bearer ' + pd.backend.anonKey, 'content-type': 'application/json' };
+    if (prefer) headers.prefer = prefer;
+    return fetch(rest + endpoint, { method: method, headers: headers, body: body ? JSON.stringify(body) : undefined, cache: 'no-store' })
+      .catch(function () { throw { kind: 'offline' }; })
+      .then(function (r) {
+        if (r.status === 409) throw { kind: 'taken' };
+        if (r.status === 404) throw { kind: 'setup' };
+        if (!r.ok) throw { kind: 'server' };
+        return r.text().then(function (t) { return t ? JSON.parse(t) : null; });
+      });
+  }
+  function explain(e) {
+    if (e && e.kind === 'offline') return 'Could not reach the crawl server. Check your connection and try again.';
+    if (e && e.kind === 'setup') return 'The crawl server is not set up yet.';
+    return 'Something went wrong on the server. Try again in a moment.';
+  }
+  function say(el, text, isErr) { el.textContent = text || ''; el.classList.toggle('is-err', !!isErr); }
+  function crawlExists(code) {
+    return api('POST', 'rpc/goofproof_state', { p_board: code.toLowerCase() }).then(function (s) {
+      var cols = (s && s.cols) || {};
+      var meta = cols.meta && cols.meta.trip;
+      return { exists: Object.keys(cols).length > 0, title: meta && meta.title, place: meta && meta.place };
+    });
+  }
+
+  /* ── your crawls ── */
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function renderRecent() {
+    var list = pd.recentCrawls();
+    $('recent-list').innerHTML = list.map(function (c) {
+      var line = [c.place, 'Code ' + c.code].filter(Boolean).join(' · ');
+      return '<li><a href="' + esc(pd.boardURL(c.code)) + '"><span class="t"><b>' + esc(c.title || 'Crawl ' + c.code) + '</b><small>' + esc(line) + '</small></span><code>' + esc(c.code) + '</code></a></li>';
+    }).join('');
+    $('recent-empty').hidden = list.length > 0;
+    $('recent-count').hidden = !list.length;
+    $('recent-count').textContent = list.length;
+  }
+  $('recent-toggle').addEventListener('click', function () {
+    var open = $('recent-panel').hidden;
+    $('recent-panel').hidden = !open;
+    this.setAttribute('aria-expanded', String(open));
+  });
+  renderRecent();
+
+  /* ── join ── */
+  var code = $('code'), joinBtn = $('join-btn'), joinMsg = $('join-msg');
+  function syncJoin() {
+    var c = pd.cleanCode(code.value);
+    if (code.value !== c) code.value = c;
+    joinBtn.disabled = !pd.isCode(c);
+    say(joinMsg, '');
+  }
+  code.addEventListener('input', syncJoin);
+  var fromLink = pd.cleanCode(new URLSearchParams(location.search).get('c'));
+  if (fromLink) { code.value = fromLink; syncJoin(); }
+
+  $('join-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = pd.cleanCode(code.value);
+    if (!pd.isCode(c)) { say(joinMsg, 'Crawl codes are ' + pd.codeLength + ' letters and numbers.', true); return; }
+    joinBtn.disabled = true; joinBtn.textContent = 'Finding your crawl…';
+    crawlExists(c).then(function (r) {
+      if (!r.exists) { say(joinMsg, 'No crawl uses the code ' + c + '. Check it with whoever started it.', true); return; }
+      pd.rememberCrawl(c, { title: r.title, place: r.place });
+      location.href = pd.boardURL(c);
+    }).catch(function (err) { say(joinMsg, explain(err), true); })
+      .then(function () { joinBtn.textContent = 'Join Crawl'; joinBtn.disabled = !pd.isCode(pd.cleanCode(code.value)); });
+  });
+
+  /* ── create ── */
+  var home = $('step-home'), create = $('step-create'), title = $('trip-title'), place = $('trip-place'), createBtn = $('create-btn'), createMsg = $('create-msg');
+  var clean = function (v) { return String(v || '').replace(/\s+/g, ' ').trim().slice(0, 60); };
+  function show(step) {
+    home.hidden = step !== 'home'; create.hidden = step !== 'create';
+    $('sub').textContent = step === 'create' ? 'Name it, say where it is, and share the code with your crew.' : 'Join an existing crawl or start a new one to get going.';
+    (step === 'create' ? title : code).focus();
+  }
+  $('create-open').addEventListener('click', function () { show('create'); });
+  $('create-back').addEventListener('click', function () { say(createMsg, ''); show('home'); });
+  title.addEventListener('input', function () { createBtn.disabled = !clean(title.value); say(createMsg, ''); });
+
+  function claim(trip, triesLeft) {
+    var c = pd.newCode();
+    // Inserting the crawl's details is what claims the code; a taken code comes back as a conflict.
+    return api('POST', 'goofproof_docs', { board: c.toLowerCase(), col: 'meta', id: 'trip', data: trip }, 'return=minimal')
+      .then(function () { return c; })
+      .catch(function (e) { if (e && e.kind === 'taken' && triesLeft > 0) return claim(trip, triesLeft - 1); throw e; });
+  }
+  create.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var trip = { title: clean(title.value), place: clean(place.value) };
+    if (!trip.title) { say(createMsg, 'Give the crawl a name.', true); return; }
+    createBtn.disabled = true; createBtn.textContent = 'Setting up the board…';
+    claim(trip, 4).then(function (c) {
+      pd.rememberCrawl(c, trip);
+      location.href = pd.boardURL(c);
+    }).catch(function (err) {
+      say(createMsg, explain(err), true);
+      createBtn.disabled = false; createBtn.textContent = 'Create Crawl';
+    });
+  });
+})();
+</script>
+</body>
+</html>

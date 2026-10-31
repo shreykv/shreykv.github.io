@@ -1,8 +1,8 @@
 -- =============================================================================
--- Goof Proof (bachelor weekend drink board) - shared board storage
+-- Pour Decisions (bar crawl drink board) - shared board storage
 -- =============================================================================
--- The board is public and account-free: anyone with the link can read and
--- write it, exactly like the original. The constraints below keep the table
+-- Each crawl is one board, keyed by its lowercased crawl code. Boards are
+-- public and account-free: anyone with the code can read and write them. The constraints below keep the table
 -- limited to the shapes the app writes, and the trigger caps each board's size.
 -- Run this in your Supabase Dashboard > SQL Editor > New Query.
 -- =============================================================================

@@ -4,21 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
-<title>Goof Proof · Bachelor Weekend</title>
-<meta name="description" content="The shared drink board, bar crawl, and weekend recap for Pruthvi’s bachelor party. Pick your name and join the crew.">
+<title>Pour Decisions · The Board</title>
+<meta name="description" content="The shared drink board, bar crawl, and recap for your crew. Pick your name and join in.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f3f0">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Goof Proof">
+<meta name="apple-mobile-web-app-title" content="Pour Decisions">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script src="config.js"></script>
 <script>
-/* Shared board storage. The anon key is public by design; the goofproof_docs table's policies decide what it can do. */
-window.GOOFPROOF_BACKEND = {
-  url: 'https://wxdlgovtibygpigrleux.supabase.co',
-  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4ZGxnb3Z0aWJ5Z3BpZ3JsZXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzNDMxNzAsImV4cCI6MjA4NTkxOTE3MH0.CjiUVWNGD2GJkX21BK1KBUKdPJ0FHVD82S8_38WwfVw',
-  board: 'pruthvi-bachelor'
-};
+/* Each crawl is its own board, picked by the code in the link. No valid code: back to the landing page. */
+(function () {
+  var pd = window.PourDecisions;
+  var code = pd.cleanCode(new URLSearchParams(location.search).get('c'));
+  if (!pd.isCode(code)) { location.replace('./'); return; }
+  window.GOOFPROOF_BACKEND = { url: pd.backend.url, anonKey: pd.backend.anonKey, board: code.toLowerCase(), code: code };
+  pd.rememberCrawl(code);
+})();
 </script>
 <script>/* A theme picked by hand applies before the first paint, browser bar included. */
 (function () {
@@ -31,7 +34,7 @@ window.GOOFPROOF_BACKEND = {
   } catch (e) { /* storage is off: follow the device */ }
 })();
 </script>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%3Crect%20width=%2232%22%20height=%2232%22%20rx=%227%22/%3E%3Cg%20fill=%22%233a2300%22%3E%3Ccircle%20cx=%229%22%20cy=%225.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%225.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2212.5%22%20cy=%229%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%229%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%229%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2212.5%22%20cy=%2212.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2212.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%2212.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%2212.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2212.5%22%20cy=%2216%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2212.5%22%20cy=%2219.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2219.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%2219.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2212.5%22%20cy=%2223%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2223%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%2223%22%20r=%221.42%22/%3E%3Ccircle%20cx=%229%22%20cy=%2226.5%22%20r=%221.42%22/%3E%3C/g%3E%3Cg%20fill=%22%23ffb000%22%3E%3Ccircle%20cx=%2212.5%22%20cy=%225.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%225.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%225.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%229%22%20cy=%229%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%229%22%20r=%221.42%22/%3E%3Ccircle%20cx=%229%22%20cy=%2212.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%229%22%20cy=%2216%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2216%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%2216%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%2216%22%20r=%221.42%22/%3E%3Ccircle%20cx=%229%22%20cy=%2219.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%2219.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%229%22%20cy=%2223%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%2223%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2212.5%22%20cy=%2226.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2216%22%20cy=%2226.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2219.5%22%20cy=%2226.5%22%20r=%221.42%22/%3E%3Ccircle%20cx=%2223%22%20cy=%2226.5%22%20r=%221.42%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="preload" href="fonts/mona-sans-latin.5ea3740633.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:"Mona Sans";font-style:normal;font-weight:200 900;font-stretch:75% 125%;font-display:swap;src:url(fonts/mona-sans-latin-ext.5658cdeea6.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
@@ -39,7 +42,7 @@ window.GOOFPROOF_BACKEND = {
 @font-face{font-family:"Martian Mono";font-style:normal;font-weight:100 800;font-stretch:75% 112.5%;font-display:swap;src:url(fonts/martian-mono-latin.f9c1655c2c.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 </style>
 <style>
-/* Goof Proof. The house scoreboard: black glass, white type, one lit colour.
+/* Pour Decisions. The house scoreboard: black glass, white type, one lit colour.
    - Amber is the one accent. It marks what is live, what is yours, and the main action.
      The only other colours on the chrome are small status marks with their usual meanings (green: connected or done;
      red: offline or destructive; blue: a note or a view-only state) and the groom's gold. Drink and crew colours are data.
@@ -711,6 +714,10 @@ button.rc-b:hover { background: var(--s2); }
 .invite-qr { display: block; background: #fff; border-radius: 14px; width: min(232px, 100%); height: auto; margin-bottom: 10px; }
 .invite-card h3 { font: 800 1.2rem/1.2 var(--f-sans); font-stretch: 112%; letter-spacing: -.01em; text-wrap: balance; }
 .invite-card p { font-size: .92rem; max-width: 30ch; color: var(--ink-3); }
+.invite-code { display: grid; justify-items: center; gap: 4px; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--amber-line); background: var(--amber-soft); text-align: center; }
+.invite-code span { font: 650 .84rem/1.2 var(--f-sans); color: var(--ink-2); }
+.invite-code b { font: 600 1.9rem/1.1 var(--f-mono); letter-spacing: .18em; color: var(--amber-text); padding-left: .18em; }
+.invite-code small { font-size: .82rem; color: var(--ink-3); }
 .invite-actions { display: flex; gap: 8px; }
 .invite-actions > * { flex: 1; min-width: 0; padding-inline: 10px; }
 .share-url { font: 500 .8rem/1.4 var(--f-mono); font-stretch: 80%; }
@@ -3608,7 +3615,7 @@ var qrcode = function() {
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to the board</a>
-<div id="goofproof"><div class="boot"><div class="wm"><span>Goof</span><b>Proof</b></div><p>Pouring the board&hellip;</p></div></div>
+<div id="goofproof"><div class="boot"><div class="wm"><span>Pour</span><b>Decisions</b></div><p>Pouring the board&hellip;</p></div></div>
 <script>!function(n,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((n||self).preact={})}(this,function(n){var t,i,e,o,r,f,u,c,s,a,h,p,l,y="http://www.w3.org/2000/svg",v="http://www.w3.org/1999/xhtml",d=null,w=void 0,g={},_=[],m=/acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i,b=Array.isArray;function k(n,t){for(var i in t)n[i]=t[i];return n}function x(n){n&&n.parentNode&&n.parentNode.removeChild(n)}function S(n,i,e){var o,r,f,u={};for(f in i)"key"==f?o=i[f]:"ref"==f?r=i[f]:u[f]=i[f];if(arguments.length>2&&(u.children=arguments.length>3?t.call(arguments,2):e),"function"==typeof n&&n.defaultProps!=d)for(f in n.defaultProps)u[f]===w&&(u[f]=n.defaultProps[f]);return M(n,u,o,r,d)}function M(n,t,o,r,f){var u={type:n,props:t,key:o,ref:r,__k:d,__:d,__b:0,__e:d,__c:d,constructor:w,__v:f==d?++e:f,__i:-1,__u:0};return f==d&&i.vnode!=d&&i.vnode(u),u}function T(n){return n.children}function $(n,t){this.props=n,this.context=t}function C(n,t){if(t==d)return n.__?C(n.__,n.__i+1):d;for(var i;t<n.__k.length;t++)if((i=n.__k[t])!=d&&i.__e!=d)return i.__e;return"function"==typeof n.type?C(n):d}function I(n){if(n.__P&&n.__d){var t=n.__v,e=t.__e,o=[],r=[],f=k({},t);f.__v=t.__v+1,i.vnode&&i.vnode(f),q(n.__P,f,t,n.__n,n.__P.namespaceURI,32&t.__u?[e]:d,o,e==d?C(t):e,!!(32&t.__u),r),f.__v=t.__v,f.__.__k[f.__i]=f,D(o,f,r),t.__e=t.__=null,f.__e!=e&&P(f)}}function P(n){if((n=n.__)!=d&&n.__c!=d)return n.__e=n.__c.base=d,n.__k.some(function(t){if(t!=d&&t.__e!=d)return n.__e=n.__c.base=t.__e}),P(n)}function j(n){(!n.__d&&(n.__d=!0)&&r.push(n)&&!A.__r++||f!=i.debounceRendering)&&((f=i.debounceRendering)||u)(A)}function A(){for(var n,t=1;r.length;)r.length>t&&r.sort(c),n=r.shift(),t=r.length,I(n);A.__r=0}function H(n,t,i,e,o,r,f,u,c,s,a){var h,p,l,y,v,m,b,k=e&&e.__k||_,x=t.length;for(c=L(i,t,k,c,x),h=0;h<x;h++)(l=i.__k[h])!=d&&(p=-1!=l.__i&&k[l.__i]||g,l.__i=h,m=q(n,l,p,o,r,f,u,c,s,a),y=l.__e,l.ref&&p.ref!=l.ref&&(p.ref&&J(p.ref,d,l),a.push(l.ref,l.__c||y,l)),v==d&&y!=d&&(v=y),(b=!!(4&l.__u))||p.__k===l.__k?c=F(l,c,n,b):"function"==typeof l.type&&m!==w?c=m:y&&(c=y.nextSibling),l.__u&=-7);return i.__e=v,c}function L(n,t,i,e,o){var r,f,u,c,s,a=i.length,h=a,p=0;for(n.__k=new Array(o),r=0;r<o;r++)(f=t[r])!=d&&"boolean"!=typeof f&&"function"!=typeof f?("string"==typeof f||"number"==typeof f||"bigint"==typeof f||f.constructor==String?f=n.__k[r]=M(d,f,d,d,d):b(f)?f=n.__k[r]=M(T,{children:f},d,d,d):f.constructor===w&&f.__b>0?f=n.__k[r]=M(f.type,f.props,f.key,f.ref?f.ref:d,f.__v):n.__k[r]=f,c=r+p,f.__=n,f.__b=n.__b+1,s=f.__i=O(f,i,c,h),u=d,-1!=s&&(h--,(u=i[s])&&(u.__u|=2)),u==d||u.__v==d?(-1==s&&(o>a?p--:o<a&&p++),"function"!=typeof f.type&&(f.__u|=4)):s!=c&&(s==c-1?p--:s==c+1?p++:(s>c?p--:p++,f.__u|=4))):n.__k[r]=d;if(h)for(r=0;r<a;r++)(u=i[r])!=d&&0==(2&u.__u)&&(u.__e==e&&(e=C(u)),K(u,u));return e}function F(n,t,i,e){var o,r;if("function"==typeof n.type){for(o=n.__k,r=0;o&&r<o.length;r++)o[r]&&(o[r].__=n,t=F(o[r],t,i,e));return t}n.__e!=t&&(e&&(t&&n.type&&!t.parentNode&&(t=C(n)),i.insertBefore(n.__e,t||d)),t=n.__e);do{t=t&&t.nextSibling}while(t!=d&&8==t.nodeType);return t}function O(n,t,i,e){var o,r,f,u=n.key,c=n.type,s=t[i],a=s!=d&&0==(2&s.__u);if(s===d&&null==u||a&&u==s.key&&c==s.type)return i;if(e>(a?1:0))for(o=i-1,r=i+1;o>=0||r<t.length;)if((s=t[f=o>=0?o--:r++])!=d&&0==(2&s.__u)&&u==s.key&&c==s.type)return f;return-1}function z(n,t,i){"-"==t[0]?n.setProperty(t,i==d?"":i):n[t]=i==d?"":"number"!=typeof i||m.test(t)?i:i+"px"}function N(n,t,i,e,o){var r,f;n:if("style"==t)if("string"==typeof i)n.style.cssText=i;else{if("string"==typeof e&&(n.style.cssText=e=""),e)for(t in e)i&&t in i||z(n.style,t,"");if(i)for(t in i)e&&i[t]==e[t]||z(n.style,t,i[t])}else if("o"==t[0]&&"n"==t[1])r=t!=(t=t.replace(s,"$1")),f=t.toLowerCase(),t=f in n||"onFocusOut"==t||"onFocusIn"==t?f.slice(2):t.slice(2),n.l||(n.l={}),n.l[t+r]=i,i?e?i.t=e.t:(i.t=a,n.addEventListener(t,r?p:h,r)):n.removeEventListener(t,r?p:h,r);else{if(o==y)t=t.replace(/xlink(H|:h)/,"h").replace(/sName$/,"s");else if("width"!=t&&"height"!=t&&"href"!=t&&"list"!=t&&"form"!=t&&"tabIndex"!=t&&"download"!=t&&"rowSpan"!=t&&"colSpan"!=t&&"role"!=t&&"popover"!=t&&t in n)try{n[t]=i==d?"":i;break n}catch(n){}"function"==typeof i||(i==d||!1===i&&"-"!=t[4]?n.removeAttribute(t):n.setAttribute(t,"popover"==t&&1==i?"":i))}}function V(n){return function(t){if(this.l){var e=this.l[t.type+n];if(t.i==d)t.i=a++;else if(t.i<e.t)return;return e(i.event?i.event(t):t)}}}function q(n,t,e,o,r,f,u,c,s,a){var h,p,l,y,v,g,m,S,M,C,I,P,j,A,L,F=t.type;if(t.constructor!==w)return d;128&e.__u&&(s=!!(32&e.__u),f=[c=t.__e=e.__e]),(h=i.__b)&&h(t);n:if("function"==typeof F)try{if(S=t.props,M="prototype"in F&&F.prototype.render,C=(h=F.contextType)&&o[h.__c],I=h?C?C.props.value:h.__:o,e.__c?m=(p=t.__c=e.__c).__=p.__E:(M?t.__c=p=new F(S,I):(t.__c=p=new $(S,I),p.constructor=F,p.render=Q),C&&C.sub(p),p.state||(p.state={}),p.__n=o,l=p.__d=!0,p.__h=[],p._sb=[]),M&&p.__s==d&&(p.__s=p.state),M&&F.getDerivedStateFromProps!=d&&(p.__s==p.state&&(p.__s=k({},p.__s)),k(p.__s,F.getDerivedStateFromProps(S,p.__s))),y=p.props,v=p.state,p.__v=t,l)M&&F.getDerivedStateFromProps==d&&p.componentWillMount!=d&&p.componentWillMount(),M&&p.componentDidMount!=d&&p.__h.push(p.componentDidMount);else{if(M&&F.getDerivedStateFromProps==d&&S!==y&&p.componentWillReceiveProps!=d&&p.componentWillReceiveProps(S,I),t.__v==e.__v||!p.__e&&p.shouldComponentUpdate!=d&&!1===p.shouldComponentUpdate(S,p.__s,I)){t.__v!=e.__v&&(p.props=S,p.state=p.__s,p.__d=!1),t.__e=e.__e,t.__k=e.__k,t.__k.some(function(n){n&&(n.__=t)}),_.push.apply(p.__h,p._sb),p._sb=[],p.__h.length&&u.push(p);break n}p.componentWillUpdate!=d&&p.componentWillUpdate(S,p.__s,I),M&&p.componentDidUpdate!=d&&p.__h.push(function(){p.componentDidUpdate(y,v,g)})}if(p.context=I,p.props=S,p.__P=n,p.__e=!1,P=i.__r,j=0,M)p.state=p.__s,p.__d=!1,P&&P(t),h=p.render(p.props,p.state,p.context),_.push.apply(p.__h,p._sb),p._sb=[];else do{p.__d=!1,P&&P(t),h=p.render(p.props,p.state,p.context),p.state=p.__s}while(p.__d&&++j<25);p.state=p.__s,p.getChildContext!=d&&(o=k(k({},o),p.getChildContext())),M&&!l&&p.getSnapshotBeforeUpdate!=d&&(g=p.getSnapshotBeforeUpdate(y,v)),A=h!=d&&h.type===T&&h.key==d?E(h.props.children):h,c=H(n,b(A)?A:[A],t,e,o,r,f,u,c,s,a),p.base=t.__e,t.__u&=-161,p.__h.length&&u.push(p),m&&(p.__E=p.__=d)}catch(n){if(t.__v=d,s||f!=d)if(n.then){for(t.__u|=s?160:128;c&&8==c.nodeType&&c.nextSibling;)c=c.nextSibling;f[f.indexOf(c)]=d,t.__e=c}else{for(L=f.length;L--;)x(f[L]);B(t)}else t.__e=e.__e,t.__k=e.__k,n.then||B(t);i.__e(n,t,e)}else f==d&&t.__v==e.__v?(t.__k=e.__k,t.__e=e.__e):c=t.__e=G(e.__e,t,e,o,r,f,u,s,a);return(h=i.diffed)&&h(t),128&t.__u?void 0:c}function B(n){n&&(n.__c&&(n.__c.__e=!0),n.__k&&n.__k.some(B))}function D(n,t,e){for(var o=0;o<e.length;o++)J(e[o],e[++o],e[++o]);i.__c&&i.__c(t,n),n.some(function(t){try{n=t.__h,t.__h=[],n.some(function(n){n.call(t)})}catch(n){i.__e(n,t.__v)}})}function E(n){return"object"!=typeof n||n==d||n.__b>0?n:b(n)?n.map(E):k({},n)}function G(n,e,o,r,f,u,c,s,a){var h,p,l,_,m,k,S,M=o.props||g,T=e.props,$=e.type;if("svg"==$?f=y:"math"==$?f="http://www.w3.org/1998/Math/MathML":f||(f=v),u!=d)for(h=0;h<u.length;h++)if((m=u[h])&&"setAttribute"in m==!!$&&($?m.localName==$:3==m.nodeType)){n=m,u[h]=d;break}if(n==d){if($==d)return document.createTextNode(T);n=document.createElementNS(f,$,T.is&&T),s&&(i.__m&&i.__m(e,u),s=!1),u=d}if($==d)M===T||s&&n.data==T||(n.data=T);else{if(u=u&&t.call(n.childNodes),!s&&u!=d)for(M={},h=0;h<n.attributes.length;h++)M[(m=n.attributes[h]).name]=m.value;for(h in M)m=M[h],"dangerouslySetInnerHTML"==h?l=m:"children"==h||h in T||"value"==h&&"defaultValue"in T||"checked"==h&&"defaultChecked"in T||N(n,h,d,m,f);for(h in T)m=T[h],"children"==h?_=m:"dangerouslySetInnerHTML"==h?p=m:"value"==h?k=m:"checked"==h?S=m:s&&"function"!=typeof m||M[h]===m||N(n,h,m,M[h],f);if(p)s||l&&(p.__html==l.__html||p.__html==n.innerHTML)||(n.innerHTML=p.__html),e.__k=[];else if(l&&(n.innerHTML=""),H("template"==e.type?n.content:n,b(_)?_:[_],e,o,r,"foreignObject"==$?v:f,u,c,u?u[0]:o.__k&&C(o,0),s,a),u!=d)for(h=u.length;h--;)x(u[h]);s||(h="value","progress"==$&&k==d?n.removeAttribute("value"):k!=w&&(k!==n[h]||"progress"==$&&!k||"option"==$&&k!=M[h])&&N(n,h,k,M[h],f),h="checked",S!=w&&S!=n[h]&&N(n,h,S,M[h],f))}return n}function J(n,t,e){try{if("function"==typeof n){var o="function"==typeof n.__u;o&&n.__u(),o&&t==d||(n.__u=n(t))}else n.current=t}catch(n){i.__e(n,e)}}function K(n,t,e){var o,r;if(i.unmount&&i.unmount(n),(o=n.ref)&&(o.current&&o.current!=n.__e||J(o,d,t)),(o=n.__c)!=d){if(o.componentWillUnmount)try{o.componentWillUnmount()}catch(n){i.__e(n,t)}o.base=o.__P=d}if(o=n.__k)for(r=0;r<o.length;r++)o[r]&&K(o[r],t,e||"function"!=typeof n.type);e||x(n.__e),n.__c=n.__=n.__e=w}function Q(n,t,i){return this.constructor(n,i)}function R(n,e,o){var r,f,u,c;e==document&&(e=document.documentElement),i.__&&i.__(n,e),f=(r="function"==typeof o)?d:o&&o.__k||e.__k,u=[],c=[],q(e,n=(!r&&o||e).__k=S(T,d,[n]),f||g,g,e.namespaceURI,!r&&o?[o]:f?d:e.firstChild?t.call(e.childNodes):d,u,!r&&o?o:f?f.__e:e.firstChild,r,c),D(u,n,c)}t=_.slice,i={__e:function(n,t,i,e){for(var o,r,f;t=t.__;)if((o=t.__c)&&!o.__)try{if((r=o.constructor)&&r.getDerivedStateFromError!=d&&(o.setState(r.getDerivedStateFromError(n)),f=o.__d),o.componentDidCatch!=d&&(o.componentDidCatch(n,e||{}),f=o.__d),f)return o.__E=o}catch(t){n=t}throw n}},e=0,o=function(n){return n!=d&&n.constructor===w},$.prototype.setState=function(n,t){var i;i=this.__s!=d&&this.__s!=this.state?this.__s:this.__s=k({},this.state),"function"==typeof n&&(n=n(k({},i),this.props)),n&&k(i,n),n!=d&&this.__v&&(t&&this._sb.push(t),j(this))},$.prototype.forceUpdate=function(n){this.__v&&(this.__e=!0,n&&this.__h.push(n),j(this))},$.prototype.render=T,r=[],u="function"==typeof Promise?Promise.prototype.then.bind(Promise.resolve()):setTimeout,c=function(n,t){return n.__v.__b-t.__v.__b},A.__r=0,s=/(PointerCapture)$|Capture$/i,a=0,h=V(!1),p=V(!0),l=0,n.Component=$,n.Fragment=T,n.cloneElement=function(n,i,e){var o,r,f,u,c=k({},n.props);for(f in n.type&&n.type.defaultProps&&(u=n.type.defaultProps),i)"key"==f?o=i[f]:"ref"==f?r=i[f]:c[f]=i[f]===w&&u!=w?u[f]:i[f];return arguments.length>2&&(c.children=arguments.length>3?t.call(arguments,2):e),M(n.type,c,o||n.key,r||n.ref,d)},n.createContext=function(n){function t(n){var i,e;return this.getChildContext||(i=new Set,(e={})[t.__c]=this,this.getChildContext=function(){return e},this.componentWillUnmount=function(){i=d},this.shouldComponentUpdate=function(n){this.props.value!=n.value&&i.forEach(function(n){n.__e=!0,j(n)})},this.sub=function(n){i.add(n);var t=n.componentWillUnmount;n.componentWillUnmount=function(){i&&i.delete(n),t&&t.call(n)}}),n.children}return t.__c="__cC"+l++,t.__=n,t.Provider=t.__l=(t.Consumer=function(n,t){return n.children(t)}).contextType=t,t},n.createElement=S,n.createRef=function(){return{current:d}},n.h=S,n.hydrate=function n(t,i){R(t,i,n)},n.isValidElement=o,n.options=i,n.render=R,n.toChildArray=function n(t,i){return i=i||[],t==d||"boolean"==typeof t||(b(t)?t.some(function(t){n(t,i)}):i.push(t)),i}});
 //# sourceMappingURL=preact.umd.js.map
 </script>
@@ -3701,7 +3708,7 @@ function initials(name) {
   return (a + b).toUpperCase();
 }
 const firstName = name => cleanText(name, 40).split(' ')[0] || '';
-// "Dave Kowalczyk" becomes Dave; "Best Man" and "The Brother" stay whole
+// "Dave Kowalczyk" becomes Dave; "Big Mike" and "The Brother" stay whole
 const shortName = name => { const n = cleanText(name, 40); return n.length <= 12 ? n : firstName(n); };
 const nice = n => (Math.round(n * 10) / 10).toString();
 
@@ -3733,8 +3740,8 @@ function createStore(initial) {
 }
 
 /* ───────────────────────── model ───────────────────────── */
-const BRAND = 'Goof Proof';
-const DEFAULT_TRIP = "Pruth the Goof's Bachelor Party";
+const BRAND = 'Pour Decisions';
+const DEFAULT_TRIP = 'The Crawl';
 
 /* Drink types. `alc` types count toward the board; water and zero proof are tracked beside it. */
 const TYPES = [
@@ -4315,7 +4322,7 @@ function createSync(backend, opts) {
       return;
     }
     if (code === 'invalid_argument' || code === 'transform_error') {
-      console.warn('[goof proof] cannot read', col, e && e.message);
+      console.warn('[pour decisions] cannot read', col, e && e.message);
       loaded.set(col, true); touch(col); notify();
       return;
     }
@@ -4479,7 +4486,10 @@ function createSync(backend, opts) {
 }
 
 /* ───────────────────────── app data + actions ───────────────────────── */
-const K = { me: 'gp.me', sound: 'gp.sound', setup: 'gp.setupDone', cache: 'gp.cache.v1', outbox: 'gp.outbox.v1', solo: 'gp.solo.v1', labels: 'gp.labels', tab: 'gp.tab' };
+const CRAWL = (window.GOOFPROOF_BACKEND && window.GOOFPROOF_BACKEND.board) || '';
+const CODE = (window.GOOFPROOF_BACKEND && window.GOOFPROOF_BACKEND.code) || '';
+const PER_CRAWL = CRAWL ? '.' + CRAWL : ''; // one phone can be on several crawls; who you are and the cached board belong to one
+const K = { me: 'gp.me' + PER_CRAWL, sound: 'gp.sound', setup: 'gp.setupDone' + PER_CRAWL, cache: 'gp.cache.v1' + PER_CRAWL, outbox: 'gp.outbox.v1' + PER_CRAWL, solo: 'gp.solo.v1' + PER_CRAWL, labels: 'gp.labels', tab: 'gp.tab' };
 const DRINK_COL = k => 'days/' + k + '/drinks';
 const BASE_COLS = ['players', 'stops', 'checkins', 'days', 'meta'];
 
@@ -4536,7 +4546,7 @@ function attach(sync, mode, why) {
     const ck = sync.docs('checkins');
     if (ck !== memo.ck) { memo.ck = ck; memo.checkins = ck.map(d => normCheckin(d.id, d)).filter(Boolean); }
     const mt = sync.docs('meta');
-    if (mt !== memo.mt) { memo.mt = mt; const t = mt.find(d => d.id === 'trip'); memo.trip = t ? { title: cleanText(t.title, 60) } : {}; }
+    if (mt !== memo.mt) { memo.mt = mt; const t = mt.find(d => d.id === 'trip'); memo.trip = t ? { title: cleanText(t.title, 60), place: cleanText(t.place, 60) } : {}; }
     let changed = keys.length !== memo.dkeys.length;
     const lists = keys.map((k, i) => { const l = sync.docs(DRINK_COL(k)); if (l !== memo.dlists[i] || k !== memo.dkeys[i]) changed = true; return l; });
     if (changed) {
@@ -4745,7 +4755,7 @@ const A = {
     const cur = dataStore.get().checkins.find(c => c.s === sid && c.p === pid);
     if (cur) engine.sync.update(path, { r: stars }); else engine.sync.set(path, { s: sid, p: pid, ts: Date.now(), r: stars });
   },
-  setTrip(title) { if (guard()) engine.sync.set('meta/trip', { title: cleanText(title, 60) }); },
+  setTrip(title, place) { if (guard()) engine.sync.set('meta/trip', { title: cleanText(title, 60), place: cleanText(place, 60) }); },
 
   /* Wipe test data before the real thing. Crew and stops stay unless asked. */
   clearBoard(o) {
@@ -4792,9 +4802,9 @@ function demoSeed(now) {
   const pickW = pairs => { let total = 0; for (const p of pairs) total += p[1]; let r = rnd() * total; for (const p of pairs) { r -= p[1]; if (r <= 0) return p[0]; } return pairs[0][0]; };
   const seed = {};
   const crew = [
-    ['Pruth', 'Pruth the Goof', 1.05, 'beer'], ['Best Man', '', 1.25, 'spirit'], ['The Brother', '', 1.1, 'beer'], ['Roomie', 'College roommate', 0.95, 'cocktail'],
-    ['Moose', '', 1.35, 'beer'], ['Tank', '', 1.2, 'shot'], ['Smitty', '', 0.9, 'seltzer'], ['Doc', '', 0.55, 'wine'], ['Coach', '', 0.8, 'beer'],
-    ['Ace', '', 1.0, 'cocktail'], ['Duke', '', 0.85, 'spirit'], ['Sarge', '', 1.15, 'beer'], ['Gooch', '', 0.7, 'seltzer'], ['Skip', '', 0.35, 'zero'], ['Chief', '', 1.0, 'beer'],
+    ['Jordan', '', 1.05, 'beer'], ['Sam', '', 1.25, 'spirit'], ['Riley', '', 1.1, 'beer'], ['Alex', 'College roommate', 0.95, 'cocktail'],
+    ['Casey', '', 1.35, 'beer'], ['Morgan', '', 1.2, 'shot'], ['Taylor', '', 0.9, 'seltzer'], ['Jamie', '', 0.55, 'wine'], ['Drew', '', 0.8, 'beer'],
+    ['Quinn', '', 1.0, 'cocktail'], ['Avery', '', 0.85, 'spirit'], ['Parker', '', 1.15, 'beer'], ['Reese', '', 0.7, 'seltzer'], ['Skyler', '', 0.35, 'zero'], ['Blake', '', 1.0, 'beer'],
   ];
   const pids = crew.map((c, i) => {
     const id = 'demo' + String(i).padStart(2, '0');
@@ -4804,9 +4814,9 @@ function demoSeed(now) {
     seed['players/' + id] = data;
     return id;
   });
-  seed['meta/trip'] = { title: DEFAULT_TRIP };
+  seed['meta/trip'] = { title: 'Saturday Night Crawl', place: 'Downtown' };
 
-  const stopNames = [['The Warm-Up', 'Wings first'], ['The Dive', 'Cash only'], ['The Rooftop', ''], ['Karaoke Bar', 'Pruth sings at 11'], ['Last Call', '']];
+  const stopNames = [['The Warm-Up', 'Wings first'], ['The Dive', 'Cash only'], ['The Rooftop', ''], ['Karaoke Bar', 'Jordan sings at 11'], ['Last Call', '']];
   const times = [now - 168 * MIN, now - 104 * MIN, now - 41 * MIN];
   const stops = stopNames.map((s, i) => {
     const id = 'stop' + i;
@@ -4901,7 +4911,8 @@ function createDMD(canvas) {
   const ROWS = 25, STEP = 1000 / 30;
   const OFF = '#2b1707', LEVEL = ['', '#8a4a0c', '#ff9a1f', '#ffc552'];
   let W = 120, pitch = 3, cssW = 0, cssH = 0, dpr = 1, ox = 0, offLayer = null;
-  const BRAND_PAGE = { key: 'brand', kind: 'big', text: 'GOOF PROOF' };
+  const BRAND_TEXT = 'POUR DECISIONS', BRAND_ZONE = dmdWidth(BRAND_TEXT, 2) + 14;
+  const BRAND_PAGE = { key: 'brand', kind: 'big', text: BRAND_TEXT };
   let pages = [BRAND_PAGE], queue = [], idx = 0;
   let cur = BRAND_PAGE, prev = null, phase = 'hold', tick = 0, phaseT = 0, lastT = 0, acc = 0;
   let raf = 0, timer = 0, running = false, shown = true, awake = true, laidOut = false;
@@ -4952,7 +4963,7 @@ function createDMD(canvas) {
   function compose(k) {
     frameBuf = new Uint8Array(W * ROWS);
     if (brand) {
-      const text = 'GOOF PROOF';
+      const text = BRAND_TEXT;
       drawText(frameBuf, W, text, Math.round((zx - 8 - dmdWidth(text, 2)) / 2), 5, 2, 3);
       for (let y = 3; y < ROWS - 3; y += 2) put(frameBuf, W, zx - 5, y, 1);
     }
@@ -5002,7 +5013,7 @@ function createDMD(canvas) {
     ox = (cssW - W * pitch) / 2;
     canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(cssH * dpr);
     canvas.style.height = cssH + 'px';
-    brand = W >= 250; zx = brand ? 132 : 0; zw = W - zx;
+    brand = W >= BRAND_ZONE + 118; zx = brand ? BRAND_ZONE : 0; zw = W - zx;
     offLayer = document.createElement('canvas');
     offLayer.width = canvas.width; offLayer.height = canvas.height;
     const o = offLayer.getContext('2d');
@@ -5427,14 +5438,14 @@ function filterLabel(f, stops) {
   if (f.kind === 'day') return f.key === partyDay(Date.now()) ? 'today' : dayLong(f.key);
   if (f.kind === 'crawl') return 'the crawl';
   if (f.kind === 'stop') { const s = stops.find(x => x.id === f.id); return s ? s.n : 'that stop'; }
-  return 'the whole weekend';
+  return 'the whole crawl';
 }
 /* the same scope, worded to follow a count: "23 drinks at The Rooftop" */
 function filterPhrase(f, stops) {
   if (f.kind === 'day') return f.key === partyDay(Date.now()) ? 'today' : 'on ' + dayLong(f.key);
   if (f.kind === 'crawl') return 'on the crawl';
   if (f.kind === 'stop') { const s = stops.find(x => x.id === f.id); return 'at ' + (s ? s.n : 'that stop'); }
-  return 'across the whole weekend';
+  return 'across the whole crawl';
 }
 const drinkLine = d => (d.l ? d.l : TYPE[d.t].name) + (d.q > 1 ? ' ×' + d.q : '');
 
@@ -5487,7 +5498,7 @@ function FilterBar({ days, stops, cls }) {
   const f = useStore(ui).filter;
   const today = partyDay(Date.now());
   const weekdays = days.map(dayShort);
-  const items = [{ label: 'Whole weekend', f: { kind: 'all' } }];
+  const items = [{ label: 'Whole crawl', f: { kind: 'all' } }];
   days.forEach((k, i) => {
     const twice = weekdays.indexOf(weekdays[i]) !== weekdays.lastIndexOf(weekdays[i]);
     items.push({ label: k === today ? 'Today' : weekdays[i] + (twice ? ' ' + (k % 100) : ''), f: { kind: 'day', key: k } });
@@ -5534,7 +5545,7 @@ function MyCard({ d, me, boardAll, boardToday, act }) {
       </button>
       <div class="mycard-nums"><div class="num"><${Count} value=${today ? today.count : 0} cls="num-v" /><span class="num-l">today</span></div></div>
     </div>
-    <div class="mycard-subline"><span><b>${all ? all.count : 0}</b> this weekend</span><span><b>${today ? today.water + today.zero : 0}</b> water + zero today</span></div>
+    <div class="mycard-subline"><span><b>${all ? all.count : 0}</b> this crawl</span><span><b>${today ? today.water + today.zero : 0}</b> water + zero today</span></div>
     ${act && html`<${QuickLog} d=${d} me=${me} />
     <div class="mycard-utilities">
       ${last && html`<button type="button" class="btn btn--quiet" onClick=${again}><${Icon} n=${last.t} size=${18} /> Same again</button>`}
@@ -5572,7 +5583,7 @@ function SetupCard({ d, act }) {
   const done = () => { ui.set({ setupDone: true }); ls.set(K.setup, true); };
   return html`<section class="card setup">
     <header class="card-head">
-      <div><h2 class="card-title">Add the crew</h2><p class="card-sub">One name per line. Each guy taps his own name when he opens the link.</p></div>
+      <div><h2 class="card-title">Add the crew</h2><p class="card-sub">One name per line. Everyone taps their own name when they open the link.</p></div>
       <button type="button" class="iconbtn" aria-label="Hide this card" onClick=${done}><${Icon} n="x" size=${18} /></button>
     </header>
     <div class="card-pad">
@@ -5613,7 +5624,7 @@ function barTip(r) {
 function StandRow({ r, max, mine, now }) {
   const fresh = r.lastAlc > 0 && now - r.lastAlc < 15 * MIN && now >= r.lastAlc - MIN;
   const pct = max && r.count ? Math.max(5, (r.count / max) * 100) : 0;
-  const keep = (r.p.g ? 62 : 0) + (mine ? 46 : 0); // room a long name leaves for its Groom and You tags, so they are never the part that is cut
+  const keep = (r.p.g ? 72 : 0) + (mine ? 46 : 0); // room a long name leaves for its Honoree and You tags, so they are never the part that is cut
   return html`<li data-flip=${r.id}>
     <button type="button" class=${'row' + (mine ? ' is-me' : '') + (r.count ? '' : ' is-zero') + (r.p.pend ? ' is-pend' : '')} onClick=${() => openSheet('profile', { pid: r.id })}
       aria-label=${r.p.n + (r.count ? ', ' + ordinal(r.rank) + ', ' + r.count + ' ' + plural(r.count, 'drink') : ', no drinks yet')}>
@@ -5622,7 +5633,7 @@ function StandRow({ r, max, mine, now }) {
       <span class="row-main">
         <span class="row-name">
           <span class="nm" style=${keep ? 'max-width:calc(100% - ' + keep + 'px)' : null}>${r.p.n}</span>
-          ${r.p.g && html`<span class="tag tag--groom">Groom</span>`}
+          ${r.p.g && html`<span class="tag tag--groom">Honoree</span>`}
           ${mine && html`<span class="tag">You</span>`}
           ${fresh && html`<span class="fresh" title="Poured in the last 15 minutes"><i></i>${Math.max(1, Math.round((now - r.lastAlc) / MIN))}m</span>`}
           ${r.p.k && html`<span class="nk">${r.p.k}</span>`}
@@ -5691,14 +5702,14 @@ function GroomCard({ groom, boardAll, now }) {
   if (!r) return null;
   const avg = boardAll.active ? boardAll.tot.count / boardAll.active : 0;
   let line;
-  if (!r.count) line = 'The guest of honor. The weekend is his.';
+  if (!r.count) line = 'Tonight is theirs. Nothing logged yet.';
   else {
     const vs = avg ? r.count / avg : 1;
-    line = (r.tied ? 'Tied for ' : '') + ordinal(r.rank) + ' on the weekend' + (vs >= 1.15 ? ', running ' + nice(vs) + '× the crew average' : vs <= 0.85 ? ', pacing under the crew average' : ', right at the crew average') + '.';
+    line = (r.tied ? 'Tied for ' : '') + ordinal(r.rank) + ' on the crawl' + (vs >= 1.15 ? ', running ' + nice(vs) + '× the crew average' : vs <= 0.85 ? ', pacing under the crew average' : ', right at the crew average') + '.';
   }
   return html`<button type="button" class="groomcard" onClick=${() => openSheet('profile', { pid: groom.id })}>
     <${Avatar} p=${groom} size=${44} />
-    <span class="groom-txt"><span class="eyebrow">Goof watch</span><b>${groom.k || groom.n}</b><span class="muted">${line}</span></span>
+    <span class="groom-txt"><span class="eyebrow">Guest of honor</span><b>${groom.k || groom.n}</b><span class="muted">${line}</span></span>
     <span class="groom-n"><b>${r.count}</b><small>${r.lastAlc ? 'last ' + fmtAgo(r.lastAlc, now) : 'no pours'}</small></span>
   </button>`;
 }
@@ -6132,7 +6143,7 @@ function TabPanel({ d, me, act, boardAll }) {
     ${query && html`<p class="tab-match-count">${list.length} matching ${plural(list.length,'entry','entries')}</p>`}
     <div class="receipt">
       <div class="rc-head">
-        <span class="rc-brand">Goof Proof</span>
+        <span class="rc-brand">Pour Decisions</span>
         <span class="rc-sub">${d.trip.title || DEFAULT_TRIP}</span>
       </div>
       ${!list.length && html`<div class="rc-empty">${query?'No matching drinks. Try a different name, label, or bar.':onlyMe?'Nothing on your tab yet.':'The tab is open. Nothing on it yet.'}</div>`}
@@ -6262,7 +6273,7 @@ SHEETS.profile = function ProfileSheet({ pid, closing }) {
   const board = useMemo(() => computeBoard(d.players, d.drinks), [d.players, d.drinks]);
   const prof = useMemo(() => profileStats(pid, d.drinks, d.stops, d.checkins, now), [pid, d.drinks, d.stops, d.checkins, Math.floor(now / MIN)]);
   const won = useMemo(() => computeAwards(board, d.drinks, d.stops, d.checkins).filter(a => a.pid === pid), [board, d.drinks, d.stops, d.checkins, pid]);
-  if (!p) return html`<${Sheet} title="Gone" closing=${closing}><p class="muted">He was removed from the crew.</p><//>`;
+  if (!p) return html`<${Sheet} title="Gone" closing=${closing}><p class="muted">They were removed from the crew.</p><//>`;
   const r = board.byId.get(pid);
   const act = canAct(), mine = u.me === pid;
   const stopsById = indexBy(d.stops);
@@ -6272,10 +6283,10 @@ SHEETS.profile = function ProfileSheet({ pid, closing }) {
     ${act && html`<button type="button" class="btn btn--quiet" onClick=${() => openSheet('player', { pid })}><${Icon} n="edit" size=${16} /> Edit</button>`}
     ${!mine && html`<button type="button" class="btn btn--ghost" onClick=${() => { A.claim(pid); toast('This phone is now ' + p.n + '.'); }}>This is me</button>`}
   </div>`;
-  return html`<${Sheet} title=${p.n} sub=${[p.k, p.g ? 'The groom' : '', mine ? 'That is you' : ''].filter(Boolean).map(x => x + '.').join(' ')} lead=${html`<${Avatar} p=${p} size=${52} />`} closing=${closing} foot=${foot}>
+  return html`<${Sheet} title=${p.n} sub=${[p.k, p.g ? 'Guest of honor' : '', mine ? 'That is you' : ''].filter(Boolean).map(x => x + '.').join(' ')} lead=${html`<${Avatar} p=${p} size=${52} />`} closing=${closing} foot=${foot}>
     <div class="tiles tiles--4">
       <div class="tile"><span class="tile-l">Rank</span><span class="tile-v">${r.count ? (r.tied ? 'T' : '') + r.rank : '–'}</span><span class="tile-s">of ${d.players.length}</span></div>
-      <div class="tile"><span class="tile-l">Weekend</span><span class="tile-v">${r.count}</span><span class="tile-s">${plural(r.count, 'drink')}</span></div>
+      <div class="tile"><span class="tile-l">Total</span><span class="tile-v">${r.count}</span><span class="tile-s">${plural(r.count, 'drink')}</span></div>
       <div class="tile"><span class="tile-l">Today</span><span class="tile-v">${prof.today}</span><span class="tile-s">since 5 AM</span></div>
       <div class="tile"><span class="tile-l">Water</span><span class="tile-v">${r.water}</span><span class="tile-s">${r.zero ? '+' + r.zero + ' zero proof' : 'logged'}</span></div>
     </div>
@@ -6314,9 +6325,9 @@ SHEETS.player = function PlayerSheet({ pid, closing }) {
   const [c, setC] = useState(p ? p.c : 0);
   const [g, setG] = useState(p ? p.g : false);
   const [sure, setSure] = useState(false);
-  if (!p) return html`<${Sheet} title="Gone" closing=${closing}><p class="muted">He was removed from the crew.</p><//>`;
+  if (!p) return html`<${Sheet} title="Gone" closing=${closing}><p class="muted">They were removed from the crew.</p><//>`;
   const save = () => {
-    if (!cleanText(n)) { toast('He needs a name.', { tone: 'warn' }); return; }
+    if (!cleanText(n)) { toast('They need a name.', { tone: 'warn' }); return; }
     const patch = {};
     if (cleanText(n, 28) !== p.n) patch.n = n;
     if (cleanText(k, 32) !== p.k) patch.k = k;
@@ -6335,10 +6346,10 @@ SHEETS.player = function PlayerSheet({ pid, closing }) {
         ${Array.from({ length: N_COLORS }, (_, i) => html`<button type="button" key=${i} class=${'swatch' + (c === i ? ' is-on' : '')} style=${'--c:var(--p' + i + ')'} aria-label=${'Color ' + (i + 1)} aria-pressed=${c === i} onClick=${() => setC(i)}>${c === i && html`<${Icon} n="check" size=${14} />`}</button>`)}
       </div>
     </div>
-    <label class="check" for="pl-groom"><input id="pl-groom" type="checkbox" checked=${g} onChange=${e => setG(e.target.checked)} /><span>He is the groom</span></label>
+    <label class="check" for="pl-groom"><input id="pl-groom" type="checkbox" checked=${g} onChange=${e => setG(e.target.checked)} /><span>Guest of honor</span></label>
     <div class="menu">
       ${sure
-        ? html`<div class="confirm"><span>Remove ${p.n} from the crew? His drinks leave the board with him.</span><button type="button" class="btn btn--sm btn--danger" onClick=${() => { A.removePlayer(pid); closeSheet(true); toast(p.n + ' removed.'); }}>Remove</button><button type="button" class="btn btn--sm btn--ghost" onClick=${() => setSure(false)}>Keep</button></div>`
+        ? html`<div class="confirm"><span>Remove ${p.n} from the crew? Their drinks leave the board too.</span><button type="button" class="btn btn--sm btn--danger" onClick=${() => { A.removePlayer(pid); closeSheet(true); toast(p.n + ' removed.'); }}>Remove</button><button type="button" class="btn btn--sm btn--ghost" onClick=${() => setSure(false)}>Keep</button></div>`
         : html`<button type="button" class="menu-i menu-i--danger" onClick=${() => setSure(true)}><${Icon} n="trash" /> <span>Remove from the crew</span></button>`}
     </div>
   <//>`;
@@ -6370,7 +6381,7 @@ SHEETS.join = function JoinSheet({ closing }) {
       ${list.map(p => html`<li key=${p.id}>
         <button type="button" class=${'person' + (u.me === p.id ? ' is-on' : '')} onClick=${() => pick(p)}>
           <${Avatar} p=${p} size=${40} />
-          <span class="person-n"><b>${p.n}</b>${(p.k || p.g) && html`<small>${p.g ? 'The groom' : p.k}</small>`}</span>
+          <span class="person-n"><b>${p.n}</b>${(p.k || p.g) && html`<small>${p.g ? 'Guest of honor' : p.k}</small>`}</span>
           ${u.me === p.id ? html`<span class="tag">You</span>` : html`<${Icon} n="chevR" size=${16} />`}
         </button>
       </li>`)}
@@ -6394,6 +6405,7 @@ SHEETS.crew = function CrewSheet({ closing }) {
   const board = useMemo(() => computeBoard(d.players, d.drinks), [d.players, d.drinks]);
   const [names, setNames] = useState('');
   const [title, setTitle] = useState(d.trip.title || DEFAULT_TRIP);
+  const [place, setPlace] = useState(d.trip.place || '');
   const parsed = names.split(/[\n,;]+/).map(s => cleanText(s, 28)).filter(Boolean);
   const add = e => {
     e.preventDefault();
@@ -6404,7 +6416,8 @@ SHEETS.crew = function CrewSheet({ closing }) {
     setNames('');
     toast(list.length + ' added.');
   };
-  const saveTitle = () => { const t = cleanText(title, 60); if (t && t !== (d.trip.title || DEFAULT_TRIP)) { A.setTrip(t); toast('Party name updated.'); } };
+  const tripDirty = cleanText(title, 60) !== (d.trip.title || DEFAULT_TRIP) || cleanText(place, 60) !== (d.trip.place || '');
+  const saveTrip = () => { const t = cleanText(title, 60); if (t && tripDirty) { A.setTrip(t, place); toast('Crawl details updated.'); } };
   const sound = () => { const v = !u.sound; ui.set({ sound: v }); ls.set(K.sound, v); if (v) ding('pour'); };
   const canClear = act && d.mode !== 'demo' && (d.mode === 'solo' || d.isOwner || (!d.ownerKnown && d.canWrite === true));
   return html`<${Sheet} title="Crew and settings" sub=${d.trip.title || DEFAULT_TRIP} closing=${closing}>
@@ -6417,6 +6430,7 @@ SHEETS.crew = function CrewSheet({ closing }) {
       </button>
       <div class="block"><span class="eyebrow">Appearance</span><div class="theme-options" role="group" aria-label="Color theme">${[['auto','Device'],['dark','After dark'],['light','Daylight']].map(([id,label])=>html`<button type="button" class=${'chip'+(u.theme===id?' is-on':'')} aria-pressed=${u.theme===id} onClick=${()=>setTheme(id)}>${label}</button>`)}</div></div>
       <label class="check" for="set-sound"><input id="set-sound" type="checkbox" checked=${u.sound} onChange=${sound} /><span>Play a chime when I log a drink</span></label>
+      <a class="btn btn--quiet" href="./">Join or start another crawl</a>
     </div>
     <div class="block">
       <span class="eyebrow">The crew${d.players.length > 1 ? ', ' + d.players.length + ' strong' : ''}</span>
@@ -6424,7 +6438,7 @@ SHEETS.crew = function CrewSheet({ closing }) {
         ${board.rows.map(r => html`<li key=${r.id}>
           <button type="button" class="person" onClick=${() => openSheet('profile', { pid: r.id })}>
             <${Avatar} p=${r.p} size=${34} />
-            <span class="person-n"><b>${r.p.n}</b>${(r.p.k || r.p.g) && html`<small>${[r.p.g ? 'The groom' : '', r.p.k].filter(Boolean).join(', ')}</small>`}</span>
+            <span class="person-n"><b>${r.p.n}</b>${(r.p.k || r.p.g) && html`<small>${[r.p.g ? 'Guest of honor' : '', r.p.k].filter(Boolean).join(', ')}</small>`}</span>
             <span class="person-ct">${r.count}</span>
           </button>
         </li>`)}
@@ -6436,29 +6450,31 @@ SHEETS.crew = function CrewSheet({ closing }) {
       </form>`}
     </div>
     ${act && d.mode !== 'demo' && html`<div class="block">
-      <span class="eyebrow">The party</span>
-      <div class="addrow">
-        <label class="sr" for="trip-title">Party name</label>
-        <input id="trip-title" class="input" type="text" maxlength="60" autocomplete="off" value=${title} onInput=${e => setTitle(e.target.value)} onKeyDown=${e => { if (e.key === 'Enter') { e.preventDefault(); saveTitle(); } }} />
-        <button type="button" class="btn btn--quiet" disabled=${cleanText(title, 60) === (d.trip.title || DEFAULT_TRIP) || !cleanText(title)} onClick=${saveTitle}>Save</button>
-      </div>
+      <span class="eyebrow">The crawl${CODE ? ', code ' + CODE : ''}</span>
+      <label class="field" for="trip-title"><span>Name</span>
+        <input id="trip-title" class="input" type="text" maxlength="60" autocomplete="off" value=${title} onInput=${e => setTitle(e.target.value)} onKeyDown=${e => { if (e.key === 'Enter') { e.preventDefault(); saveTrip(); } }} />
+      </label>
+      <label class="field" for="trip-place"><span>Location</span>
+        <input id="trip-place" class="input" type="text" maxlength="60" autocomplete="off" placeholder="City or neighborhood" value=${place} onInput=${e => setPlace(e.target.value)} onKeyDown=${e => { if (e.key === 'Enter') { e.preventDefault(); saveTrip(); } }} />
+      </label>
+      <button type="button" class="btn btn--quiet" disabled=${!tripDirty || !cleanText(title)} onClick=${saveTrip}>Save</button>
     </div>`}
     <div class="block">
       <span class="eyebrow">How the board works</span>
       <ul class="notes">
         <li><b>Drinks</b> count one each. Water and zero proof are tracked beside the board, never against you.</li>
         <li><b>The day</b> rolls over at 5 AM, so a 1 AM round still belongs to the night before.</li>
-        <li><b>Rounds:</b> pick several guys in the pour sheet and one tap logs it for all of them.</li>
+        <li><b>Rounds:</b> pick several people in the pour sheet and one tap logs it for all of them.</li>
         <li><b>Big screen:</b> open it on a laptop or cast it to the TV and the whole scoreboard shows at once.</li>
         <li><b>Who can log:</b> anyone with this link. Pick your name; no account is needed. Everyone shares one board, and anyone can log a round or correct an entry. Share the link with your crew.</li>
       </ul>
     </div>
     <div class="block">
       <span class="eyebrow">Extras</span>
-      <div class="menu"><button type="button" class="menu-i" onClick=${()=>openSheet('invite')}><${Icon} n="share"/><span>Invite the crew<small>QR code, copy link, or share from your phone.</small></span></button><button type="button" class="menu-i" onClick=${()=>toggleTV(true)}><${Icon} n="screen"/><span>TV scoreboard<small>Put the whole weekend on the big screen.</small></span></button>
+      <div class="menu"><button type="button" class="menu-i" onClick=${()=>openSheet('invite')}><${Icon} n="share"/><span>Invite the crew<small>QR code, copy link, or share from your phone.</small></span></button><button type="button" class="menu-i" onClick=${()=>toggleTV(true)}><${Icon} n="screen"/><span>TV scoreboard<small>Put the whole crawl on the big screen.</small></span></button>
         ${d.mode === 'demo'
           ? html`<button type="button" class="menu-i" onClick=${() => { exitDemo(); closeSheet(true); }}><${Icon} n="door" /> <span>Leave the sample preview</span></button>`
-          : html`<button type="button" class="menu-i" onClick=${() => enterDemo()}><${Icon} n="spark" /> <span>Preview with sample data<small>See a full weekend. Nothing is saved.</small></span></button>`}
+          : html`<button type="button" class="menu-i" onClick=${() => enterDemo()}><${Icon} n="spark" /> <span>Preview with sample data<small>See a full crawl. Nothing is saved.</small></span></button>`}
         ${html`<button type="button" class="menu-i" onClick=${() => openSheet('recap')}><${Icon} n="trophy" /> <span>The recap<small>One image to save or share with the group chat.</small></span></button>`}
         ${canClear && html`<button type="button" class="menu-i menu-i--danger" onClick=${() => openSheet('clear')}><${Icon} n="trash" /> <span>Clear the board<small>Wipe test drinks before the real thing.</small></span></button>`}
       </div>
@@ -6502,7 +6518,7 @@ function RecapPoster({ d, now }) {
   const peak = hs.peak >= 0 ? hs.cols[hs.peak] : null;
   return html`<div class="poster">
     <div class="poster-top">
-      <div class="wm"><span>Goof</span><b>Proof</b></div>
+      <div class="wm"><span>Pour</span><b>Decisions</b></div>
       <div class="poster-sub">${d.trip.title || DEFAULT_TRIP}</div>
       ${span && html`<div class="poster-date">${span}</div>`}
     </div>
@@ -6519,7 +6535,7 @@ function RecapPoster({ d, now }) {
     ${won.length > 0 && html`<ul class="poster-awards">
       ${won.map(a => html`<li key=${a.id}><${Icon} n=${a.icon} size=${14} /><span>${a.title}</span><b>${shortName(byId[a.pid].n)}</b></li>`)}
     </ul>`}
-    <div class="poster-foot">Bottled by the crew. No goofs were harmed.</div>
+    <div class="poster-foot">Bottled by the crew. All decisions final.</div>
   </div>`;
 }
 SHEETS.recap = function RecapSheet({ closing }) {
@@ -6558,7 +6574,7 @@ SHEETS.recap = function RecapSheet({ closing }) {
 
 /* ───────────────────────── app shell + boot ───────────────────────── */
 function marqueePages(d, boardAll, crawl) {
-  const pages = [{ key: 'brand', kind: 'big', text: 'GOOF PROOF' }];
+  const pages = [{ key: 'brand', kind: 'big', text: 'POUR DECISIONS' }];
   const tot = boardAll.tot;
   if (!tot.count) {
     pages.push(d.players.length ? { key: 'start', kind: 'duo', label: 'THE TAB IS OPEN', text: 'POUR ONE' } : { key: 'start', kind: 'duo', label: 'WHO IS IN?', text: 'JOIN UP' });
@@ -6635,7 +6651,7 @@ function SyncPill({ d }) {
 
 function TopBar({ d, me, act }) {
   const u=useStore(ui);
-  return html`<header class="topbar"><h1 class="wm" aria-label="Goof Proof"><span>Goof</span><b>Proof</b></h1><nav class="desktop-nav" aria-label="Main sections">${[['board','The board'],['crawl','The crawl'],['stats','Stats'],['tab','The tab']].map(([id,label])=>html`<button type="button" aria-current=${u.tab===id?'page':null} onClick=${()=>setTab(id)}>${label}</button>`)}</nav><div class="topbar-r"><${SyncPill} d=${d}/><button type="button" class="iconbtn" aria-label="Weekend recap" onClick=${()=>openSheet('recap')}><${Icon} n="trophy"/></button><button type="button" class="mebtn" onClick=${()=>openSheet('crew')} aria-label="Crew and settings"><${Avatar} p=${me} size=${36}/></button></div></header>`;
+  return html`<header class="topbar"><h1 class="wm" aria-label="Pour Decisions"><span>Pour</span><b>Decisions</b></h1><nav class="desktop-nav" aria-label="Main sections">${[['board','The board'],['crawl','The crawl'],['stats','Stats'],['tab','The tab']].map(([id,label])=>html`<button type="button" aria-current=${u.tab===id?'page':null} onClick=${()=>setTab(id)}>${label}</button>`)}</nav><div class="topbar-r"><${SyncPill} d=${d}/><button type="button" class="iconbtn" aria-label="Crawl recap" onClick=${()=>openSheet('recap')}><${Icon} n="trophy"/></button><button type="button" class="mebtn" onClick=${()=>openSheet('crew')} aria-label="Crew and settings"><${Avatar} p=${me} size=${36}/></button></div></header>`;
 }
 
 function Notices({ d }) {
@@ -6780,7 +6796,7 @@ function enterDemo() {
   const s = createSync(MemoryBackend({ seed: demoSeed(Date.now()), kind: 'demo' }), { writable: true });
   attach(s, 'demo');
   ui.set({ me: 'demo04', filter: { kind: 'all' }, sheets: [] });
-  toast('Sample weekend loaded. Nothing here is saved.', { long: true });
+  toast('Sample crawl loaded. Nothing here is saved.', { long: true });
 }
 function exitDemo() {
   const p = engine.parked;
@@ -6934,7 +6950,7 @@ function registerBoardTool() {
   window.addEventListener('pagehide', () => lifecycle.abort(), { once: true });
   try {
     Promise.resolve(document.modelContext.registerTool({
-      name: 'get_goof_proof_board', title: 'Read the shared drink board',
+      name: 'get_pour_decisions_board', title: 'Read the shared drink board',
       description: 'Read the currently visible shared crew, drinks, crawl stops, and sync status. Does not change the board.',
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
       annotations: { readOnlyHint: true, untrustedContentHint: true },
@@ -6973,7 +6989,7 @@ function toggleTV(on) {
   try { const url = new URL(location.href); if (on) url.searchParams.set('screen', 'tv'); else url.searchParams.delete('screen'); history.replaceState(null, '', url); } catch(e) {}
   if (!on && document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
 }
-function inviteURL() { const url = new URL(location.href); url.search = ''; url.hash = ''; return url.href; }
+function inviteURL() { const url = new URL(location.href); url.search = CODE ? '?c=' + CODE : ''; url.hash = ''; return url.href; }
 async function copyText(text) {
   try { await navigator.clipboard.writeText(text); toast('Link copied. Send it to the crew.'); return true; }
   catch(e) { toast('Press and hold the link below to copy it.', { long: true }); return false; }
@@ -6991,17 +7007,18 @@ function csvText(drinks, players, stops) {
   return '\ufeff' + rows.map(row => row.map(cell).join(',')).join('\r\n');
 }
 function exportTab(drinks, players, stops) {
-  downloadBlob(new Blob([csvText(drinks, players, stops)], { type: 'text/csv;charset=utf-8' }), 'goof-proof-tab.csv');
+  downloadBlob(new Blob([csvText(drinks, players, stops)], { type: 'text/csv;charset=utf-8' }), 'pour-decisions-tab.csv');
   toast('Your tab is ready to download.');
 }
 function WeekendHeader({ d, board, crawl, loading }) {
-  const drinks = board.tot.count, title = d.trip.title || DEFAULT_TRIP;
+  const drinks = board.tot.count, title = d.trip.title || DEFAULT_TRIP, place = d.trip.place || '';
   const n = v => (loading ? '–' : v); // nothing is known until the board has loaded
-  return html`<section class="hero" aria-label="Weekend overview">
+  useEffect(() => { if (CODE && d.mode === 'live' && d.trip.title && window.PourDecisions) window.PourDecisions.rememberCrawl(CODE, { title: d.trip.title, place }); }, [d.mode, d.trip.title, place]);
+  return html`<section class="hero" aria-label="Crawl overview">
     <div class="hero-head">
       <div>
         <h2 class=${'hero-title' + (title.length > 46 ? ' is-xlong' : title.length > 34 ? ' is-long' : '')}>${title}</h2>
-        <p class="hero-sub">${d.mode === 'demo' ? 'A sample weekend. Your real board is untouched.' : 'Savannah, Georgia. The group chat has receipts now.'}</p>
+        <p class="hero-sub">${d.mode === 'demo' ? 'A sample crawl. Your real board is untouched.' : (place ? place + '. ' : '') + 'Every round is on the record.'}</p>
       </div>
       <div class="hero-tools">
         <button type="button" class="btn btn--quiet btn--sm" onClick=${() => openSheet('invite')}><${Icon} n="share" size=${16} /> Invite crew</button>
@@ -7041,10 +7058,11 @@ SHEETS.invite = function InviteSheet({ closing }) {
   const qr = useMemo(() => {
     try { if (!window.qrcode) return ''; const q = window.qrcode(0, 'M'); q.addData(url); q.make(); return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(q.createSvgTag({cellSize:5,margin:20,scalable:true})); } catch(e) { return ''; }
   }, [url]);
-  const share = async () => { try { await navigator.share({title:'Goof Proof',text:(d.trip.title || DEFAULT_TRIP) + ': pick your name and join the board.',url}); } catch(e) { if (e.name !== 'AbortError') await copyText(url); } };
+  const share = async () => { try { await navigator.share({title:BRAND,text:(d.trip.title || DEFAULT_TRIP) + ': pick your name and join the board.',url}); } catch(e) { if (e.name !== 'AbortError') await copyText(url); } };
   return html`<${Sheet} title="Get the crew in here." sub="One link. One board. Zero accounts." closing=${closing}>
     <div class="invite-card">${qr ? html`<img class="invite-qr" src=${qr} alt="QR code to open this party board" width="230" height="230" />` : html`<${Icon} n="share" size=${48} />`}<h3>Scan. Pick your name. You're in.</h3><p>Point your phone camera at the code to join the shared board.</p></div>
-    <label class="field"><span>Party link</span><input class="input share-url" type="text" readonly value=${url} onFocus=${e => e.target.select()} /></label>
+    ${CODE && html`<div class="invite-code"><span>Crawl code</span><b>${CODE}</b><small>Or enter it on the Pour Decisions home page.</small></div>`}
+    <label class="field"><span>Crawl link</span><input class="input share-url" type="text" readonly value=${url} onFocus=${e => e.target.select()} /></label>
     <div class="invite-actions">${typeof navigator.share === 'function' && html`<button type="button" class="btn btn--primary btn--lg" onClick=${share}><${Icon} n="share" size=${18} /> Share link</button>`}<button type="button" class="btn btn--quiet btn--lg" onClick=${() => copyText(url)}><${Icon} n="copy" size=${18} /> Copy link</button></div>
     <p class="invite-note">Anyone with this link can see and edit the board. Keep it in the crew.</p>
     <div class="install-tip"><${Icon} n="screen" size=${20} /><div><b>Keep it one tap away</b><p>On iPhone: open in Safari, tap Share, then Add to Home Screen.</p></div></div>
@@ -7067,7 +7085,7 @@ function TVBoard({ d, board, crawl, now, pages }) {
   const cols = board.rows.length > 16 ? 3 : 2, half = Math.max(1, Math.ceil(board.rows.length / cols)); // ranks read down each column in turn
   return html`<main class="tv-stage">
     <header class="tv-header">
-      <div><div class="wm"><span>Goof</span><b>Proof</b></div><p>${d.trip.title || DEFAULT_TRIP}</p></div>
+      <div><div class="wm"><span>Pour</span><b>Decisions</b></div><p>${d.trip.title || DEFAULT_TRIP}</p></div>
       <div class="tv-controls"><${SyncPill} d=${d} /><time>${clock.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}</time><button type="button" class="iconbtn" aria-label="Enter fullscreen" onClick=${fullscreen}><${Icon} n="expand" /></button><button type="button" class="btn btn--quiet" onClick=${() => openSheet('invite')}>Join code</button><button type="button" class="btn btn--quiet" onClick=${() => toggleTV(false)}>Exit TV</button></div>
     </header>
     <${Marquee} pages=${pages} />
@@ -7075,12 +7093,12 @@ function TVBoard({ d, board, crawl, now, pages }) {
       <div><b>${board.tot.count}</b><span>${plural(board.tot.count, 'drink')} logged</span></div>
       <div><b>${d.players.length}</b><span>on the crew</span></div>
       <div><b>${board.tot.water + board.tot.zero}</b><span>water + zero</span></div>
-      <div><b>${crawl.cur ? crawl.cur.stop.n : 'Airbnb HQ'}</b><span>${crawl.cur ? 'current stop' : 'the weekend is yours'}</span></div>
+      <div><b>${crawl.cur ? crawl.cur.stop.n : 'Home base'}</b><span>${crawl.cur ? 'current stop' : 'the night is yours'}</span></div>
     </div>
     <div class="tv-body">
       <section class="tv-board">
-        <header><h2>The weekend standings</h2><span>Live from Savannah</span></header>
-        <ol class="tv-rows" style=${'--half:' + half + ';--cols:' + cols}>${board.rows.map(r => html`<li key=${r.id}><span class="tv-rank">${r.count ? (r.tied ? 'T' : '') + r.rank : '–'}</span><${Avatar} p=${r.p} size=${44} /><span class="tv-name">${r.p.n}${r.p.g && html`<small>The groom</small>`}</span><span class="tv-score">${r.count}</span></li>`)}</ol>
+        <header><h2>The standings</h2><span>${d.trip.place ? 'Live from ' + d.trip.place : 'Live'}</span></header>
+        <ol class="tv-rows" style=${'--half:' + half + ';--cols:' + cols}>${board.rows.map(r => html`<li key=${r.id}><span class="tv-rank">${r.count ? (r.tied ? 'T' : '') + r.rank : '–'}</span><${Avatar} p=${r.p} size=${44} /><span class="tv-name">${r.p.n}${r.p.g && html`<small>Guest of honor</small>`}</span><span class="tv-score">${r.count}</span></li>`)}</ol>
         ${!board.rows.length && html`<p class="tv-empty">Add the crew on your phone. They'll show up here.</p>`}
       </section>
       <aside class="tv-side">
@@ -7176,7 +7194,7 @@ async function makeRecapImage(d) {
   }
   for (const line of lines) { text(fit(line, IW), X - 3, y); y += 68; }
   y -= 16;
-  font(500, 27); text('Savannah, Georgia', X, y, INK2);
+  font(500, 27); if (d.trip.place) text(fit(d.trip.place, IW - 360), X, y, INK2);
   font(500, 21, '', MONO); text((recapSpan(d, now) || dayMed(partyDay(now))).toUpperCase(), X + IW, y, INK3, 'right');
 
   // the number
@@ -7218,7 +7236,7 @@ async function makeRecapImage(d) {
     rule(awardsY);
     won.forEach((a, i) => { const x = X + i * (IW / 3) + (i ? 28 : 0), max = IW / 3 - 40; font(600, 22); text(fit(a.title, max), x, awardsY + 44, INK3); font(750, 30); text(fit(shortName(byId[a.pid].n), max), x, awardsY + 82); });
   }
-  font(500, 19, '', MONO); text('BOTTLED BY THE CREW. NO GOOFS WERE HARMED.', X, footY + 8, INK3);
+  font(500, 19, '', MONO); text('BOTTLED BY THE CREW. ALL DECISIONS FINAL.', X, footY + 8, INK3);
   return new Promise((resolve, reject) => c.toBlob(blob => {
     c.width = c.height = 0; // hand the 1080 × 1350 drawing surface back at once; phones keep few of these
     if (blob) resolve(blob); else reject(new Error('Image export failed'));
@@ -7230,9 +7248,9 @@ function RecapActions({ d, shot }) {
     if (busy) return;
     setBusy(true);
     try {
-      const blob = shot ? shot.blob : await makeRecapImage(d), file = new File([blob], 'goof-proof-recap.png', { type: 'image/png' });
+      const blob = shot ? shot.blob : await makeRecapImage(d), file = new File([blob], 'pour-decisions-recap.png', { type: 'image/png' });
       if (share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try { await navigator.share({ files: [file], title: 'The weekend receipt' }); } catch (e) { if (e.name !== 'AbortError') downloadBlob(blob, file.name); }
+        try { await navigator.share({ files: [file], title: 'The crawl receipt' }); } catch (e) { if (e.name !== 'AbortError') downloadBlob(blob, file.name); }
       } else downloadBlob(blob, file.name);
     } catch (e) { toast('Could not export the image. You can still screenshot the recap.', { tone: 'warn' }); }
     finally { setBusy(false); }
@@ -7262,7 +7280,7 @@ async function boot() {
 
 function start(hot) {
   const root = document.getElementById('goofproof');
-  if (!root) return;
+  if (!root || !CRAWL) return; // no crawl code: the page is already on its way back to the landing page
   const tabs = ['board', 'crawl', 'stats', 'tab'];
   let tab = (location.hash || '').replace('#', '');
   if (tabs.indexOf(tab) === -1) tab = hot && tabs.indexOf(hot.tab) !== -1 ? hot.tab : ls.get(K.tab, 'board');
