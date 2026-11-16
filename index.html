@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shrey Vasisht — Product Engineer & Researcher</title>
-  <meta name="description" content="Portfolio of Shrey Vasisht — NC State students with experience in embedded systems, test automation, and applied research." />
+  <meta name="description" content="Portfolio of Shrey Vasisht — NC State student with experience in embedded systems, test automation, and applied research." />
   <style>
     :root{
       --bg:#070A10;
@@ -14,35 +14,39 @@
       --muted: rgba(255,255,255,.68);
       --muted2: rgba(255,255,255,.52);
       --border: rgba(255,255,255,.12);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
       --accent: #6EE7FF;
       --accent2:#A78BFA;
       --ok:#22c55e;
       --warn:#f59e0b;
       --danger:#ef4444;
-      --radius: 18px;
-      --radius2: 26px;
+      --r-sm: 8px;
+      --r-md: 10px;
+      --r-lg: 14px;
       --max: 1120px;
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --ease: cubic-bezier(.25, 1, .5, 1);
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+      --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth; color-scheme:dark}
+    @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
     body{
       margin:0;
       font-family:var(--font);
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(110,231,255,.08), transparent 55%),
-                  radial-gradient(900px 700px at 80% 35%, rgba(167,139,250,.10), transparent 55%),
-                  radial-gradient(900px 700px at 55% 95%, rgba(110,231,255,.05), transparent 55%),
-                  var(--bg);
+      background: var(--bg);
       color:var(--text);
       overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
+    ::selection{background: rgba(110,231,255,.28); color:#fff}
+    :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm)}
     a{color:inherit; text-decoration:none}
     .wrap{max-width:var(--max); margin:0 auto; padding:24px}
     .nav{
       position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(14px);
-      background: rgba(7,10,16,.55);
+      backdrop-filter: blur(12px);
+      background: rgba(7,10,16,.86);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner{
@@ -53,84 +57,90 @@
       display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;
     }
     .logo{
-      width:34px; height:34px; border-radius:12px;
-      background: linear-gradient(135deg, rgba(110,231,255,.9), rgba(167,139,250,.9));
-      box-shadow: 0 10px 24px rgba(110,231,255,.12);
+      display:grid; place-items:center;
+      width:30px; height:30px; border-radius:var(--r-sm);
+      border:1px solid rgba(110,231,255,.5);
+      color:var(--accent);
+      font-size:12px; font-weight:700; letter-spacing:.04em;
     }
     .brand span{opacity:.95}
-    .nav-links{display:flex; gap:16px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .nav-links{display:flex; gap:4px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
     .nav-links a{
-      padding:8px 10px; border-radius:12px; color:var(--muted);
-      transition: .18s ease;
+      padding:8px 12px; border-radius:var(--r-sm); color:var(--muted);
+      font-size:15px;
+      transition: color .18s var(--ease), background-color .18s var(--ease);
     }
-    .nav-links a:hover{color:var(--text); background:rgba(255,255,255,.06)}
+    .nav-links a:hover{color:var(--text); background:rgba(255,255,255,.05)}
     .btn{
       display:inline-flex; align-items:center; gap:10px;
-      padding:12px 14px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      box-shadow: var(--shadow);
+      padding:11px 16px; border-radius:var(--r-md);
+      border:1px solid rgba(255,255,255,.16);
+      background: transparent;
       color:var(--text);
-      transition:.18s ease;
+      font: inherit; font-size:15px; font-weight:500;
+      transition: background-color .18s var(--ease), border-color .18s var(--ease);
       cursor:pointer;
       user-select:none;
     }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .btn:hover{background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.28)}
     .btn.primary{
-      border:none;
-      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+      border-color: var(--accent);
+      background: var(--accent);
       color:#071018;
-      font-weight:700;
+      font-weight:650;
     }
-    .btn.primary:hover{filter:saturate(1.05) brightness(1.02)}
+    .btn.primary:hover{background:#9AEEFF; border-color:#9AEEFF}
     .pill{
       display:inline-flex; gap:10px; align-items:center;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
+      padding:6px 11px; border-radius:999px;
+      border:1px solid var(--border);
       color:var(--muted);
       font-size:13px;
     }
     .hero{
-      padding:64px 0 26px;
+      padding:var(--s-7) 0 0;
       position:relative;
     }
     .hero-grid{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
       gap:28px;
       align-items:stretch;
     }
+    [id]{scroll-margin-top:84px}
     @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr; gap:18px}
-      .nav-links{display:none}
+      .hero-grid{grid-template-columns:minmax(0, 1fr); gap:18px}
+      .nav-inner{flex-wrap:wrap; row-gap:4px; padding-bottom:6px}
+      .nav-links{
+        order:3; flex:1 0 100%;
+        justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto;
+        margin:0 -12px; scrollbar-width:none;
+      }
+      .nav-links a{flex:none}
+      [id]{scroll-margin-top:124px}
     }
+    .skip{
+      position:absolute; left:16px; top:-64px; z-index:60;
+      padding:10px 14px; border-radius:var(--r-md);
+      background:var(--accent); color:#071018; font-weight:650;
+    }
+    .skip:focus{top:12px}
     .card{
       border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r-lg);
     }
     .hero-card{
-      padding:26px;
-      overflow:hidden;
-      position:relative;
+      padding:var(--s-6);
     }
-    .hero-card::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(700px 400px at 25% 15%, rgba(110,231,255,.20), transparent 60%),
-                  radial-gradient(700px 400px at 75% 65%, rgba(167,139,250,.18), transparent 60%);
-      opacity:.9;
-      pointer-events:none;
-      filter: blur(0px);
-    }
-    .hero-card > *{position:relative}
+    @media (max-width: 640px){ .hero-card{padding:var(--s-5)} }
     h1{
-      margin:14px 0 10px;
+      margin:0 0 var(--s-4);
       font-size: clamp(34px, 4vw, 52px);
+      font-weight:650;
       line-height: 1.05;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
     }
     .sub{
       margin:0 0 18px;
@@ -139,139 +149,187 @@
       line-height:1.5;
       max-width: 62ch;
     }
-    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:24px}
     .meta-row{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:16px;
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-top:24px;
     }
     .side{
-      padding:22px;
+      padding:24px;
       display:flex; flex-direction:column; gap:14px;
     }
-    .side h3{margin:0; font-size:16px; letter-spacing:.2px}
+    .side h2{margin:0; font-size:16px; font-weight:600}
     .side p{margin:0; color:var(--muted); line-height:1.5}
     .kpi{
-      display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;
+      display:grid; grid-template-columns: repeat(2, minmax(0, 1fr));
       margin-top:6px;
+      border-top:1px solid var(--border);
     }
     .mini{
-      border-radius:16px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      padding:12px;
+      padding:14px 14px 14px 0;
+      border-bottom:1px solid var(--border);
     }
+    .mini--wide{grid-column:1 / -1; padding-right:0}
+    .mini:nth-child(2n+3){padding-left:14px; border-left:1px solid var(--border)}
     .mini .label{color:var(--muted2); font-size:12px}
-    .mini .value{font-size:14px; margin-top:6px}
-    section{padding:22px 0}
+    .mini .value{font-size:14px; margin-top:6px; line-height:1.4}
+    section{padding:var(--s-8) 0 0}
     .section-title{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:0 0 12px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-4); margin:0 0 var(--s-5);
     }
+    .card .section-title{margin-bottom:var(--s-4)}
     .section-title h2{
       margin:0;
       font-size:22px;
-      letter-spacing:-.2px;
+      font-weight:600;
+      letter-spacing:-.01em;
     }
-    .section-title p{margin:0; color:var(--muted); font-size:14px}
-    .grid{
+    .section-title p{margin:4px 0 0; color:var(--muted); font-size:14px; line-height:1.5; max-width:65ch}
+    .group-title{margin:0 0 var(--s-3); font-size:15px; font-weight:600; color:var(--muted)}
+    .live{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap:var(--s-4);
     }
-    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr)} }
-    @media (max-width: 640px){ .grid{grid-template-columns: 1fr} }
-    .project{
-      overflow:hidden;
-      position:relative;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    .app{
+      padding:var(--s-5);
+      display:flex; flex-direction:column; gap:var(--s-3);
     }
-    .project:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.22)}
-    .thumb{
-      height:160px;
-      background:
-        linear-gradient(135deg, rgba(110,231,255,.18), rgba(167,139,250,.14)),
-        radial-gradient(700px 220px at 30% 20%, rgba(255,255,255,.12), transparent 65%),
-        rgba(255,255,255,.05);
-      border-bottom:1px solid rgba(255,255,255,.10);
-      display:flex; align-items:center; justify-content:center;
-      color:rgba(255,255,255,.72);
-      font-size:13px;
-      letter-spacing:.2px;
+    .app--feature{padding:var(--s-6) var(--s-6) var(--s-5)}
+    .app h4{margin:0; font-size:17px; font-weight:600}
+    .app--feature h4{font-size:24px; letter-spacing:-.01em}
+    .app p{margin:0; color:var(--muted); font-size:14px; line-height:1.55; max-width:60ch}
+    .app--feature > p{font-size:16px}
+    .app-foot{
+      margin-top:auto; padding-top:var(--s-2);
+      display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--s-2) var(--s-4);
     }
-    .project .body{padding:14px}
-    .project h3{margin:0 0 6px; font-size:16px}
-    .project p{margin:0 0 12px; color:var(--muted); font-size:14px; line-height:1.5}
-    .tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px}
-    .tag{
-      font-size:12px; color:rgba(255,255,255,.76);
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      padding:6px 8px; border-radius:999px;
+    .app-foot .link{padding-block:var(--s-2); margin-block:calc(var(--s-2) * -1)}
+    .access{color:var(--muted2); font-size:13px}
+    .facts{
+      margin:var(--s-2) 0 var(--s-3); padding:0;
+      display:grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top:1px solid var(--border);
+    }
+    .facts div{padding:var(--s-3) var(--s-3) var(--s-3) 0; border-bottom:1px solid var(--border)}
+    .facts:not(.facts--list) div:nth-child(even){padding-left:var(--s-3); border-left:1px solid var(--border)}
+    .facts--list{grid-template-columns:minmax(0, 1fr); margin-top:var(--s-1)}
+    .facts dt{color:var(--muted2); font-size:12px}
+    .facts dd{margin:var(--s-1) 0 0; font-size:14px; line-height:1.4}
+    .contact{
+      display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+      gap:var(--s-5) var(--s-7); align-items:start;
+    }
+    .contact .section-title{margin:0}
+    .contact form{margin:0}
+    .pending-group{margin-top:var(--s-7)}
+    .pending-list{
+      margin:0; padding:0; list-style:none;
+      display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap:var(--s-7);
+      border-top:1px solid var(--border);
+    }
+    .pending-list li{padding:var(--s-4) 0; border-bottom:1px solid var(--border)}
+    .pending-list h4{margin:0 0 var(--s-1); font-size:15px; font-weight:600}
+    .pending-list p{margin:0; color:var(--muted); font-size:14px; line-height:1.5}
+    .pending-list .stack{margin-top:var(--s-2); color:var(--muted2); font-size:13px}
+    @media (max-width: 860px){
+      .live, .pending-list, .contact{grid-template-columns:minmax(0, 1fr)}
+      .app--feature{padding:var(--s-5)}
     }
     .link{
       display:inline-flex; align-items:center; gap:8px;
-      color: rgba(110,231,255,.95);
-      font-weight:600;
-      font-size:13px;
+      color: var(--accent);
+      font-weight:550;
+      font-size:14px;
+      text-underline-offset:3px;
     }
-    .link:hover{filter:brightness(1.05)}
+    .link:hover{text-decoration:underline}
     .two-col{
-      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+      display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:var(--s-4);
     }
-    @media (max-width: 980px){ .two-col{grid-template-columns: 1fr} }
+    @media (max-width: 980px){ .two-col{grid-template-columns: minmax(0, 1fr)} }
     .about, .skills, .contact{
-      padding:18px;
+      padding:24px;
     }
-    .about p{color:var(--muted); line-height:1.6; margin:0}
+    .about p{color:var(--muted); line-height:1.6; margin:0; max-width:68ch}
+    .about p + p{margin-top:12px}
+    .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+    .field{display:grid; gap:6px}
+    .section-title p .link{font-size:inherit}
     .skills ul{
-      margin:10px 0 0; padding:0; list-style:none;
-      display:flex; flex-wrap:wrap; gap:10px;
+      margin:4px 0 0; padding:0; list-style:none;
+      display:grid;
     }
     .skills li{
-      padding:10px 12px; border-radius:14px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      color:rgba(255,255,255,.80);
-      font-size:13px;
+      padding:11px 0;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
     }
+    .skills li:first-child{border-top:0; padding-top:0}
 
-    form{display:grid; gap:10px; margin-top:10px}
+    form{display:grid; gap:12px; margin-top:4px; max-width:640px}
     input, textarea{
       width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.22);
+      padding:12px 14px;
+      border-radius:var(--r-md);
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.25);
       color:var(--text);
-      outline:none;
-      transition:.18s ease;
+      font: inherit; font-size:16px; font-weight:400;
+      transition: border-color .18s var(--ease);
     }
-    input:focus, textarea:focus{border-color: rgba(110,231,255,.55)}
-    textarea{min-height:120px; resize:vertical}
+    input::placeholder, textarea::placeholder{color:var(--muted2)}
+    input:hover, textarea:hover{border-color: rgba(255,255,255,.26)}
+    input:focus, textarea:focus{border-color: var(--accent)}
+    input:focus-visible, textarea:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+    textarea{min-height:120px; resize:vertical; line-height:1.5}
+    .field label{color:var(--muted); font-size:14px; font-weight:500}
+    .field-meta{display:flex; justify-content:space-between; gap:var(--s-3); color:var(--muted2); font-size:13px}
+    .count{font-variant-numeric:tabular-nums; margin-left:auto}
+    .count.near{color:var(--warn)}
+    .error{margin:0; color:var(--danger); font-size:13px; line-height:1.4}
+    .error[hidden]{display:none}
+    [aria-invalid="true"], [aria-invalid="true"]:hover{border-color:var(--danger)}
+    [aria-invalid="true"]:focus{border-color:var(--danger)}
+    .form-actions{display:flex; gap:var(--s-3); flex-wrap:wrap; align-items:center}
+    #status{color:var(--muted); font-size:14px; line-height:1.5}
+    .fallback{
+      display:grid; gap:var(--s-2);
+      padding:var(--s-4); border:1px solid var(--border); border-radius:var(--r-md);
+      color:var(--muted); font-size:14px; line-height:1.5;
+    }
+    .fallback[hidden]{display:none}
+    .fallback p{margin:0}
+    .fallback .btn{justify-self:start; padding:8px 12px; font-size:14px}
+    .link, .contact p{overflow-wrap:anywhere}
     .footer{
-      margin-top:24px;
-      padding:22px 0 36px;
+      margin-top:var(--s-8);
+      padding:var(--s-5) 0 var(--s-4);
       color:var(--muted2);
-      border-top:1px solid rgba(255,255,255,.10);
-      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      border-top:1px solid var(--border);
+      display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+      font-size:14px;
     }
-    .social{display:flex; gap:10px; flex-wrap:wrap}
+    .social{display:flex; gap:4px; flex-wrap:wrap}
     .social a{
-      padding:8px 10px; border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color:rgba(255,255,255,.80);
-      font-size:13px;
+      padding:8px 12px; border-radius:var(--r-sm);
+      color:var(--muted);
+      font-size:14px;
+      transition: color .18s var(--ease), background-color .18s var(--ease);
     }
-    .social a:hover{border-color: rgba(255,255,255,.22)}
+    .social a:hover{color:var(--text); background: rgba(255,255,255,.05)}
   </style>
 </head>
 
 <body>
+  <a class="skip" href="#portfolio">Skip to projects</a>
   <!-- Nav -->
   <div class="nav">
     <div class="nav-inner">
-      <a class="brand" href="#top" aria-label="Home">
-        <div class="logo"></div>
+      <a class="brand" href="#top">
+        <div class="logo" aria-hidden="true">SV</div>
         <span>Shrey Vasisht</span>
       </a>
       <div class="nav-links">
@@ -280,7 +338,7 @@
         <a href="#skills">Skills</a>
         <a href="#contact">Contact</a>
       </div>
-      <a class="btn" href="https://www.linkedin.com/in/shreyvasisht/" target="_blank">Connect →</a>
+      <a class="btn" href="https://www.linkedin.com/in/shreyvasisht/" target="_blank" rel="noreferrer">LinkedIn<span class="sr"> (opens in a new tab)</span></a>
     </div>
   </div>
 
@@ -289,37 +347,40 @@
     <div class="hero">
       <div class="hero-grid">
         <div class="card hero-card">
-          <div class="pill">Product Engineer • Researcher • Builder</div>
           <h1>Engineering systems that sense, test, and scale.</h1>
           <p class="sub">
           Student at NC State with internship experience in data analytics, product development, and research.
           I build sensor-driven test systems, embedded prototypes, and data pipelines that turn physical signals into validated, production-ready outcomes.
           </p>
           <div class="cta-row">
-            <a class="btn primary" href="#contact">Contact Me</a>
-            <a class="btn" href="#portfolio">View Projects</a>
+            <a class="btn primary" href="#contact">Get in touch</a>
+            <a class="btn" href="#portfolio">See projects</a>
           </div>
           <div class="meta-row">
-            <span class="pill">⚙️ Embedded systems & sensors</span>
-            <span class="pill">📊 Test automation & data pipelines</span>
-            <span class="pill">🔬 Research-to-production workflows</span>
+            <span class="pill">Embedded systems &amp; sensors</span>
+            <span class="pill">Test automation &amp; data pipelines</span>
+            <span class="pill">Research-to-production workflows</span>
           </div>
         </div>
 
         <div class="card side">
-          <h3>Snapshot</h3>
+          <h2>Snapshot</h2>
           <p>
             Focused on sensor-driven products, experimentation, and analytics workflows—from
             concept to validation to deployment.
           </p>
           <div class="kpi">
+            <div class="mini mini--wide">
+              <div class="label">Role</div>
+              <div class="value">Product engineer • Researcher • Builder</div>
+            </div>
             <div class="mini">
               <div class="label">Core areas</div>
-              <div class="value">Sensors • Embedded • Test Eng</div>
+              <div class="value">Sensors • Embedded • Test engineering</div>
             </div>
             <div class="mini">
               <div class="label">Strengths</div>
-              <div class="value">DOE • Automation • Firmware</div>
+              <div class="value">Design of experiments • Automation • Firmware</div>
             </div>
             <div class="mini">
               <div class="label">Tooling</div>
@@ -330,7 +391,6 @@
               <div class="value">Hands-on, measurable, shipped</div>
             </div>
           </div>
-          <a class="btn" href="#portfolio">Explore portfolio →</a>
         </div>
       </div>
     </div>
@@ -340,93 +400,71 @@
       <div class="section-title">
         <div>
           <h2>Portfolio</h2>
-          <p>Swap in your real images + links as you publish projects.</p>
+          <p>Software I’ve built and use, then projects I’m still writing up.</p>
         </div>
-        <a class="btn" href="#contact">Hire / Collaborate</a>
       </div>
 
-      <div class="grid">
-        <!-- Project 1 -->
-        <article class="card project">
-          <div class="project-image-placeholder">📈</div>
-          <h3>Stock Strategy Screener</h3>
-          <div class="project-tags">
-            <span>Python</span><span>Streamlit</span><span>Supabase</span><span>yfinance</span>
-          </div>
-          <p>
-            Multi-strategy stock screener evaluating the S&amp;P 500 weekly against
-            Warren Buffett, Lower Risk, and Balanced Risk criteria. Local Python
-            engine + Streamlit UI + Supabase sync for live web display.
-          </p>
-          <a href="personal.html#/personal/screener" class="project-link">
-            View Project →
-          </a>
-        </article>
-
-        <!-- Project 2 -->
-        <article class="card project">
-          <div class="thumb">Project Image (add /assets/p2.jpg)</div>
-          <div class="body">
-            <h3>Design of Experiments Toolkit</h3>
-            <div class="tags">
-              <span class="tag">DOE</span><span class="tag">ANOVA</span><span class="tag">Optimization</span>
-            </div>
-            <p>Reusable templates for structured experimentation to improve yield, throughput, and robustness.</p>
-            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+      <h3 class="group-title">Open now</h3>
+      <div class="live">
+        <article class="card app app--feature">
+          <h4>Stock Strategy Screener</h4>
+          <p>Screens the S&amp;P 500 every week against three investing strategies and publishes the results to a web view with a performance chart.</p>
+          <dl class="facts">
+            <div><dt>Strategies</dt><dd>Warren Buffett, Lower Risk, Balanced Risk</dd></div>
+            <div><dt>Universe</dt><dd>S&amp;P 500, run weekly</dd></div>
+            <div><dt>Engine</dt><dd>Local Python with a Streamlit UI</dd></div>
+            <div><dt>Data</dt><dd>yfinance in, Supabase sync out</dd></div>
+          </dl>
+          <div class="app-foot">
+            <a class="link" href="personal.html#/personal/screener">Open the screener</a>
+            <span class="access">Sign-in required</span>
           </div>
         </article>
 
-        <!-- Project 3 -->
-        <article class="card project">
-          <div class="thumb">Project Image (add /assets/p3.jpg)</div>
-          <div class="body">
-            <h3>Embedded Sensing Prototype</h3>
-            <div class="tags">
-              <span class="tag">MCU</span><span class="tag">Signal</span><span class="tag">Validation</span>
-            </div>
-            <p>Built a sensor prototype with logging + calibration workflow to quantify performance and drift.</p>
-            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
+        <article class="card app">
+          <h4>Personal hub</h4>
+          <p>The everyday tools I built for myself, plus the screener’s web view.</p>
+          <dl class="facts facts--list">
+            <div><dt>Tools</dt><dd>Gym log, tournament generator, counters, focus timer</dd></div>
+            <div><dt>Sync</dt><dd>Supabase sign-in, synced across devices</dd></div>
+            <div><dt>Export</dt><dd>JSON from the gym log and counters</dd></div>
+          </dl>
+          <div class="app-foot">
+            <a class="link" href="personal.html">Open the hub</a>
+            <span class="access">Sign-in required</span>
           </div>
         </article>
+      </div>
 
-        <!-- Project 4 -->
-        <article class="card project">
-          <div class="thumb">Project Image (add /assets/p4.jpg)</div>
-          <div class="body">
-            <h3>Production Automation Upgrade</h3>
-            <div class="tags">
-              <span class="tag">Process</span><span class="tag">Automation</span><span class="tag">KPIs</span>
-            </div>
-            <p>Automated a manual workflow to increase speed/output and improve consistency with better visibility.</p>
-            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
-          </div>
-        </article>
-
-        <!-- Project 5 -->
-        <article class="card project">
-          <div class="thumb">Project Image (add /assets/p5.jpg)</div>
-          <div class="body">
-            <h3>Predictive Quality Model</h3>
-            <div class="tags">
-              <span class="tag">ML</span><span class="tag">Feature Eng</span><span class="tag">QA</span>
-            </div>
-            <p>Modeled drivers of defects and created an interpretable scoring approach for earlier intervention.</p>
-            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
-          </div>
-        </article>
-
-        <!-- Project 6 -->
-        <article class="card project">
-          <div class="thumb">Project Image (add /assets/p6.jpg)</div>
-          <div class="body">
-            <h3>Data Product: Metrics & Alerts</h3>
-            <div class="tags">
-              <span class="tag">ETL</span><span class="tag">Monitoring</span><span class="tag">Ops</span>
-            </div>
-            <p>Defined a metric hierarchy and alert thresholds to catch regressions and keep systems healthy.</p>
-            <a class="link" href="#" target="_blank" rel="noreferrer">View Project →</a>
-          </div>
-        </article>
+      <div class="pending-group">
+        <h3 class="group-title">Write-ups pending</h3>
+        <ul class="pending-list">
+          <li>
+            <h4>Design of Experiments Toolkit</h4>
+            <p>Templates for planning, running, and analyzing structured experiments.</p>
+            <p class="stack">DOE • ANOVA • Optimization</p>
+          </li>
+          <li>
+            <h4>Embedded Sensing Prototype</h4>
+            <p>A sensor prototype with logging and a calibration workflow for measuring performance and drift.</p>
+            <p class="stack">MCU • Signal • Validation</p>
+          </li>
+          <li>
+            <h4>Production Automation Upgrade</h4>
+            <p>Automation of a manual production workflow, with clearer visibility into output.</p>
+            <p class="stack">Process • Automation • KPIs</p>
+          </li>
+          <li>
+            <h4>Predictive Quality Model</h4>
+            <p>An interpretable model of the drivers of defects, aimed at earlier intervention.</p>
+            <p class="stack">ML • Feature engineering • QA</p>
+          </li>
+          <li>
+            <h4>Data Product: Metrics &amp; Alerts</h4>
+            <p>A metric hierarchy and alert thresholds for catching regressions early.</p>
+            <p class="stack">ETL • Monitoring • Ops</p>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -435,14 +473,12 @@
       <div id="about" class="card about">
         <div class="section-title">
           <h2>About</h2>
-          <p></p>
         </div>
         <p>
           I’m a product-focused engineer who likes tight feedback loops: prototype → measure → learn → ship.
           My work sits at the intersection of sensors, validation, and data—building systems that collect
           signals reliably, turn them into insights, and drive better decisions in the real world.
         </p>
-        <div style="height:10px"></div>
         <p>
           I care about practical outcomes: test plans, clear metrics, traceable experiments, and robust implementations.
           If it can’t be measured, it can’t be improved.
@@ -451,14 +487,13 @@
 
       <div id="skills" class="card skills">
         <div class="section-title">
-          <h2>Skills / Services</h2>
-          <p></p>
+          <h2>Skills</h2>
         </div>
         <ul>
           <li>Embedded systems: C++, firmware, sensor integration</li>
           <li>Hardware design: SolidWorks, Inventor, AutoCAD, EAGLE, KiCAD</li>
-          <li>Data & ML: Python, PyTorch, MATLAB, Simulink, signal processing</li>
-          <li>Test & validation: DOE, bench testing, FEA, calibration workflows</li>
+          <li>Data &amp; ML: Python, PyTorch, MATLAB, Simulink, signal processing</li>
+          <li>Test &amp; validation: DOE, bench testing, FEA, calibration workflows</li>
           <li>Manufacturing: SLA/SLS 3D printing, CNC, ISO 13485 compliance</li>
           <li>Project management: Jira, MS Project, Scrum, Six Sigma</li>
         </ul>
@@ -471,50 +506,151 @@
         <div class="section-title">
           <div>
             <h2>Contact</h2>
-            <p></p>
+            <p>Email me at <a class="link" href="mailto:shreykv@gmail.com">shreykv@gmail.com</a>, or write here and the form will open your email app with the message filled in.</p>
           </div>
         </div>
 
-        <!-- Note: This form is static unless you wire it to a service (Formspree/Netlify Forms/etc.) -->
-        <form onsubmit="return handleSubmit(event)">
-          <input id="name" name="name" placeholder="Your name" required />
-          <input id="email" name="email" type="email" placeholder="Your email" required />
-          <textarea id="message" name="message" placeholder="What are you building?" required></textarea>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-            <button class="btn primary" type="submit">Send Message</button>
-            <span id="status" style="color:var(--muted); font-size:13px;"></span>
+        <!-- Static form: it builds a mailto: link rather than posting to a service. -->
+        <form id="contact-form" action="mailto:shreykv@gmail.com" method="post" enctype="text/plain" novalidate>
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" autocomplete="name" maxlength="100" required aria-describedby="name-error" />
+            <p class="error" id="name-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="email">Your email</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" maxlength="254" placeholder="you@example.com" required aria-describedby="email-error" />
+            <p class="error" id="email-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" maxlength="1500" required aria-describedby="message-error message-count"></textarea>
+            <div class="field-meta">
+              <p class="error" id="message-error" hidden></p>
+              <span class="count" id="message-count">Up to 1,500 characters</span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn primary" type="submit">Open in email app</button>
+            <span id="status" role="status"></span>
+          </div>
+          <div class="fallback" id="fallback" hidden>
+            <p>No email app? Copy your message and send it to <a class="link" href="mailto:shreykv@gmail.com">shreykv@gmail.com</a> from wherever you write email.</p>
+            <button class="btn" type="button" id="copy">Copy message</button>
           </div>
         </form>
-
-        <div class="footer">
-          <div>© <span id="year"></span> Shrey Vasisht</div>
-          <div class="social">
-            <a href="https://www.linkedin.com/in/shreyvasisht/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="https://github.com/shreykv" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="mailto:shreykv@gmail.com">Email</a>
-          </div>
-        </div>
       </div>
     </section>
+
+    <footer class="footer">
+      <div>© <span id="year">2026</span> Shrey Vasisht</div>
+      <div class="social">
+        <a href="https://www.linkedin.com/in/shreyvasisht/" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href="https://github.com/shreykv" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="mailto:shreykv@gmail.com">Email</a>
+      </div>
+    </footer>
   </main>
 
   <script>
-    // ===== Contact form: simple mailto fallback =====
-    function handleSubmit(e){
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
+    // ===== Contact form: builds a mailto: link; there is no server =====
+    (function(){
+      const form = document.getElementById('contact-form');
+      const fields = {
+        name: document.getElementById('name'),
+        email: document.getElementById('email'),
+        message: document.getElementById('message')
+      };
       const status = document.getElementById('status');
+      const fallback = document.getElementById('fallback');
+      const copyBtn = document.getElementById('copy');
+      const count = document.getElementById('message-count');
+      const MAX = Number(fields.message.maxLength);
+      const fmt = new Intl.NumberFormat();
+      let attempted = false;
 
-      // Static site: open user's email client
-      const subject = encodeURIComponent(`Portfolio contact from ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-      window.location.href = `mailto:shreykv@gmail.com?subject=${subject}&body=${body}`;
+      const checks = {
+        name: v => v ? '' : 'Please add your name.',
+        email: v => !v ? 'Please add your email so I can reply.'
+          : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? ''
+          : 'That email address looks incomplete. It needs an @ and a domain, like you@example.com.',
+        message: v => v ? '' : 'Please add a message.'
+      };
 
-      status.textContent = 'Opening your email client…';
-      return false;
-    }
+      function validate(key){
+        const input = fields[key];
+        const msg = checks[key](input.value.trim());
+        const error = document.getElementById(key + '-error');
+        error.textContent = msg;
+        error.hidden = !msg;
+        if (msg) input.setAttribute('aria-invalid', 'true');
+        else input.removeAttribute('aria-invalid');
+        return !msg;
+      }
+
+      function compose(){
+        const name = fields.name.value.trim();
+        const email = fields.email.value.trim();
+        return {
+          subject: `Portfolio contact from ${name}`,
+          body: `Name: ${name}\nEmail: ${email}\n\n${fields.message.value.trim()}`
+        };
+      }
+
+      function updateCount(){
+        const n = fields.message.value.length;
+        count.textContent = n ? `${fmt.format(n)} / ${fmt.format(MAX)}` : `Up to ${fmt.format(MAX)} characters`;
+        count.classList.toggle('near', n >= MAX * 0.9);
+      }
+
+      Object.keys(fields).forEach(key => {
+        fields[key].addEventListener('input', () => { if (attempted) validate(key); });
+        fields[key].addEventListener('blur', () => { if (attempted || fields[key].value) validate(key); });
+      });
+      fields.message.addEventListener('input', updateCount);
+      form.addEventListener('reset', () => {
+        attempted = false;
+        setTimeout(() => {
+          Object.keys(fields).forEach(key => {
+            fields[key].removeAttribute('aria-invalid');
+            document.getElementById(key + '-error').hidden = true;
+          });
+          updateCount();
+          status.textContent = '';
+          fallback.hidden = true;
+        });
+      });
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        attempted = true;
+        const invalid = Object.keys(fields).filter(key => !validate(key));
+        if (invalid.length){
+          status.textContent = '';
+          fields[invalid[0]].focus();
+          return;
+        }
+        const { subject, body } = compose();
+        window.location.href = `mailto:shreykv@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        status.textContent = 'Opening your email app with your message filled in.';
+        fallback.hidden = false;
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        const { subject, body } = compose();
+        const text = `To: shreykv@gmail.com\nSubject: ${subject}\n\n${body}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = 'Copied';
+          status.textContent = 'Message copied. Paste it into a new email to shreykv@gmail.com.';
+        } catch {
+          fields.message.focus();
+          fields.message.select();
+          status.textContent = 'Couldn’t copy automatically. Your message is selected; press Ctrl+C or ⌘C to copy it.';
+        }
+        setTimeout(() => { copyBtn.textContent = 'Copy message'; }, 2500);
+      });
+    })();
 
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>

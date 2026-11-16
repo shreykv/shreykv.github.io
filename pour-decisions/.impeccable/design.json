@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-16T21:10:00Z",
+  "title": "Design System: Pour Decisions",
+  "extensions": {
+    "colorMeta": {
+      "tap-light-amber": { "role": "primary", "displayName": "Tap-Light Amber", "canonical": "#ffb000", "tonalRamp": ["#2a1a00", "#4a2f00", "#7a4d00", "#aa6c00", "#d98c00", "#ffb000", "#ffd27a", "#fff0cc"] },
+      "tap-light-amber-hi": { "role": "primary", "displayName": "Tap-Light Amber, Hover" },
+      "amber-soft": { "role": "primary", "displayName": "Amber Wash" },
+      "amber-line": { "role": "primary", "displayName": "Amber Edge" },
+      "groom-gold": { "role": "secondary", "displayName": "Groom Gold", "canonical": "#f3d37c", "tonalRamp": ["#3a2c05", "#5a3f00", "#8a6a14", "#b8932f", "#dcb553", "#f3d37c", "#f8e4ad", "#fdf4dc"] },
+      "bar-black": { "role": "neutral", "displayName": "Bar Black", "canonical": "#000000", "tonalRamp": ["#000000", "#0e0e10", "#18181b", "#232327", "#303036", "#62626d", "#b1b1bb", "#ffffff"] },
+      "surface-1": { "role": "neutral", "displayName": "Surface 1" },
+      "surface-2": { "role": "neutral", "displayName": "Surface 2" },
+      "surface-3": { "role": "neutral", "displayName": "Surface 3" },
+      "surface-4": { "role": "neutral", "displayName": "Surface 4" },
+      "line": { "role": "neutral", "displayName": "Hairline" },
+      "line-2": { "role": "neutral", "displayName": "Control Border" },
+      "line-3": { "role": "neutral", "displayName": "Emphasis Border" },
+      "ink": { "role": "neutral", "displayName": "Ink" },
+      "ink-2": { "role": "neutral", "displayName": "Ink 2" },
+      "ink-3": { "role": "neutral", "displayName": "Ink 3" },
+      "ink-4": { "role": "neutral", "displayName": "Ink 4 (disabled and hairlines only)" },
+      "signal-red": { "role": "status", "displayName": "Signal Red" },
+      "signal-green": { "role": "status", "displayName": "Signal Green" },
+      "drink-beer": { "role": "data", "displayName": "Beer" },
+      "drink-wine": { "role": "data", "displayName": "Wine" },
+      "drink-shot": { "role": "data", "displayName": "Shot" },
+      "drink-seltzer": { "role": "data", "displayName": "Seltzer" },
+      "drink-cocktail": { "role": "data", "displayName": "Cocktail" },
+      "drink-spirit": { "role": "data", "displayName": "Neat Spirit" },
+      "drink-water": { "role": "data", "displayName": "Water (also note and view-only status)" },
+      "drink-zero": { "role": "data", "displayName": "Zero-Proof" },
+      "daylight-bg": { "role": "neutral", "displayName": "Daylight Ground" },
+      "daylight-surface-1": { "role": "neutral", "displayName": "Daylight Card" },
+      "daylight-ink": { "role": "neutral", "displayName": "Daylight Ink" },
+      "daylight-amber-text": { "role": "primary", "displayName": "Daylight Amber Text" },
+      "daylight-red": { "role": "status", "displayName": "Daylight Signal Red" },
+      "marquee-housing": { "role": "neutral", "displayName": "Marquee Housing" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The crawl name in the board hero." },
+      "wordmark": { "displayName": "Wordmark", "purpose": "POUR / DECISIONS lockup with the amber plate." },
+      "headline": { "displayName": "Headline", "purpose": "Panel titles." },
+      "title": { "displayName": "Title", "purpose": "Card and sheet titles." },
+      "score": { "displayName": "Score", "purpose": "Condensed numerals for counts and stats." },
+      "body": { "displayName": "Body", "purpose": "Reading text and inputs." },
+      "label": { "displayName": "Label", "purpose": "Field labels, eyebrows, tabs, chips." },
+      "receipt": { "displayName": "Receipt", "purpose": "Mono for codes, times and the recap receipt." }
+    },
+    "shadows": [
+      { "name": "lift", "value": "inset 0 1px 0 rgba(255,255,255,.05)", "purpose": "Top highlight on cards; black glass catching light." },
+      { "name": "pop", "value": "0 30px 70px -20px rgba(0,0,0,.95)", "purpose": "Sheets, toasts, the landing card." },
+      { "name": "fab-halo", "value": "0 0 0 5px var(--bg), 0 0 0 6px var(--line-2), 0 14px 30px -8px rgba(255,160,0,.6)", "purpose": "Cuts the log button out of the tab bar with an amber under-glow." },
+      { "name": "marquee-glow", "value": "inset 0 1px 0 rgba(255,255,255,.07), 0 26px 60px -34px rgba(255,150,0,.55)", "purpose": "Warm spill under the lit sign." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(.2, .9, .25, 1)", "purpose": "House curve for presses, sheets and toasts." },
+      { "name": "press", "value": "transform .12s var(--ease)", "purpose": "Buttons scale to .97, tiles to .95, the log button to .92." },
+      { "name": "sheet-rise", "value": "rise .3s var(--ease)", "purpose": "Bottom sheet entrance; exit is sink .2s ease-in." },
+      { "name": "toast-in", "value": "toastin .32s var(--ease)", "purpose": "Toast entrance from 14px below at .97 scale." },
+      { "name": "sync-pulse", "value": "pulse 2.4s ease-out infinite", "purpose": "Green live dot on the sync pill." }
+    ],
+    "breakpoints": [
+      { "name": "desktop", "value": "900px" },
+      { "name": "desktop-tall", "value": "900px wide and 700px tall" },
+      { "name": "desktop-xtall", "value": "900px wide and 1000px tall" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action: amber fill, black heavy text.",
+      "html": "<button class=\"ds-btn ds-btn--primary\">Log a drink</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #35353b; background: #18181b; color: #ffffff; font: 650 .9375rem/1.1 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; cursor: pointer; transition: transform .12s cubic-bezier(.2,.9,.25,1), background-color .15s, border-color .15s; } .ds-btn--primary { background: #ffb000; border-color: #ffb000; color: #000000; font-weight: 750; } .ds-btn--primary:hover { background: #ffc53d; } .ds-btn:active { transform: scale(.97); } .ds-btn:focus-visible { outline: 2px solid #ffb000; outline-offset: 2px; }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Quiet secondary action on a stepped surface.",
+      "html": "<button class=\"ds-btn2\">Invite the crew</button>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 14px; border: 1px solid #35353b; background: #18181b; color: #ffffff; font: 650 .9375rem/1.1 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; cursor: pointer; transition: transform .12s cubic-bezier(.2,.9,.25,1), background-color .15s, border-color .15s; } .ds-btn2:hover { background: #232327; border-color: #62626d; } .ds-btn2:active { transform: scale(.97); } .ds-btn2:focus-visible { outline: 2px solid #ffb000; outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Round filter chips; the selected one inverts to white.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip is-on\">Everyone</button><button class=\"ds-chip\">Tonight</button><button class=\"ds-chip\">Just me</button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; } .ds-chip { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 99px; border: 1px solid #35353b; background: #0e0e10; color: #dedee3; font: 600 .875rem/1 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip:hover { color: #ffffff; border-color: #62626d; } .ds-chip.is-on { background: #ffffff; border-color: #ffffff; color: #000000; font-weight: 700; } .ds-chip:focus-visible { outline: 2px solid #ffb000; outline-offset: 2px; }"
+    },
+    {
+      "name": "Crawl Code Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Landing-page code field: mono, uppercase, widely tracked, on pure black.",
+      "html": "<input class=\"ds-code\" placeholder=\"Enter crawl code\" maxlength=\"8\" />",
+      "css": ".ds-code { width: 300px; height: 56px; padding: 0 18px; border-radius: 13px; border: 1px solid #35353b; background: #000000; color: #ffffff; font: 500 1.05rem/1 'Martian Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .14em; text-transform: uppercase; -webkit-appearance: none; appearance: none; transition: border-color .15s; } .ds-code::placeholder { color: #8a8a95; letter-spacing: .02em; text-transform: none; } .ds-code:hover { border-color: #62626d; } .ds-code:focus-visible { outline: 2px solid #ffb000; outline-offset: 2px; }"
+    },
+    {
+      "name": "Mobile Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Fixed frosted tab bar with the raised amber log button in the centre.",
+      "html": "<nav class=\"ds-tabbar\"><button class=\"ds-tab is-on\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"3\"/><path d=\"M3 9h18M9 21V9\"/></svg>The board</button><button class=\"ds-tab\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/></svg>The crawl</button><button class=\"ds-fab\" aria-label=\"Log a drink\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button><button class=\"ds-tab\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\"><path d=\"M4 20V10M10 20V4M16 20v-7M22 20H2\"/></svg>Stats</button><button class=\"ds-tab\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 2h12v20l-3-2-3 2-3-2-3 2z\"/><path d=\"M9 7h6M9 11h6\"/></svg>The tab</button></nav>",
+      "css": ".ds-tabbar { display: grid; grid-template-columns: 1fr 1fr 84px 1fr 1fr; align-items: end; width: 390px; padding: 6px 8px 8px; background: rgba(0,0,0,.86); border-top: 1px solid #35353b; backdrop-filter: saturate(1.4) blur(20px); font-family: 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; } .ds-tab { display: grid; justify-items: center; gap: 5px; min-height: 52px; padding: 8px 0 4px; border: 0; border-radius: 14px; background: none; color: #b1b1bb; font: 650 .72rem/1 inherit; cursor: pointer; } .ds-tab.is-on { color: #ffffff; } .ds-tab.is-on svg { color: #ffb000; } .ds-tab:focus-visible, .ds-fab:focus-visible { outline: 2px solid #ffb000; outline-offset: 2px; } .ds-fab { justify-self: center; width: 62px; height: 62px; margin-top: -24px; display: grid; place-items: center; border-radius: 50%; border: 0; background: #ffb000; color: #000000; box-shadow: 0 0 0 5px #000000, 0 0 0 6px #35353b, 0 14px 30px -8px rgba(255,160,0,.6); cursor: pointer; transition: transform .14s cubic-bezier(.2,.9,.25,1), background-color .15s; } .ds-fab:hover { background: #ffc53d; } .ds-fab:active { transform: scale(.92); }"
+    },
+    {
+      "name": "Card with Standings Rows",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Surface 1 card with a title and leaderboard rows; your own row glows amber.",
+      "html": "<section class=\"ds-card\"><header><h2>Standings</h2><p>Tonight, everyone</p></header><div class=\"ds-row\"><span class=\"ds-rk\">1</span><span class=\"ds-av\" style=\"--c:#fd978a\">MK</span><span class=\"ds-nm\">Marcus</span><b class=\"ds-cnt\">9</b></div><div class=\"ds-row is-me\"><span class=\"ds-rk\">2</span><span class=\"ds-av\" style=\"--c:#02ccf2\">SV</span><span class=\"ds-nm\">Shrey</span><b class=\"ds-cnt\">7</b></div></section>",
+      "css": ".ds-card { width: 380px; background: #0e0e10; border: 1px solid #35353b; border-radius: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,.05); color: #ffffff; font-family: 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; padding-bottom: 10px; } .ds-card header { padding: 18px 18px 10px; } .ds-card h2 { margin: 0; font: 800 1.2rem/1.1 inherit; font-stretch: 114%; letter-spacing: -.012em; } .ds-card p { margin: 5px 0 0; color: #b1b1bb; font-size: .875rem; } .ds-row { display: grid; grid-template-columns: 28px 40px minmax(0,1fr) auto; align-items: center; gap: 11px; min-height: 66px; margin: 0 8px; padding: 10px 12px 10px 8px; border-radius: 16px; transition: background-color .15s; } .ds-row:hover { background: #18181b; } .ds-row.is-me { background: rgba(255,176,0,.14); box-shadow: inset 0 0 0 1px rgba(255,176,0,.62); } .ds-rk { text-align: center; color: #b1b1bb; font-weight: 800; } .ds-av { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--c); color: #000000; font: 800 .9rem/1 inherit; } .ds-nm { font-weight: 700; } .ds-cnt { font: 800 1.9rem/1 inherit; font-stretch: 75%; }"
+    },
+    {
+      "name": "Drink Grid",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Signature pour picker: drink tiles in their data colour, selected tile washed amber.",
+      "html": "<div class=\"ds-grid8\"><button class=\"ds-t8 is-selected\" style=\"--c:#c98500\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linejoin=\"round\"><path d=\"M6 4h10v16H6z\"/><path d=\"M16 8h2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2\"/></svg><span>Beer</span></button><button class=\"ds-t8\" style=\"--c:#d55181\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\"><path d=\"M8 3h8l-1 7a3 3 0 0 1-6 0zM12 13v8M8 21h8\"/></svg><span>Wine</span></button><button class=\"ds-t8\" style=\"--c:#9085e9\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linejoin=\"round\"><path d=\"M7 6h10l-1.5 13h-7z\"/></svg><span>Shot</span></button><button class=\"ds-t8\" style=\"--c:#3987e5\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4h16l-8 9zM12 13v8M8 21h8\"/></svg><span>Cocktail</span></button></div>",
+      "css": ".ds-grid8 { display: grid; grid-template-columns: repeat(4, 88px); gap: 8px; font-family: 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; } .ds-t8 { display: grid; place-content: center; justify-items: center; gap: 9px; min-height: 88px; padding: 12px 2px 10px; border-radius: 16px; border: 1px solid #35353b; background: #18181b; color: #ffffff; font: 650 .84rem/1.1 inherit; cursor: pointer; transition: transform .12s cubic-bezier(.2,.9,.25,1), background-color .15s, border-color .15s; } .ds-t8 svg { color: var(--c); } .ds-t8:hover { background: #232327; border-color: #62626d; } .ds-t8:active { transform: scale(.95); } .ds-t8.is-selected { border-color: #ffb000; box-shadow: inset 0 0 0 1px #ffb000; background: linear-gradient(rgba(255,176,0,.14), rgba(255,176,0,.14)), #18181b; } .ds-t8:focus-visible { outline: 2px solid #ffb000; outline-offset: 2px; }"
+    },
+    {
+      "name": "Wordmark and Sync Pill",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Top-bar identity: expanded uppercase wordmark with the amber plate, plus the live status pill.",
+      "html": "<div class=\"ds-top\"><span class=\"ds-wm\"><span>Pour</span><b>Decisions</b></span><span class=\"ds-sync\"><i></i>Live</span></div>",
+      "css": ".ds-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 390px; height: 58px; padding: 0 16px; background: rgba(0,0,0,.86); border-bottom: 1px solid #222226; font-family: 'Mona Sans', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif; color: #ffffff; } .ds-wm { display: flex; align-items: center; gap: .3em; font: 900 .98rem/1 inherit; font-stretch: 125%; letter-spacing: .012em; text-transform: uppercase; } .ds-wm b { font-weight: 900; background: #ffb000; color: #000000; padding: .3em .42em .26em; border-radius: .34em; } .ds-sync { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 11px 0 10px; border-radius: 99px; border: 1px solid #35353b; background: #0e0e10; font: 700 .69rem/1 inherit; letter-spacing: .06em; text-transform: uppercase; } .ds-sync i { width: 7px; height: 7px; border-radius: 50%; background: #2fd47a; animation: ds-pulse 2.4s ease-out infinite; } @keyframes ds-pulse { 0% { box-shadow: 0 0 0 0 rgba(47,212,122,.55); } 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } } @media (prefers-reduced-motion: reduce) { .ds-sync i { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The House Scoreboard",
+    "overview": "Pour Decisions is the scoreboard over the bar: black glass, white type, one lit colour. It is used in dark rooms, on phones, by people mid-conversation, so everything quiet stays quiet and the few things that matter glow. Amber is the house light. It marks what is live, what is yours, and the main action. Everything else is black, greys and crisp white type.\n\nOne element is allowed to be loud: the dot-matrix marquee, a lit LED sign rendered to canvas inside a dark glass housing with an amber under-glow. Everything around it is restrained so it can perform. Dark is the base because bars are dark. The light \"Daylight\" theme exists for daytime use (the pool), and the marquee and recap poster keep their dark look in both themes because they are objects, not pages.\n\nThe voice is a scoreboard with a sense of humour: expanded, uppercase-capable Mona Sans for the names of things, condensed numerals for scores, and Martian Mono as the receipt printer and the clock.",
+    "keyCharacteristics": [
+      "Pure black ground with stepped near-black surfaces and grey hairlines.",
+      "One accent, Tap-Light Amber; every other colour is either a status mark or data.",
+      "One typeface at three widths (expanded for names, normal for reading, condensed for scores), plus a mono for receipts.",
+      "A 7:1 contrast floor for all live text in both themes, including hover and focus.",
+      "Phone-first: bottom tab bar, central amber log button, bottom sheets; a two-column board at 900px and up, plus a TV mode."
+    ],
+    "rules": [
+      { "name": "The One Lit Colour Rule", "body": "Amber is the only accent on the chrome. Any other hue on screen is either a status mark with its usual meaning or data.", "section": "colors" },
+      { "name": "The Data Is Not Decoration Rule", "body": "Drink and crew colours appear only where they encode a drink type or a person. Change the stacked-bar order and the colours together, never one without the other.", "section": "colors" },
+      { "name": "The 7:1 Rule", "body": "Every piece of live text is 7:1 or better against its background, in both themes, in every state.", "section": "colors" },
+      { "name": "The Three Widths Rule", "body": "Expanded for the names of things, normal for reading, condensed for scores. Don't add another typeface.", "section": "typography" },
+      { "name": "The Only Glow Rule", "body": "Only the marquee and the log button glow amber. Nothing else gets a coloured shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep amber as the single accent for live state, ownership and the main action (The One Lit Colour Rule).",
+      "Do meet 7:1 contrast for all live text in both themes, including hover and focus states.",
+      "Do use Mona Sans's width axis for hierarchy: expanded names, normal reading text, condensed scores.",
+      "Do use Martian Mono for codes, times and receipt-style lines.",
+      "Do keep touch targets at 44px or more and respect safe-area insets on fixed chrome.",
+      "Do open new tasks in a bottom sheet on phones.",
+      "Do honour reduced-motion preferences; the board already checks for them."
+    ],
+    "donts": [
+      "Don't introduce a second accent hue or a coloured glow beyond the marquee and log button.",
+      "Don't use drink or crew colours decoratively, or reorder the drink set without re-checking colour-blind separation.",
+      "Don't use Ink 4 for readable text; it is for disabled controls and hairlines only.",
+      "Don't let anything compete with the marquee for loudness.",
+      "Don't theme the marquee or recap poster for Daylight; they stay dark objects.",
+      "Don't borrow the portfolio's cyan, violet, glass gradients or system font."
+    ]
+  }
+}

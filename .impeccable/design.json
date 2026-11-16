@@ -1,0 +1,282 @@
+{
+    "schemaVersion":  2,
+    "generatedAt":  "2026-11-16T22:40:00Z",
+    "title":  "Design System: Shrey Vasisht — Portfolio \u0026 Personal Hub",
+    "extensions":  {
+                       "colorMeta":  {
+                                         "readout-cyan":  {
+                                                              "role":  "primary",
+                                                              "displayName":  "Readout Cyan",
+                                                              "canonical":  "#6EE7FF",
+                                                              "tonalRamp":  [
+                                                                                "#062a33",
+                                                                                "#0b4a59",
+                                                                                "#127082",
+                                                                                "#1d9bb3",
+                                                                                "#3fc6e0",
+                                                                                "#6ee7ff",
+                                                                                "#a8f1ff",
+                                                                                "#dcf9ff"
+                                                                            ]
+                                                          },
+                                         "readout-cyan-hover":  {
+                                                                    "role":  "primary",
+                                                                    "displayName":  "Readout Cyan, Hover"
+                                                                },
+                                         "ultraviolet":  {
+                                                             "role":  "secondary",
+                                                             "displayName":  "Ultraviolet (hub legacy)",
+                                                             "canonical":  "#A78BFA",
+                                                             "tonalRamp":  [
+                                                                               "#1e1640",
+                                                                               "#33266b",
+                                                                               "#4c3a9c",
+                                                                               "#6a54cc",
+                                                                               "#8b6ff0",
+                                                                               "#a78bfa",
+                                                                               "#c9b8fc",
+                                                                               "#ece5fe"
+                                                                           ]
+                                                         },
+                                         "cabinet-navy":  {
+                                                              "role":  "neutral",
+                                                              "displayName":  "Cabinet Navy",
+                                                              "canonical":  "#070A10",
+                                                              "tonalRamp":  [
+                                                                                "#070a10",
+                                                                                "#0e131d",
+                                                                                "#161d2b",
+                                                                                "#222b3d",
+                                                                                "#3a4458",
+                                                                                "#6b7487",
+                                                                                "#a9afbc",
+                                                                                "#e3e6ec"
+                                                                            ]
+                                                          },
+                                         "panel-flat":  {
+                                                            "role":  "neutral",
+                                                            "displayName":  "Panel Flat"
+                                                        },
+                                         "panel-glass":  {
+                                                             "role":  "neutral",
+                                                             "displayName":  "Panel Glass"
+                                                         },
+                                         "panel-glass-raised":  {
+                                                                    "role":  "neutral",
+                                                                    "displayName":  "Panel Glass Raised"
+                                                                },
+                                         "text-primary":  {
+                                                              "role":  "neutral",
+                                                              "displayName":  "Text Primary"
+                                                          },
+                                         "text-muted":  {
+                                                            "role":  "neutral",
+                                                            "displayName":  "Text Muted"
+                                                        },
+                                         "text-faint":  {
+                                                            "role":  "neutral",
+                                                            "displayName":  "Text Faint"
+                                                        },
+                                         "hairline":  {
+                                                          "role":  "neutral",
+                                                          "displayName":  "Hairline"
+                                                      },
+                                         "field-well":  {
+                                                            "role":  "neutral",
+                                                            "displayName":  "Field Well"
+                                                        },
+                                         "on-accent":  {
+                                                           "role":  "neutral",
+                                                           "displayName":  "On-Accent Ink"
+                                                       },
+                                         "status-ok":  {
+                                                           "role":  "status",
+                                                           "displayName":  "Status OK"
+                                                       },
+                                         "status-warn":  {
+                                                             "role":  "status",
+                                                             "displayName":  "Status Warn"
+                                                         },
+                                         "status-danger":  {
+                                                               "role":  "status",
+                                                               "displayName":  "Status Danger"
+                                                           }
+                                     },
+                       "typographyMeta":  {
+                                              "display":  {
+                                                              "displayName":  "Display",
+                                                              "purpose":  "Hero headline only."
+                                                          },
+                                              "headline":  {
+                                                               "displayName":  "Headline",
+                                                               "purpose":  "Section and hub page titles."
+                                                           },
+                                              "feature-title":  {
+                                                                    "displayName":  "Feature Title",
+                                                                    "purpose":  "The lead project panel name."
+                                                                },
+                                              "card-title":  {
+                                                                 "displayName":  "Card Title",
+                                                                 "purpose":  "Live project panel names."
+                                                             },
+                                              "title":  {
+                                                            "displayName":  "Title",
+                                                            "purpose":  "Panel headings, pending-project names and portfolio group headings."
+                                                        },
+                                              "body":  {
+                                                           "displayName":  "Body",
+                                                           "purpose":  "Hero subhead and long-form copy, max 62ch."
+                                                       },
+                                              "body-sm":  {
+                                                              "displayName":  "Body Small",
+                                                              "purpose":  "Card descriptions, subtitles, list items."
+                                                          },
+                                              "label":  {
+                                                            "displayName":  "Label",
+                                                            "purpose":  "Pills and form labels."
+                                                        },
+                                              "caption":  {
+                                                              "displayName":  "Caption",
+                                                              "purpose":  "Snapshot and facts-table captions."
+                                                          }
+                                          },
+                       "shadows":  [
+                                       {
+                                           "name":  "hub-ambient-lift",
+                                           "value":  "0 10px 30px rgba(0,0,0,.35)",
+                                           "purpose":  "Hub legacy only; the portfolio uses no shadows."
+                                       }
+                                   ],
+                       "motion":  [
+                                      {
+                                          "name":  "ease-out-quart",
+                                          "value":  "cubic-bezier(.25, 1, .5, 1)",
+                                          "purpose":  "Colour, fill and border transitions at .18s. Nothing moves on hover."
+                                      }
+                                  ],
+                       "breakpoints":  [
+                                           {
+                                               "name":  "sm",
+                                               "value":  "640px"
+                                           },
+                                           {
+                                               "name":  "portfolio-stack",
+                                               "value":  "860px"
+                                           },
+                                           {
+                                               "name":  "md",
+                                               "value":  "980px"
+                                           }
+                                       ]
+                   },
+    "components":  [
+                       {
+                           "name":  "Primary Button",
+                           "kind":  "button",
+                           "refersTo":  "button-primary",
+                           "description":  "Solid cyan call to action: Get in touch, Open in email app.",
+                           "html":  "\u003cbutton class=\"ds-btn-primary\"\u003eGet in touch\u003c/button\u003e",
+                           "css":  ".ds-btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 10px; border: 1px solid #6EE7FF; background: #6EE7FF; color: #071018; font: 650 15px/1.2 ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; cursor: pointer; transition: background-color .18s cubic-bezier(.25,1,.5,1), border-color .18s cubic-bezier(.25,1,.5,1); } .ds-btn-primary:hover { background: #9AEEFF; border-color: #9AEEFF; } .ds-btn-primary:focus-visible { outline: 2px solid #6EE7FF; outline-offset: 2px; }"
+                       },
+                       {
+                           "name":  "Secondary Button",
+                           "kind":  "button",
+                           "refersTo":  "button-secondary",
+                           "description":  "Outlined button: See projects, LinkedIn.",
+                           "html":  "\u003cbutton class=\"ds-btn\"\u003eSee projects\u003c/button\u003e",
+                           "css":  ".ds-btn { display: inline-flex; align-items: center; gap: 10px; padding: 11px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: rgba(255,255,255,.92); font: 500 15px/1.2 ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; cursor: pointer; transition: background-color .18s cubic-bezier(.25,1,.5,1), border-color .18s cubic-bezier(.25,1,.5,1); } .ds-btn:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.28); } .ds-btn:focus-visible { outline: 2px solid #6EE7FF; outline-offset: 2px; }"
+                       },
+                       {
+                           "name":  "Text Input",
+                           "kind":  "input",
+                           "refersTo":  "input",
+                           "description":  "Recessed field for the contact form.",
+                           "html":  "\u003cinput class=\"ds-input\" placeholder=\"Your email\" /\u003e",
+                           "css":  ".ds-input { width: 300px; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.16); background: rgba(0,0,0,.25); color: rgba(255,255,255,.92); font: 400 16px/1.3 ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; transition: border-color .18s cubic-bezier(.25,1,.5,1); } .ds-input::placeholder { color: rgba(255,255,255,.52); } .ds-input:hover { border-color: rgba(255,255,255,.26); } .ds-input:focus { border-color: #6EE7FF; } .ds-input:focus-visible { outline: 2px solid #6EE7FF; outline-offset: 1px; }"
+                       },
+                       {
+                           "name":  "Navigation Bar",
+                           "kind":  "nav",
+                           "refersTo":  "nav-link",
+                           "description":  "Sticky top bar with monogram, links and Connect button.",
+                           "html":  "\u003cnav class=\"ds-nav\"\u003e\u003ca class=\"ds-brand\" href=\"#\"\u003e\u003cspan class=\"ds-logo\"\u003eSV\u003c/span\u003eShrey Vasisht\u003c/a\u003e\u003cspan class=\"ds-links\"\u003e\u003ca href=\"#\"\u003ePortfolio\u003c/a\u003e\u003ca href=\"#\"\u003eAbout\u003c/a\u003e\u003ca href=\"#\"\u003eSkills\u003c/a\u003e\u003ca href=\"#\"\u003eContact\u003c/a\u003e\u003c/span\u003e\u003c/nav\u003e",
+                           "css":  ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; background: rgba(7,10,16,.86); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,.12); font: 400 15px/1.2 ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; color: rgba(255,255,255,.92); } .ds-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: inherit; text-decoration: none; } .ds-logo { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(110,231,255,.5); color: #6EE7FF; font-size: 12px; font-weight: 700; letter-spacing: .04em; } .ds-links { display: flex; gap: 4px; } .ds-links a { padding: 8px 12px; border-radius: 8px; color: rgba(255,255,255,.68); text-decoration: none; transition: color .18s cubic-bezier(.25,1,.5,1), background-color .18s cubic-bezier(.25,1,.5,1); } .ds-links a:hover { color: rgba(255,255,255,.92); background: rgba(255,255,255,.05); } .ds-links a:focus-visible { outline: 2px solid #6EE7FF; outline-offset: 2px; }"
+                       },
+                       {
+                           "name":  "Pill and Tags",
+                           "kind":  "chip",
+                           "refersTo":  "pill",
+                           "description":  "Outlined round labels for the hero capability chips; tags are legacy and no longer used on the portfolio.",
+                           "html":  "\u003cdiv class=\"ds-chips\"\u003e\u003cspan class=\"ds-pill\"\u003eEmbedded systems \u0026amp; sensors\u003c/span\u003e\u003cspan class=\"ds-pill\"\u003eTest automation \u0026amp; data pipelines\u003c/span\u003e\u003c/div\u003e",
+                           "css":  ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; } .ds-pill { padding: 6px 11px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.68); font-size: 13px; } .ds-tag { padding: 4px 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.68); font-size: 12px; }"
+                       },
+                       {
+                           "name":  "Live Project Panel",
+                           "kind":  "card",
+                           "refersTo":  "card",
+                           "description":  "Flat panel for working software: title, description, a ruled facts list, and a footer row with the cyan link and access note.",
+                           "html":  "\u003carticle class=\"ds-app\"\u003e\u003ch4\u003eStock Strategy Screener\u003c/h4\u003e\u003cp\u003eScreens the S\u0026amp;P 500 weekly against three strategies.\u003c/p\u003e\u003cp class=\"ds-stack\"\u003ePython • Streamlit • Supabase\u003c/p\u003e\u003cdiv class=\"ds-foot\"\u003e\u003ca href=\"#\"\u003eOpen the screener\u003c/a\u003e\u003cspan\u003eSign-in required\u003c/span\u003e\u003c/div\u003e\u003c/article\u003e",
+                           "css":  ".ds-app { width: 360px; display: flex; flex-direction: column; gap: 12px; padding: 24px; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; background: rgba(255,255,255,.03); color: rgba(255,255,255,.92); font-family: ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; } .ds-app h4 { margin: 0; font-size: 17px; font-weight: 600; } .ds-app p { margin: 0; color: rgba(255,255,255,.68); font-size: 14px; line-height: 1.55; } .ds-app .ds-stack { color: rgba(255,255,255,.52); font-size: 13px; } .ds-foot { margin-top: auto; padding-top: 8px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; } .ds-foot a { color: #6EE7FF; font-weight: 550; font-size: 14px; text-decoration: none; text-underline-offset: 3px; } .ds-foot a:hover { text-decoration: underline; } .ds-foot a:focus-visible { outline: 2px solid #6EE7FF; outline-offset: 2px; border-radius: 8px; } .ds-foot span { color: rgba(255,255,255,.52); font-size: 13px; }"
+                       },
+                       {
+                           "name":  "Snapshot Readout",
+                           "kind":  "custom",
+                           "refersTo":  "card",
+                           "description":  "Signature 2x2 readout ruled by hairlines: caption over value.",
+                           "html":  "\u003cdiv class=\"ds-kpi\"\u003e\u003cdiv class=\"ds-mini\"\u003e\u003cdiv class=\"ds-l\"\u003eCore areas\u003c/div\u003e\u003cdiv class=\"ds-v\"\u003eSensors • Embedded • Test Eng\u003c/div\u003e\u003c/div\u003e\u003cdiv class=\"ds-mini\"\u003e\u003cdiv class=\"ds-l\"\u003eStrengths\u003c/div\u003e\u003cdiv class=\"ds-v\"\u003eDOE • Automation • Firmware\u003c/div\u003e\u003c/div\u003e\u003cdiv class=\"ds-mini\"\u003e\u003cdiv class=\"ds-l\"\u003eTooling\u003c/div\u003e\u003cdiv class=\"ds-v\"\u003ePython • C++ • SolidWorks\u003c/div\u003e\u003c/div\u003e\u003cdiv class=\"ds-mini\"\u003e\u003cdiv class=\"ds-l\"\u003eStyle\u003c/div\u003e\u003cdiv class=\"ds-v\"\u003eHands-on, measurable, shipped\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e",
+                           "css":  ".ds-kpi { display: grid; grid-template-columns: repeat(2, 1fr); width: 400px; border-top: 1px solid rgba(255,255,255,.12); font-family: ui-sans-serif, system-ui, -apple-system, \u0027Segoe UI\u0027, Roboto, sans-serif; } .ds-mini { padding: 14px 14px 14px 0; border-bottom: 1px solid rgba(255,255,255,.12); } .ds-mini:nth-child(even) { padding-left: 14px; border-left: 1px solid rgba(255,255,255,.12); } .ds-l { color: rgba(255,255,255,.52); font-size: 12px; } .ds-v { margin-top: 6px; color: rgba(255,255,255,.92); font-size: 14px; line-height: 1.4; }"
+                       }
+                   ],
+    "narrative":  {
+                      "northStar":  "The Instrument Panel",
+                      "overview":  "The site should read like a well-built bench instrument at night: a dark cabinet, a few precise readouts glowing in cool light, and labels you can trust. It belongs to an engineer who builds sensor rigs and test systems, so the interface should feel measured rather than decorative. Information sits in clearly bounded panels and the accents mark signal, not ornament.\n\nThe portfolio (`index.html`) now carries the confirmed crisp and technical direction. The ground is flat near-black navy with no glows. Panels are barely-there fills with hairline edges and 14px corners, and nothing has a shadow or lifts on hover. Readout Cyan is the single lit colour, and the Snapshot readout is ruled by hairlines rather than boxed. The hub (`personal.html`, `css/personal.css`) still uses the earlier soft-glass vocabulary: 26px corners, gradient fills, ambient shadows and cyan-to-violet gradients. Those values are kept below as `hub-*` legacy tokens until the hub gets the same pass.\n\nThe hub shares the colour tokens but is an Operate surface: dense forms, lists and charts. There the instrument metaphor means legibility and consistency first.",
+                      "keyCharacteristics":  [
+                                                 "Flat near-black navy cabinet with faint white panels and 12% white hairlines.",
+                                                 "One lit colour: Readout Cyan for actions, links and focus. Ultraviolet survives only in the hub\u0027s legacy gradients.",
+                                                 "A single system sans-serif; hierarchy comes from size and weight, not from a second family.",
+                                                 "Content lives in hairline-bounded panels on a centered 1120px column; lists are ruled, not chipped.",
+                                                 "No shadows, glows, gradients or hover lifts on the portfolio."
+                                             ],
+                      "rules":  [
+                                    {
+                                        "name":  "The Signal Rule",
+                                        "body":  "Cyan marks what is interactive or live. If an element is neither, it gets a neutral colour.",
+                                        "section":  "colors"
+                                    },
+                                    {
+                                        "name":  "The White-Opacity Rule",
+                                        "body":  "Every neutral is white at a stated opacity over Cabinet Navy. Don\u0027t introduce tinted greys; the hub\u0027s hard-coded select-menu fills (#0d1117, #1a1e2e, #2d3348) are known exceptions, not precedent.",
+                                        "section":  "colors"
+                                    },
+                                    {
+                                        "name":  "The One Family Rule",
+                                        "body":  "One sans-serif across the site. If a technical voice is added later, it comes from a monospace used for readouts (values, codes, dates), not a second display face.",
+                                        "section":  "typography"
+                                    },
+                                    {
+                                        "name":  "The Flat Instrument Rule",
+                                        "body":  "Resting surfaces are flat: hairline edge, faint fill, no shadow, no hover lift. Depth signals a real layer (nav, modal, popover), not decoration.",
+                                        "section":  "elevation"
+                                    },
+                                    {
+                                        "name":  "The Three Corners Rule",
+                                        "body":  "8, 10 or 14px, or fully round for chips. No new radius values.",
+                                        "section":  "shapes"
+                                    }
+                                ],
+                      "dos":  [
+                                  "Do keep Cabinet Navy as the ground and build every neutral from white at a stated opacity.",
+                                  "Do reserve Readout Cyan for links, focus and primary actions (The Signal Rule).",
+                                  "Do bound content in hairline-edged panels on the 1120px column.",
+                                  "Do use 8, 10 or 14px corners and flat resting surfaces (The Three Corners Rule, The Flat Instrument Rule).",
+                                  "Do present facts as labelled readouts ruled by hairlines, the way the Snapshot does.",
+                                  "Do keep the site-wide 2px cyan :focus-visible ring on every interactive element."
+                              ],
+                      "donts":  [
+                                    "Don\u0027t use gradient fills, glows, shadows or hover lifts on the portfolio.",
+                                    "Don\u0027t use emoji as icons or labels.",
+                                    "Don\u0027t introduce a second accent hue, bring Ultraviolet back, or use status colours decoratively.",
+                                    "Don\u0027t carry Pour Decisions\u0027 amber, fonts or components into these pages, or these into Pour Decisions."
+                                ]
+                  }
+}
