@@ -40,8 +40,26 @@ class Tournament {
   }
 
   getShareUrl(code) {
-    const base = `${window.location.origin}${window.location.pathname}`;
-    return `${base}#/personal/tournament/watch/${code}`;
+    // Always pin to personal.html — pathname alone can be "/personal" on GH Pages
+    // and produce a broken share link without the .html suffix.
+    const clean = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+    return `${window.location.origin}/personal.html#/personal/tournament/watch/${clean}`;
+  }
+
+  joinByCode() {
+    const input = document.getElementById('join-code');
+    const code = String(input?.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+    if (code.length !== 6) {
+      this.showMessage('Enter the 6-character share code.', 'error');
+      return;
+    }
+    if (input) input.value = code;
+    // Public spectator route — works signed-in or as a visitor
+    if (window.router?.navigate) {
+      window.router.navigate(`#/personal/tournament/watch/${code}`);
+    } else {
+      window.location.hash = `#/personal/tournament/watch/${code}`;
+    }
   }
 
   async shareTournament() {
@@ -109,9 +127,7 @@ class Tournament {
     const url = this.getShareUrl(code);
     return `
       <div class="tournament-share-panel" id="tournament-share-panel">
-        <div class="tournament-share-qr">
-          <canvas id="tournament-share-qr-canvas" width="180" height="180" aria-label="QR code for tournament share link"></canvas>
-        </div>
+        <div class="tournament-share-qr" id="tournament-share-qr" aria-label="QR code for tournament share link"></div>
         <div class="tournament-share-meta">
           <h3 class="tournament-share-title">Share with spectators</h3>
           <p class="teams-preview-note">Anyone can scan this code or open the link to follow the bracket (read-only).</p>
@@ -127,31 +143,40 @@ class Tournament {
   }
 
   async paintShareQr() {
-    const canvas = document.getElementById('tournament-share-qr-canvas');
+    const host = document.getElementById('tournament-share-qr');
     const code = this.currentTournament?.shareCode;
-    if (!canvas || !code || !this.currentTournament?.isPublic) return;
+    if (!host || !code || !this.currentTournament?.isPublic) return;
 
     const url = this.getShareUrl(code);
-    if (typeof QRCode === 'undefined' || typeof QRCode.toCanvas !== 'function') {
-      canvas.replaceWith(Object.assign(document.createElement('p'), {
-        className: 'teams-preview-note',
-        textContent: 'QR library failed to load. Use the link instead.'
-      }));
-      return;
-    }
+    const opts = {
+      width: 180,
+      margin: 2,
+      color: { dark: '#071018', light: '#ffffff' }
+    };
+
+    const setImg = (src) => {
+      host.innerHTML = `<img src="${src}" width="180" height="180" alt="QR code linking to this tournament">`;
+    };
 
     try {
-      await QRCode.toCanvas(canvas, url, {
-        width: 180,
-        margin: 2,
-        color: {
-          dark: '#071018',
-          light: '#ffffff'
-        }
-      });
+      if (typeof QRCode !== 'undefined' && typeof QRCode.toDataURL === 'function') {
+        const dataUrl = await QRCode.toDataURL(url, opts);
+        setImg(dataUrl);
+        return;
+      }
+      if (typeof QRCode !== 'undefined' && typeof QRCode.toCanvas === 'function') {
+        const canvas = document.createElement('canvas');
+        await QRCode.toCanvas(canvas, url, opts);
+        host.innerHTML = '';
+        host.appendChild(canvas);
+        return;
+      }
     } catch (error) {
-      console.error('QR render failed:', error);
+      console.error('QR library render failed:', error);
     }
+
+    // Fallback image API if the CDN library is blocked or unavailable
+    setImg(`https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(url)}`);
   }
 
   async openSpectator(code) {
@@ -235,6 +260,20 @@ class Tournament {
     const typeSelect = document.getElementById('type');
     if (typeSelect) {
       typeSelect.addEventListener('change', (e) => this.handleTypeChange(e));
+    }
+
+    // Join-by-code on the main tournament page
+    const joinInput = document.getElementById('join-code');
+    if (joinInput) {
+      joinInput.addEventListener('input', () => {
+        joinInput.value = joinInput.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+      });
+      joinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.joinByCode();
+        }
+      });
     }
   }
 
@@ -2944,6 +2983,17 @@ class Tournament {
         </div>
 
         <div id="tournament-message" class="message" style="display:none;"></div>
+
+        <div class="tournament-join-panel">
+          <div class="tournament-join-copy">
+            <h2 class="tournament-join-title">Join existing tournament</h2>
+            <p class="teams-preview-note">Have a 6-character share code? Open the live spectator bracket.</p>
+          </div>
+          <div class="participant-input-group tournament-join-row">
+            <input type="text" id="join-code" maxlength="6" placeholder="e.g. 7NS8W7" autocomplete="off" spellcheck="false" aria-label="Tournament share code">
+            <button type="button" class="btn primary" onclick="tournament.joinByCode()">Join</button>
+          </div>
+        </div>
 
         <form id="tournament-form" class="tournament-form">
           <div class="form-group">

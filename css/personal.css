@@ -2709,12 +2709,48 @@ select#category-selector option:hover {
   background: #fff;
   border-radius: 10px;
   line-height: 0;
+  min-width: 200px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.tournament-share-qr canvas {
+.tournament-share-qr canvas,
+.tournament-share-qr img {
   display: block;
   width: 180px;
   height: 180px;
+}
+
+.tournament-join-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 24px;
+  padding: 18px 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tournament-join-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.tournament-join-row {
+  margin-bottom: 0;
+  min-width: min(100%, 280px);
+}
+
+.tournament-join-row input {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
 }
 
 .tournament-share-meta {
