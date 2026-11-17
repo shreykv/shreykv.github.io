@@ -336,6 +336,28 @@ class API {
     return this.request('/api/tournaments', { method: 'GET' });
   }
 
+  tournamentPayload(tournament, { includeShare = false } = {}) {
+    const payload = {
+      name: tournament.name,
+      type: tournament.type,
+      seeding_mode: tournament.seedingMode || 'random',
+      game_mode: tournament.gameMode || 'singles',
+      has_consolation: tournament.hasConsolation || false,
+      participants: tournament.participants,
+      final_participants: tournament.finalParticipants,
+      teams: tournament.teams,
+      power_rankings: tournament.powerRankings,
+      bracket: tournament.bracket
+    };
+    // Only touch share columns when explicitly sharing — they may not exist
+    // until supabase/tournament_share_migration.sql is applied.
+    if (includeShare) {
+      payload.share_code = tournament.shareCode || null;
+      payload.is_public = !!tournament.isPublic;
+    }
+    return payload;
+  }
+
   async createTournament(tournament) {
     if (this.isSupabaseEnabled()) {
       const supabase = this.getSupabase();
@@ -345,18 +367,7 @@ class API {
         .from('tournaments')
         .insert({
           user_id: userId,
-          name: tournament.name,
-          type: tournament.type,
-          seeding_mode: tournament.seedingMode || 'random',
-          game_mode: tournament.gameMode || 'singles',
-          has_consolation: tournament.hasConsolation || false,
-          participants: tournament.participants,
-          final_participants: tournament.finalParticipants,
-          teams: tournament.teams,
-          power_rankings: tournament.powerRankings,
-          bracket: tournament.bracket,
-          share_code: tournament.shareCode || null,
-          is_public: tournament.isPublic || false
+          ...this.tournamentPayload(tournament, { includeShare: false })
         })
         .select()
         .single();
@@ -370,26 +381,15 @@ class API {
     return this.request('/api/tournaments', { method: 'POST', body: tournament });
   }
 
-  async updateTournament(tournament) {
+  async updateTournament(tournament, options = {}) {
     if (this.isSupabaseEnabled()) {
       const supabase = this.getSupabase();
+      // Share columns only on explicit share/stop-share (may be missing pre-migration).
+      const includeShare = !!options.includeShare;
       
       const { data, error } = await supabase
         .from('tournaments')
-        .update({
-          name: tournament.name,
-          type: tournament.type,
-          seeding_mode: tournament.seedingMode,
-          game_mode: tournament.gameMode,
-          has_consolation: tournament.hasConsolation,
-          participants: tournament.participants,
-          final_participants: tournament.finalParticipants,
-          teams: tournament.teams,
-          power_rankings: tournament.powerRankings,
-          bracket: tournament.bracket,
-          share_code: tournament.shareCode || null,
-          is_public: !!tournament.isPublic
-        })
+        .update(this.tournamentPayload(tournament, { includeShare }))
         .eq('id', tournament.id)
         .select()
         .single();

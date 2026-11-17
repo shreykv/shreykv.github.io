@@ -50,7 +50,7 @@ class Tournament {
       if (!this.currentTournament.shareCode || !this.currentTournament.isPublic) {
         this.currentTournament.shareCode = api.generateShareCode();
         this.currentTournament.isPublic = true;
-        const updated = await api.updateTournament(this.currentTournament);
+        const updated = await api.updateTournament(this.currentTournament, { includeShare: true });
         Object.assign(this.currentTournament, updated);
         const idx = this.tournaments.findIndex(t => t.id === this.currentTournament.id);
         if (idx >= 0) this.tournaments[idx] = this.currentTournament;
@@ -74,7 +74,7 @@ class Tournament {
     try {
       this.currentTournament.isPublic = false;
       this.currentTournament.shareCode = null;
-      const updated = await api.updateTournament(this.currentTournament);
+      const updated = await api.updateTournament(this.currentTournament, { includeShare: true });
       Object.assign(this.currentTournament, updated);
       const idx = this.tournaments.findIndex(t => t.id === this.currentTournament.id);
       if (idx >= 0) this.tournaments[idx] = this.currentTournament;

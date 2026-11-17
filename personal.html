@@ -270,7 +270,7 @@
   <div id="auth-modal" class="auth-modal" style="display: none;">
     <div class="auth-modal-content">
       <h2>Personal hub</h2>
-      <p>A gym log, tournament brackets, counters and a focus timer, synced across your devices. Sign in, or create an account to use them.</p>
+      <p>A gym log, tournament brackets, counters and more, synced across your devices. Sign in, or create an account to use them.</p>
       <p class="auth-visitor">
         Just visiting? <a href="#/personal/screener">See the stock screener</a>, which is open to everyone, or go <a href="/">back to the portfolio</a>.
       </p>
@@ -343,10 +343,8 @@
       <div class="personal-nav-links">
         <a href="#/personal" data-route="#/personal" id="nav-personal-home"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg><span>Overview</span></a>
         <a href="#/personal/gym-log" data-route="#/personal/gym-log" id="nav-gym-log"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7v10"/><path d="M18 7v10"/><path d="M3 10v4"/><path d="M21 10v4"/><path d="M6 12h12"/></svg><span>Gym Log</span></a>
-        <a href="#/personal/focus-timer" data-route="#/personal/focus-timer" id="nav-focus-timer"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg><span>Focus<span class="nav-long"> Timer</span></span></a>
         <a href="#/personal/counter" data-route="#/personal/counter" id="nav-counter"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h14"/><path d="M5 15h14"/><path d="M10 4 8 20"/><path d="M16 4l-2 16"/></svg><span>Counters</span></a>
         <a href="#/personal/tournament" data-route="#/personal/tournament" id="nav-tournament"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h5v6H4"/><path d="M4 19h5v-6"/><path d="M9 8h4v8H9"/><path d="M13 12h7"/></svg><span>Tournament</span></a>
-        <a href="#/personal/habits" data-route="#/personal/habits" id="nav-habits"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Habits</span></a>
         <a href="#/personal/screener" data-route="#/personal/screener" id="nav-screener"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span>Screener</span></a>
       </div>
       <div class="personal-nav-aside">
@@ -383,8 +381,6 @@
   <script src="js/gym-log.js"></script>
   <script src="js/tournament.js"></script>
   <script src="js/counter.js"></script>
-  <script src="js/focus-timer.js"></script>
-  <script src="js/habit-tracker.js"></script>
   <script src="js/migrate-data.js"></script>
   <script src="js/screener-performance.js"></script>
   <script src="js/screener.js"></script>
@@ -692,14 +688,6 @@
               : ['No workouts logged yet']
           },
           {
-            route: '#/personal/focus-timer', name: 'Focus Timer',
-            status: s.focusTimer.totalSessions || s.focusTimer.activeTasks
-              ? [`${s.focusTimer.todayFormatted} focused today`, `${s.focusTimer.weeklyFormatted} this week`,
-                 plural(s.focusTimer.activeTasks, 'active task', 'active tasks'),
-                 s.focusTimer.overdueTasks ? `<span class="hub-row__alert">${s.focusTimer.overdueTasks} overdue</span>` : '']
-              : ['No focus sessions yet']
-          },
-          {
             route: '#/personal/counter', name: 'Counters',
             status: s.counters.total
               ? [plural(s.counters.total, 'counter', 'counters'),
@@ -712,14 +700,6 @@
             status: s.tournaments.total
               ? [plural(s.tournaments.total, 'tournament', 'tournaments'), `${s.tournaments.inProgress} in progress`]
               : ['No tournaments yet']
-          },
-          {
-            route: '#/personal/habits', name: 'Habits',
-            status: s.habits.total
-              ? [plural(s.habits.total, 'habit', 'habits'),
-                 `${s.habits.completedToday}/${s.habits.total} today`,
-                 s.habits.bestStreak ? `Best streak: ${s.habits.bestStreak}d` : '']
-              : ['No habits yet']
           },
           {
             route: '#/personal/screener', name: 'Stock Screener',
@@ -762,10 +742,8 @@
       async function loadDashboardStats() {
         const stats = {
           gymLog: { totalWorkouts: 0, thisWeek: 0, recentWorkout: null },
-          focusTimer: { totalSessions: 0, todayTime: 0, todayFormatted: '0m', weeklyTime: 0, weeklyFormatted: '0m', activeTasks: 0, overdueTasks: 0 },
           counters: { total: 0, totalValue: 0, goalsCompleted: 0, topCounter: null },
-          tournaments: { total: 0, inProgress: 0 },
-          habits: { total: 0, completedToday: 0, bestStreak: 0 }
+          tournaments: { total: 0, inProgress: 0 }
         };
         
         try {
@@ -784,38 +762,6 @@
             stats.gymLog.recentWorkout = sorted[0];
           }
         } catch (e) { console.warn('Could not load gym stats:', e); }
-        
-        try {
-          // Load focus timer data
-          const focusData = await api.getFocusTimer();
-          if (focusData) {
-            const tasks = focusData.tasks || [];
-            const sessions = focusData.sessions || [];
-            
-            stats.focusTimer.totalSessions = sessions.length;
-            stats.focusTimer.activeTasks = tasks.filter(t => !t.completed).length;
-            stats.focusTimer.overdueTasks = tasks.filter(t => {
-              if (t.completed || !t.dueDate) return false;
-              return new Date(t.dueDate) < new Date();
-            }).length;
-            
-            // Calculate today's focus time
-            const todayStr = new Date().toISOString().split('T')[0];
-            const todaySessions = sessions.filter(s => {
-              const sessionDate = new Date(s.startTime).toISOString().split('T')[0];
-              return sessionDate === todayStr;
-            });
-            stats.focusTimer.todayTime = todaySessions.reduce((sum, s) => sum + s.duration, 0);
-            stats.focusTimer.todayFormatted = formatDuration(stats.focusTimer.todayTime);
-            
-            // Calculate weekly focus time
-            const weekAgo = new Date();
-            weekAgo.setDate(weekAgo.getDate() - 7);
-            const weeklySessions = sessions.filter(s => new Date(s.startTime) >= weekAgo);
-            stats.focusTimer.weeklyTime = weeklySessions.reduce((sum, s) => sum + s.duration, 0);
-            stats.focusTimer.weeklyFormatted = formatDuration(stats.focusTimer.weeklyTime);
-          }
-        } catch (e) { console.warn('Could not load focus timer stats:', e); }
         
         try {
           // Load counter data
@@ -841,33 +787,6 @@
             stats.tournaments.inProgress = tournaments.filter(t => !t.winner).length;
           }
         } catch (e) { console.warn('Could not load tournament stats:', e); }
-
-        try {
-          const habitData = await api.getHabits();
-          const habits = habitData?.habits || [];
-          const entries = habitData?.entries || [];
-          stats.habits.total = habits.length;
-          const todayStr = new Date().toISOString().split('T')[0];
-          stats.habits.completedToday = habits.filter(h =>
-            entries.some(e => e.habitId === h.id && e.date === todayStr)
-          ).length;
-          // Lightweight streak: consecutive days ending today/yesterday per habit
-          let best = 0;
-          habits.forEach(h => {
-            const dates = new Set(entries.filter(e => e.habitId === h.id).map(e => e.date));
-            let streak = 0;
-            const cursor = new Date();
-            cursor.setHours(0, 0, 0, 0);
-            const todayKey = cursor.toISOString().split('T')[0];
-            if (!dates.has(todayKey)) cursor.setDate(cursor.getDate() - 1);
-            while (dates.has(cursor.toISOString().split('T')[0])) {
-              streak++;
-              cursor.setDate(cursor.getDate() - 1);
-            }
-            if (streak > best) best = streak;
-          });
-          stats.habits.bestStreak = best;
-        } catch (e) { console.warn('Could not load habit stats:', e); }
         
         return stats;
       }
@@ -932,20 +851,6 @@
         counter.init();
       }));
 
-      router.register('/personal/focus-timer', requireSignIn(() => {
-        document.getElementById('app-content').innerHTML = '<div id="focus-timer-content"></div>';
-        document.title = 'Focus Timer — Shrey Vasisht';
-        updateActiveNav('nav-focus-timer');
-        focusTimer.init();
-      }));
-
-      router.register('/personal/habits', requireSignIn(() => {
-        document.getElementById('app-content').innerHTML = '<div id="habit-tracker-content"></div>';
-        document.title = 'Habits — Shrey Vasisht';
-        updateActiveNav('nav-habits');
-        habitTracker.init();
-      }));
-
       // Public: no sign-in check.
       router.register('/personal/screener', () => {
         authModal.style.display = 'none';
@@ -992,8 +897,6 @@
     window.gymLog = gymLog;
     window.tournament = tournament;
     window.counter = counter;
-    window.focusTimer = focusTimer;
-    window.habitTracker = habitTracker;
   </script>
 </body>
 </html>
