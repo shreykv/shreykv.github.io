@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Personal Access — Shrey Vasisht</title>
   <meta name="description" content="Personal access page with mini sites" />
   <link rel="stylesheet" href="css/personal.css" />
@@ -15,14 +15,14 @@
       --muted: rgba(255,255,255,.68);
       --muted2: rgba(255,255,255,.52);
       --border: rgba(255,255,255,.12);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
       --accent: #6EE7FF;
       --accent2:#A78BFA;
       --ok:#22c55e;
       --warn:#f59e0b;
       --danger:#ef4444;
-      --radius: 18px;
-      --radius2: 26px;
+      --danger-text:#f87171;
+      --radius: 14px;
+      --radius2: 14px;
       --max: 1120px;
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     }
@@ -31,35 +31,32 @@
     body{
       margin:0;
       font-family:var(--font);
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(110,231,255,.08), transparent 55%),
-                  radial-gradient(900px 700px at 80% 35%, rgba(167,139,250,.10), transparent 55%),
-                  radial-gradient(900px 700px at 55% 95%, rgba(110,231,255,.05), transparent 55%),
-                  var(--bg);
+      background: var(--bg);
       color:var(--text);
       overflow-x:hidden;
     }
     a{color:inherit; text-decoration:none}
     .btn{
       display:inline-flex; align-items:center; gap:10px;
-      padding:12px 14px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      box-shadow: var(--shadow);
+      padding:11px 14px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.16);
+      background: transparent;
       color:var(--text);
-      transition:.18s ease;
+      transition: background-color .18s cubic-bezier(.25,1,.5,1), border-color .18s cubic-bezier(.25,1,.5,1);
       cursor:pointer;
       user-select:none;
       font-family:var(--font);
       font-size:14px;
+      font-weight:500;
     }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .btn:hover{background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.28)}
     .btn.primary{
-      border:none;
-      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+      border-color: var(--accent);
+      background: var(--accent);
       color:#071018;
-      font-weight:700;
+      font-weight:650;
     }
-    .btn.primary:hover{filter:saturate(1.05) brightness(1.02)}
+    .btn.primary:hover{background:#9AEEFF; border-color:#9AEEFF}
     .btn.secondary{
       background: transparent;
       border: 1px solid var(--accent);
@@ -70,27 +67,25 @@
     /* Auth Modal Styles */
     .auth-modal{
       position:fixed; inset:0; z-index:1000;
-      background: rgba(7,10,16,.95);
-      backdrop-filter: blur(20px);
+      background: rgba(7,10,16,.92);
+      backdrop-filter: blur(12px);
       display:flex; align-items:center; justify-content:center;
       padding: 20px;
     }
     .auth-modal-content{
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      background: #0c1017;
       border: 1px solid rgba(255,255,255,.12);
       border-radius: var(--radius2);
-      padding: 40px;
+      padding: 32px;
       max-width: 420px;
       width: 100%;
       box-shadow: 0 20px 60px rgba(0,0,0,.5);
     }
     .auth-modal-content h2{
       margin: 0 0 8px 0;
-      font-size: 1.8rem;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
     .auth-modal-content p{
       margin: 0 0 24px 0;
@@ -134,8 +129,8 @@
       color: var(--muted);
     }
     .auth-form input{
-      padding: 14px 16px;
-      border-radius: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,.05);
       color: var(--text);
@@ -156,7 +151,7 @@
       border-radius: 10px;
       background: rgba(239, 68, 68, 0.1);
       border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #f87171;
+      color: var(--danger-text);
       font-size: 0.9rem;
       display: none;
     }
@@ -166,7 +161,7 @@
       border-radius: 10px;
       background: rgba(34, 197, 94, 0.1);
       border: 1px solid rgba(34, 197, 94, 0.3);
-      color: #4ade80;
+      color: var(--ok);
       font-size: 0.9rem;
       display: none;
     }
@@ -229,6 +224,31 @@
       font-size: 0.85rem;
       color: var(--muted);
     }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+    .logo{
+      display:grid; place-items:center;
+      width:30px; height:30px; border-radius:8px;
+      border:1px solid rgba(110,231,255,.5);
+      color:var(--accent);
+      font-size:12px; font-weight:700; letter-spacing:.04em;
+    }
+    .sync-status{
+      display:flex; align-items:center; gap:8px;
+      margin:0 0 20px; color:var(--muted); font-size:.875rem;
+    }
+    .sync-dot{width:8px; height:8px; border-radius:999px; background:var(--ok); flex:none}
+    .sync-status--local .sync-dot{background:var(--warn)}
+    .visitor-only{display:none}
+    body.visitor .personal-nav-links,
+    body.visitor .personal-nav-aside > :not(.visitor-keep){display:none !important}
+    body.visitor .visitor-only{display:inline-flex}
+    .auth-modal-content .auth-visitor{
+      margin:-8px 0 20px; padding:10px 12px;
+      border:1px solid var(--border); border-radius:10px;
+      color:var(--muted); font-size:.875rem; line-height:1.5;
+    }
+    .auth-visitor a{color:var(--accent); text-underline-offset:3px}
+    .auth-visitor a:hover{text-decoration:underline}
     .user-badge .user-email{
       max-width: 150px;
       overflow: hidden;
@@ -237,12 +257,15 @@
     }
   </style>
 </head>
-<body>
+<body class="visitor">
   <!-- Auth Modal (Sign In / Sign Up) -->
   <div id="auth-modal" class="auth-modal" style="display: none;">
     <div class="auth-modal-content">
-      <h2>Personal Access</h2>
-      <p>Sign in to sync your data across all devices.</p>
+      <h2>Personal hub</h2>
+      <p>A gym log, tournament brackets, counters and a focus timer, synced across your devices. Sign in, or create an account to use them.</p>
+      <p class="auth-visitor">
+        Just visiting? <a href="#/personal/screener">See the stock screener</a>, which is open to everyone, or go <a href="/">back to the portfolio</a>.
+      </p>
       
       <div class="auth-tabs">
         <button class="auth-tab active" id="tab-signin" onclick="showAuthTab('signin')">Sign In</button>
@@ -305,23 +328,26 @@
   <!-- Navigation -->
   <nav class="personal-nav">
     <div class="personal-nav-inner">
-      <a href="/" class="brand" style="display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;">
-        <div class="logo" style="width:34px; height:34px; border-radius:12px; background: linear-gradient(135deg, rgba(110,231,255,.9), rgba(167,139,250,.9)); box-shadow: 0 10px 24px rgba(110,231,255,.12);"></div>
+      <a href="/" class="brand">
+        <div class="logo" aria-hidden="true">SV</div>
         <span>Shrey Vasisht</span>
       </a>
       <div class="personal-nav-links">
-        <a href="#" data-route="#/personal" id="nav-personal-home">Overview</a>
-        <a href="#" data-route="#/personal/gym-log" id="nav-gym-log">Gym Log</a>
-        <a href="#" data-route="#/personal/tournament" id="nav-tournament">Tournament</a>
-        <a href="#" data-route="#/personal/counter" id="nav-counter">Counter</a>
-        <a href="#" data-route="#/personal/focus-timer" id="nav-focus-timer">Focus Timer</a>
-        <a href="#" data-route="#/personal/screener" id="nav-screener">Screener</a>
-        <a href="/pour-decisions/">Pour Decisions</a>
-        <a href="/" class="btn">Back to Portfolio</a>
+        <a href="#/personal" data-route="#/personal" id="nav-personal-home"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg><span>Overview</span></a>
+        <a href="#/personal/gym-log" data-route="#/personal/gym-log" id="nav-gym-log"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7v10"/><path d="M18 7v10"/><path d="M3 10v4"/><path d="M21 10v4"/><path d="M6 12h12"/></svg><span>Gym Log</span></a>
+        <a href="#/personal/focus-timer" data-route="#/personal/focus-timer" id="nav-focus-timer"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg><span>Focus<span class="nav-long"> Timer</span></span></a>
+        <a href="#/personal/counter" data-route="#/personal/counter" id="nav-counter"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h14"/><path d="M5 15h14"/><path d="M10 4 8 20"/><path d="M16 4l-2 16"/></svg><span>Counters</span></a>
+        <a href="#/personal/tournament" data-route="#/personal/tournament" id="nav-tournament"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h5v6H4"/><path d="M4 19h5v-6"/><path d="M9 8h4v8H9"/><path d="M13 12h7"/></svg><span>Tournament</span></a>
+        <a href="#/personal/screener" data-route="#/personal/screener" id="nav-screener"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span>Screener</span></a>
+      </div>
+      <div class="personal-nav-aside">
+        <a href="/pour-decisions/" class="nav-external">Pour Decisions<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+        <a href="/" class="visitor-keep" aria-label="Back to Portfolio"><span class="nav-long">Back to Portfolio</span><span class="nav-short">Portfolio</span></a>
         <span id="user-badge" class="user-badge" style="display:none;">
           <span class="user-email"></span>
         </span>
-        <button class="btn" id="logout-btn" onclick="handleLogout()">Logout</button>
+        <button class="btn" id="logout-btn" onclick="handleLogout()">Log out</button>
+        <button class="btn visitor-keep visitor-only" type="button" onclick="showSignIn()">Sign in</button>
       </div>
     </div>
   </nav>
@@ -442,6 +468,7 @@
         const result = await auth.signIn(email, password);
         
         if (result.success) {
+          setSignedIn(true);
           authModal.style.display = 'none';
           updateUserBadge();
           initializeApp();
@@ -481,6 +508,7 @@
           if (result.requiresConfirmation) {
             showSuccess(signupSuccess, result.message);
           } else {
+            setSignedIn(true);
             authModal.style.display = 'none';
             updateUserBadge();
             initializeApp();
@@ -526,8 +554,55 @@
     async function handleLogout() {
       await auth.signOut();
       userBadge.style.display = 'none';
+      setSignedIn(false);
+      router.handleRoute();
+    }
+
+    // ==========================================================================
+    // Access: the screener reads public tables, so visitors (e.g. recruiters
+    // following the portfolio link) see it without an account. Everything
+    // else holds private, per-user data and needs a sign-in.
+    // ==========================================================================
+
+    let signedIn = false;
+
+    function setSignedIn(value) {
+      signedIn = value;
+      document.body.classList.toggle('visitor', !value);
+    }
+
+    function showSignIn() {
       authModal.style.display = 'flex';
       showAuthTab('signin');
+    }
+
+    function onPublicRoute() {
+      return router.getCurrentPath() === '/personal/screener';
+    }
+
+    document.querySelector('.auth-visitor a[href^="#"]').addEventListener('click', e => {
+      if (onPublicRoute()) {
+        e.preventDefault();
+        authModal.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && authModal.style.display !== 'none' && onPublicRoute()) {
+        authModal.style.display = 'none';
+      }
+    });
+
+    function requireSignIn(render) {
+      return (...args) => {
+        if (signedIn) {
+          authModal.style.display = 'none';
+          return render(...args);
+        }
+        document.getElementById('app-content').innerHTML = '';
+        document.title = 'Personal hub — Shrey Vasisht';
+        showSignIn();
+      };
     }
     
     // ==========================================================================
@@ -550,13 +625,16 @@
       const isAuthenticated = await auth.isAuthenticated();
       
       if (!isAuthenticated) {
-        authModal.style.display = 'flex';
-        
+        setSignedIn(false);
+
         // Show legacy notice if Supabase is not configured
         if (!auth.isSupabaseEnabled()) {
           legacyNotice.style.display = 'block';
         }
+
+        initializeApp();
       } else {
+        setSignedIn(true);
         authModal.style.display = 'none';
         updateUserBadge();
 
@@ -583,234 +661,84 @@
     // Initialize app after authentication
     function initializeApp() {
       // Register routes (using hash-based routing)
-      router.register('/personal', async () => {
+      router.register('/personal', requireSignIn(async () => {
         const appContent = document.getElementById('app-content');
+        document.title = 'Personal hub — Shrey Vasisht';
         
         // Load data from all mini sites for dashboard stats
         const dashboardStats = await loadDashboardStats();
         
-        appContent.innerHTML = `
-          <section class="personal-landing">
-            <header class="personal-landing-header">
-              <h1>Personal Dashboard</h1>
-              <p>Your productivity hub at a glance${auth.isSupabaseEnabled() ? ' — synced across devices' : ''}</p>
-            </header>
-            
-            <!-- Sync Status -->
-            ${auth.isSupabaseEnabled() ? `
-              <div style="margin-bottom: 20px; padding: 12px 16px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; display: flex; align-items: center; gap: 10px;">
-                <span style="color: var(--ok);">☁️</span>
-                <span style="color: var(--ok); font-size: 0.9rem;">Cloud sync enabled — your data is available on all devices</span>
-              </div>
-            ` : `
-              <div style="margin-bottom: 20px; padding: 12px 16px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; display: flex; align-items: center; gap: 10px;">
-                <span style="color: var(--warn);">💾</span>
-                <span style="color: var(--warn); font-size: 0.9rem;">Local storage mode — data is stored on this device only</span>
-              </div>
-            `}
-            
-            <!-- Quick Stats Overview -->
-            <div class="dashboard-overview">
-              <div class="dashboard-stats-row">
-                ${dashboardStats.gymLog.totalWorkouts > 0 ? `
-                  <div class="dashboard-stat-card gym-stat" onclick="router.navigate('#/personal/gym-log')">
-                    <div class="stat-icon">🏋️</div>
-                    <div class="stat-info">
-                      <span class="stat-number">${dashboardStats.gymLog.totalWorkouts}</span>
-                      <span class="stat-label">Workouts</span>
-                    </div>
-                    <div class="stat-detail">
-                      ${dashboardStats.gymLog.thisWeek > 0 ? `<span class="stat-highlight">${dashboardStats.gymLog.thisWeek} this week</span>` : '<span class="stat-muted">Start today!</span>'}
-                    </div>
-                  </div>
-                ` : `
-                  <div class="dashboard-stat-card gym-stat empty" onclick="router.navigate('#/personal/gym-log')">
-                    <div class="stat-icon">🏋️</div>
-                    <div class="stat-info">
-                      <span class="stat-number">0</span>
-                      <span class="stat-label">Workouts</span>
-                    </div>
-                    <div class="stat-detail"><span class="stat-muted">Start logging!</span></div>
-                  </div>
-                `}
-                
-                ${dashboardStats.focusTimer.totalSessions > 0 ? `
-                  <div class="dashboard-stat-card focus-stat" onclick="router.navigate('#/personal/focus-timer')">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-info">
-                      <span class="stat-number">${dashboardStats.focusTimer.todayFormatted}</span>
-                      <span class="stat-label">Focus Today</span>
-                    </div>
-                    <div class="stat-detail">
-                      <span class="stat-highlight">${dashboardStats.focusTimer.activeTasks} active tasks</span>
-                    </div>
-                  </div>
-                ` : `
-                  <div class="dashboard-stat-card focus-stat empty" onclick="router.navigate('#/personal/focus-timer')">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-info">
-                      <span class="stat-number">0m</span>
-                      <span class="stat-label">Focus Today</span>
-                    </div>
-                    <div class="stat-detail"><span class="stat-muted">Start focusing!</span></div>
-                  </div>
-                `}
-                
-                ${dashboardStats.counters.total > 0 ? `
-                  <div class="dashboard-stat-card counter-stat" onclick="router.navigate('#/personal/counter')">
-                    <div class="stat-icon">🔢</div>
-                    <div class="stat-info">
-                      <span class="stat-number">${dashboardStats.counters.total}</span>
-                      <span class="stat-label">Counters</span>
-                    </div>
-                    <div class="stat-detail">
-                      ${dashboardStats.counters.goalsCompleted > 0 ? `<span class="stat-highlight">${dashboardStats.counters.goalsCompleted} goals hit! 🎉</span>` : '<span class="stat-muted">Keep counting!</span>'}
-                    </div>
-                  </div>
-                ` : `
-                  <div class="dashboard-stat-card counter-stat empty" onclick="router.navigate('#/personal/counter')">
-                    <div class="stat-icon">🔢</div>
-                    <div class="stat-info">
-                      <span class="stat-number">0</span>
-                      <span class="stat-label">Counters</span>
-                    </div>
-                    <div class="stat-detail"><span class="stat-muted">Create one!</span></div>
-                  </div>
-                `}
-                
-                ${dashboardStats.tournaments.total > 0 ? `
-                  <div class="dashboard-stat-card tournament-stat" onclick="router.navigate('#/personal/tournament')">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-info">
-                      <span class="stat-number">${dashboardStats.tournaments.total}</span>
-                      <span class="stat-label">Tournaments</span>
-                    </div>
-                    <div class="stat-detail">
-                      ${dashboardStats.tournaments.inProgress > 0 ? `<span class="stat-highlight">${dashboardStats.tournaments.inProgress} in progress</span>` : '<span class="stat-muted">All completed!</span>'}
-                    </div>
-                  </div>
-                ` : `
-                  <div class="dashboard-stat-card tournament-stat empty" onclick="router.navigate('#/personal/tournament')">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-info">
-                      <span class="stat-number">0</span>
-                      <span class="stat-label">Tournaments</span>
-                    </div>
-                    <div class="stat-detail"><span class="stat-muted">Create one!</span></div>
-                  </div>
-                `}
-              </div>
-            </div>
-            
-            <!-- Activity Summary Section -->
-            <div class="dashboard-activity">
-              <h3 class="activity-title">📊 Quick Summary</h3>
-              <div class="activity-cards">
-                ${dashboardStats.gymLog.recentWorkout ? `
-                  <div class="activity-card">
-                    <div class="activity-header">
-                      <span class="activity-icon">🏋️</span>
-                      <span class="activity-type">Last Workout</span>
-                    </div>
-                    <div class="activity-content">
-                      <strong>${dashboardStats.gymLog.recentWorkout.exercise}</strong>
-                      <span class="activity-meta">${dashboardStats.gymLog.recentWorkout.sets}×${dashboardStats.gymLog.recentWorkout.reps} @ ${dashboardStats.gymLog.recentWorkout.weight} lbs</span>
-                      <span class="activity-time">${formatRelativeDate(dashboardStats.gymLog.recentWorkout.date)}</span>
-                    </div>
-                  </div>
-                ` : ''}
-                
-                ${dashboardStats.focusTimer.activeTasks > 0 ? `
-                  <div class="activity-card">
-                    <div class="activity-header">
-                      <span class="activity-icon">📋</span>
-                      <span class="activity-type">Tasks</span>
-                    </div>
-                    <div class="activity-content">
-                      <strong>${dashboardStats.focusTimer.activeTasks} active</strong>
-                      ${dashboardStats.focusTimer.overdueTasks > 0 ? `<span class="activity-warning">⚠️ ${dashboardStats.focusTimer.overdueTasks} overdue</span>` : ''}
-                      <span class="activity-meta">${dashboardStats.focusTimer.weeklyFormatted} this week</span>
-                    </div>
-                  </div>
-                ` : ''}
-                
-                ${dashboardStats.counters.topCounter ? `
-                  <div class="activity-card">
-                    <div class="activity-header">
-                      <span class="activity-icon">🔥</span>
-                      <span class="activity-type">Top Counter</span>
-                    </div>
-                    <div class="activity-content">
-                      <strong>${dashboardStats.counters.topCounter.name}</strong>
-                      <span class="activity-meta">${dashboardStats.counters.topCounter.value}${dashboardStats.counters.topCounter.goal ? ` / ${dashboardStats.counters.topCounter.goal}` : ''}</span>
-                    </div>
-                  </div>
-                ` : ''}
-              </div>
-            </div>
+        const s = dashboardStats;
+        const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+        const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+        const last = s.gymLog.recentWorkout;
 
-            <!-- Mini App Cards -->
-            <h3 class="section-title">🚀 Quick Access</h3>
-            <div class="personal-landing-grid">
-              <button class="personal-landing-card" data-route="#/personal/gym-log" type="button">
-                <div class="card-icon">🏋️</div>
-                <div class="card-body">
-                  <h2>Gym Log</h2>
-                  <p>Track workouts, volume, and progress over time.</p>
-                </div>
-              </button>
-              <button class="personal-landing-card" data-route="#/personal/tournament" type="button">
-                <div class="card-icon">🏆</div>
-                <div class="card-body">
-                  <h2>Tournament</h2>
-                  <p>Create brackets and record match results.</p>
-                </div>
-              </button>
-              <button class="personal-landing-card" data-route="#/personal/counter" type="button">
-                <div class="card-icon">🔢</div>
-                <div class="card-body">
-                  <h2>Counters</h2>
-                  <p>Track reps, sets, or any custom counts.</p>
-                </div>
-              </button>
-              <button class="personal-landing-card" data-route="#/personal/focus-timer" type="button">
-                <div class="card-icon">⏱️</div>
-                <div class="card-body">
-                  <h2>Focus Timer</h2>
-                  <p>Manage tasks with productivity timers and track your time.</p>
-                  </div>
-              </button>
-              <button class="personal-landing-card" data-route="#/personal/screener" type="button">
-                <div class="card-icon">📈</div>
-                <div class="card-body">
-                  <h2>Stock Screener</h2>
-                  <p>S&amp;P 500 stocks ranked weekly against three investor strategies.</p>
-                </div>
-              </button>
-              <a class="personal-landing-card" href="/pour-decisions/" style="text-decoration:none; color:inherit;">
-                <div class="card-icon">🍻</div>
-                <div class="card-body">
-                  <h2>Pour Decisions</h2>
-                  <p>Start or join a bar crawl with a shared drink board and recap.</p>
-                </div>
-              </a>
-            </div>
+        const rows = [
+          {
+            route: '#/personal/gym-log', name: 'Gym Log',
+            status: s.gymLog.totalWorkouts
+              ? [plural(s.gymLog.totalWorkouts, 'workout', 'workouts'), `${s.gymLog.thisWeek} this week`,
+                 last ? `Last: ${esc(last.exercise)} ${esc(last.sets)}×${esc(last.reps)} @ ${esc(last.weight)} lbs, ${formatRelativeDate(last.date).toLowerCase()}` : '']
+              : ['No workouts logged yet']
+          },
+          {
+            route: '#/personal/focus-timer', name: 'Focus Timer',
+            status: s.focusTimer.totalSessions || s.focusTimer.activeTasks
+              ? [`${s.focusTimer.todayFormatted} focused today`, `${s.focusTimer.weeklyFormatted} this week`,
+                 plural(s.focusTimer.activeTasks, 'active task', 'active tasks'),
+                 s.focusTimer.overdueTasks ? `<span class="hub-row__alert">${s.focusTimer.overdueTasks} overdue</span>` : '']
+              : ['No focus sessions yet']
+          },
+          {
+            route: '#/personal/counter', name: 'Counters',
+            status: s.counters.total
+              ? [plural(s.counters.total, 'counter', 'counters'),
+                 s.counters.goalsCompleted ? plural(s.counters.goalsCompleted, 'goal reached', 'goals reached') : '',
+                 s.counters.topCounter ? `Top: ${esc(s.counters.topCounter.name)} ${esc(s.counters.topCounter.value)}${s.counters.topCounter.goal ? ` / ${esc(s.counters.topCounter.goal)}` : ''}` : '']
+              : ['No counters yet']
+          },
+          {
+            route: '#/personal/tournament', name: 'Tournament',
+            status: s.tournaments.total
+              ? [plural(s.tournaments.total, 'tournament', 'tournaments'), `${s.tournaments.inProgress} in progress`]
+              : ['No tournaments yet']
+          },
+          {
+            route: '#/personal/screener', name: 'Stock Screener',
+            status: ['S&amp;P 500 picks, updated weekly', 'Public']
+          }
+        ];
+
+        const chevron = '<svg class="hub-row__go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
+
+        appContent.innerHTML = `
+          <section class="hub-overview">
+            <header class="hub-head">
+              <h1>Personal hub</h1>
+              ${auth.isSupabaseEnabled()
+                ? '<p class="sync-status"><span class="sync-dot" aria-hidden="true"></span>Cloud sync on. Your data is available on all your devices.</p>'
+                : '<p class="sync-status sync-status--local"><span class="sync-dot" aria-hidden="true"></span>Local storage only. Your data stays on this device.</p>'}
+            </header>
+
+            <ul class="hub-readout">
+              ${rows.map(r => `
+                <li>
+                  <a class="hub-row" href="${r.route}" data-route="${r.route}">
+                    <span class="hub-row__name">${r.name}</span>
+                    <span class="hub-row__status">${r.status.filter(Boolean).join('<span class="hub-row__sep" aria-hidden="true"> · </span>')}</span>
+                    ${chevron}
+                  </a>
+                </li>`).join('')}
+            </ul>
+
+            <p class="hub-elsewhere">
+              Elsewhere: <a href="/pour-decisions/">Pour Decisions</a>, a shared drink board and bar crawl tracker.
+            </p>
           </section>
         `;
-        
-        // Add click handlers to make entire cards clickable
-        const cards = appContent.querySelectorAll('.personal-landing-card');
-        cards.forEach(card => {
-          card.addEventListener('click', (e) => {
-            const route = card.getAttribute('data-route');
-            if (route) {
-              router.navigate(route);
-            }
-          });
-        });
-        
+
         updateActiveNav('nav-personal-home');
-      });
+      }));
       
       // Helper function to load dashboard stats from all mini sites
       async function loadDashboardStats() {
@@ -925,33 +853,40 @@
         return date.toLocaleDateString();
       }
 
-      router.register('/personal/gym-log', () => {
+      router.register('/personal/gym-log', requireSignIn(() => {
         document.getElementById('app-content').innerHTML = '<div id="gym-log-content"></div>';
+        document.title = 'Gym Log — Shrey Vasisht';
         updateActiveNav('nav-gym-log');
         // Reload data from current source (Supabase or localStorage) then render
         gymLog.init();
-      });
+      }));
 
-      router.register('/personal/tournament', () => {
+      router.register('/personal/tournament', requireSignIn(() => {
         document.getElementById('app-content').innerHTML = '<div id="tournament-content"></div>';
+        document.title = 'Tournament — Shrey Vasisht';
         updateActiveNav('nav-tournament');
         tournament.init();
-      });
+      }));
 
-      router.register('/personal/counter', () => {
+      router.register('/personal/counter', requireSignIn(() => {
         document.getElementById('app-content').innerHTML = '<div id="counter-content"></div>';
+        document.title = 'Counters — Shrey Vasisht';
         updateActiveNav('nav-counter');
         counter.init();
-      });
+      }));
 
-      router.register('/personal/focus-timer', () => {
+      router.register('/personal/focus-timer', requireSignIn(() => {
         document.getElementById('app-content').innerHTML = '<div id="focus-timer-content"></div>';
+        document.title = 'Focus Timer — Shrey Vasisht';
         updateActiveNav('nav-focus-timer');
         focusTimer.init();
-      });
+      }));
 
+      // Public: no sign-in check.
       router.register('/personal/screener', () => {
+        authModal.style.display = 'none';
         document.getElementById('app-content').innerHTML = '<div id="screener-content"></div>';
+        document.title = 'Stock Strategy Screener — Shrey Vasisht';
         updateActiveNav('nav-screener');
         screener.init();
       });

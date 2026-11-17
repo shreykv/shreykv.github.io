@@ -1079,18 +1079,28 @@ class API {
       const supabase = this.getSupabase();
       const { data, error } = await supabase
         .from('screener_latest_picks')
-        .select('criteria_met, criteria_total, price_to_book, free_cash_flow, revenue_growth_1y, revenue_growth_5y, earnings_growth_1y, earnings_growth_5y')
+        .select('*')
         .order('strategy_key', { ascending: true })
         .order('rank', { ascending: true });
 
       if (error) {
         console.error('Error fetching screener picks:', error);
-        return [];
+        throw new Error('picks');
       }
-      return this.toCamelCase(data) || [];
+      return (data || []).map(row => this.screenerRow(row));
     }
     // No localStorage fallback — without Supabase there's no screener data.
     return [];
+  }
+
+  // toCamelCase leaves "_1y" untouched (revenueGrowth_1y); screener.js reads
+  // revenueGrowth1y. Kept local so nested JSON in other tables keeps its keys.
+  screenerRow(row) {
+    return Object.keys(row).reduce((acc, key) => {
+      const camelKey = key.replace(/_([a-z0-9])/g, (_, ch) => ch.toUpperCase());
+      acc[camelKey] = row[key];
+      return acc;
+    }, {});
   }
 
   async getScreenerSnapshots(limit = 20) {
@@ -1104,7 +1114,7 @@ class API {
 
       if (error) {
         console.error('Error fetching screener snapshots:', error);
-        return [];
+        throw new Error('snapshots');
       }
       return this.toCamelCase(data) || [];
     }
@@ -1148,7 +1158,7 @@ class API {
         .order('strategy_key', { ascending: true })
         .order('rank', { ascending: true })
         .range(from, from + PAGE - 1);
-      if (error) { console.error('Error fetching all screener picks:', error); break; }
+      if (error) { console.error('Error fetching all screener picks:', error); throw new Error('picks'); }
       rows.push(...(data || []));
       if (!data || data.length < PAGE) break;
     }
@@ -1172,7 +1182,7 @@ class API {
         .range(from, from + PAGE - 1);
       if (sinceDate) q = q.gte('date', sinceDate);
       const { data, error } = await q;
-      if (error) { console.error('Error fetching all screener prices:', error); break; }
+      if (error) { console.error('Error fetching all screener prices:', error); throw new Error('prices'); }
       rows.push(...(data || []));
       if (!data || data.length < PAGE) break;
     }

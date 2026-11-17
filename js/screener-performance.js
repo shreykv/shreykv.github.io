@@ -295,7 +295,7 @@
   function renderEmptyState(container, perf) {
     container.innerHTML =
       '<div class="screener-placeholder">' +
-        '\uD83D\uDCCA Collecting weekly snapshots \u2014 <strong>' + perf.coverage.snapshotCount +
+        'Collecting weekly snapshots \u2014 <strong>' + perf.coverage.snapshotCount +
         ' / ' + TARGET_SNAPSHOTS + '</strong>. The chart appears once at least two ' +
         'snapshots exist and one position has time to realize a return.' +
       '</div>';
@@ -444,8 +444,9 @@
       var perf = computePerformance(data.snapshots, data.picks, data.prices, opts);
       await renderPerformance(el, perf, opts);
     } catch (e) {
-      el.innerHTML = '<div class="screener-error">Performance unavailable: ' +
-        (e && e.message ? e.message : 'unknown error') + '</div>';
+      el.innerHTML = '<div class="screener-error" role="alert"><p>Couldn\u2019t load performance data. ' +
+        'Check your connection and try again.</p>' +
+        '<button type="button" class="btn" data-screener-retry>Try again</button></div>';
       if (global.console) console.error('ScreenerPerformance.init failed:', e);
     }
   }

@@ -289,14 +289,8 @@ class TodoList {
                 medium: 'rgba(245, 158, 11, 0.3)',
                 low: 'rgba(34, 197, 94, 0.3)'
               };
-              const priorityBorders = {
-                high: 'rgba(239, 68, 68, 0.8)',
-                medium: 'rgba(245, 158, 11, 0.8)',
-                low: 'rgba(34, 197, 94, 0.8)'
-              };
               return `
-                <div class="task-card ${task.completed ? 'completed' : ''} ${overdue ? 'overdue' : ''}" 
-                     style="border-left: 4px solid ${priorityBorders[task.priority] || priorityBorders.medium}">
+                <div class="task-card ${task.completed ? 'completed' : ''} ${overdue ? 'overdue' : ''}">
                   <div class="task-main">
                     <div class="task-checkbox" onclick="todoList.toggleTask('${task.id}')">
                       <div class="checkbox ${task.completed ? 'checked' : ''}">
@@ -314,7 +308,7 @@ class TodoList {
                     </div>
                   </div>
                   <div class="task-actions">
-                    <button class="btn-icon" onclick="todoList.editTask('${task.id}')" title="Edit">✏️</button>
+                    <button class="btn-icon" onclick="todoList.editTask('${task.id}')" title="Edit" aria-label="Edit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
                     <button class="btn-icon" onclick="todoList.deleteTask('${task.id}')" title="Delete">×</button>
                   </div>
                 </div>

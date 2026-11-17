@@ -365,7 +365,7 @@ class GymLog {
         if (this.templateExerciseIndex >= this.activeTemplate.exercises.length) {
           this.activeTemplate = null;
           this.templateExerciseIndex = 0;
-          this.showMessage('Template completed! 🎉 All exercises logged.', 'success');
+          this.showMessage('Template completed. All exercises logged.', 'success');
         }
       }
       
@@ -949,7 +949,7 @@ class GymLog {
       // Template completed
       this.activeTemplate = null;
       this.templateExerciseIndex = 0;
-      this.showMessage('Template completed! 🎉', 'success');
+      this.showMessage('Template completed.', 'success');
       return;
     }
 
@@ -1070,7 +1070,7 @@ class GymLog {
                   <div class="template-header">
                     <h4>${template.name}</h4>
                     <div class="template-actions">
-                      <button class="btn-icon" onclick="gymLog.editTemplate('${template.id}')" title="Edit">✏️</button>
+                      <button class="btn-icon" onclick="gymLog.editTemplate('${template.id}')" title="Edit" aria-label="Edit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
                       <button class="btn-icon" onclick="gymLog.deleteTemplate('${template.id}')" title="Delete">×</button>
                     </div>
                   </div>
@@ -1082,7 +1082,7 @@ class GymLog {
                         <span class="exercise-name">${ex.exercise}</span>
                         <span class="exercise-details">${ex.sets}×${ex.reps} @ ${ex.weight}lbs</span>
                         <span class="exercise-categories">${(ex.categories || []).map(c => `<span class="category-tag">${c}</span>`).join('')}</span>
-                        ${ex.notes ? `<span class="exercise-note" title="${ex.notes}">📝 ${ex.notes}</span>` : ''}
+                        ${ex.notes ? `<span class="exercise-note" title="${ex.notes}">${ex.notes}</span>` : ''}
                       </div>
                     `).join('')}
                   </div>
@@ -1294,10 +1294,14 @@ class GymLog {
         <div class="gym-log-header">
           <h2>Workout Templates</h2>
           <div class="gym-log-actions">
-            <button class="btn ${this.viewMode === 'list' ? 'active' : ''}" data-view="list">List View</button>
-            <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" data-view="analytics">Analytics</button>
-            <button class="btn ${this.viewMode === 'templates' ? 'active' : ''}" data-view="templates">Templates</button>
-            <button class="btn" id="export-workouts">Export Data</button>
+            <div class="view-tabs">
+              <button class="btn ${this.viewMode === 'list' ? 'active' : ''}" data-view="list">List View</button>
+              <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" data-view="analytics">Analytics</button>
+              <button class="btn ${this.viewMode === 'templates' ? 'active' : ''}" data-view="templates">Templates</button>
+            </div>
+            <div class="tool-aside">
+              <button class="btn" id="export-workouts">Export Data</button>
+            </div>
           </div>
         </div>
 
@@ -1339,10 +1343,14 @@ class GymLog {
         <div class="gym-log-header">
           <h2>Exercise Analytics</h2>
           <div class="gym-log-actions">
-            <button class="btn ${this.viewMode === 'list' ? 'active' : ''}" data-view="list">List View</button>
-            <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" data-view="analytics">Analytics</button>
-            <button class="btn ${this.viewMode === 'templates' ? 'active' : ''}" data-view="templates">Templates</button>
-            <button class="btn" id="export-workouts">Export Data</button>
+            <div class="view-tabs">
+              <button class="btn ${this.viewMode === 'list' ? 'active' : ''}" data-view="list">List View</button>
+              <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" data-view="analytics">Analytics</button>
+              <button class="btn ${this.viewMode === 'templates' ? 'active' : ''}" data-view="templates">Templates</button>
+            </div>
+            <div class="tool-aside">
+              <button class="btn" id="export-workouts">Export Data</button>
+            </div>
           </div>
         </div>
 
@@ -1414,12 +1422,16 @@ class GymLog {
     } else {
       container.innerHTML = `
         <div class="gym-log-header">
-          <h2>Gym Log</h2>
+          <h1>Gym Log</h1>
           <div class="gym-log-actions">
-            <button class="btn ${this.viewMode === 'list' ? 'active' : ''}" data-view="list">List View</button>
-            <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" data-view="analytics">Analytics</button>
-            <button class="btn ${this.viewMode === 'templates' ? 'active' : ''}" data-view="templates">Templates</button>
-            <button class="btn" id="export-workouts">Export Data</button>
+            <div class="view-tabs">
+              <button class="btn ${this.viewMode === 'list' ? 'active' : ''}" data-view="list">List View</button>
+              <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" data-view="analytics">Analytics</button>
+              <button class="btn ${this.viewMode === 'templates' ? 'active' : ''}" data-view="templates">Templates</button>
+            </div>
+            <div class="tool-aside">
+              <button class="btn" id="export-workouts">Export Data</button>
+            </div>
           </div>
         </div>
 
@@ -1428,7 +1440,6 @@ class GymLog {
         ${this.activeTemplate ? `
           <div class="active-template-banner">
             <div class="template-banner-content">
-              <span class="template-banner-icon">📋</span>
               <div class="template-banner-info">
                 <strong>Using Template: ${this.activeTemplate.name}</strong>
                 <span>Exercise ${this.templateExerciseIndex + 1} of ${this.activeTemplate.exercises.length}</span>
@@ -1504,8 +1515,8 @@ class GymLog {
                         <span class="workout-date">${new Date(workout.date).toLocaleDateString()}</span>
                       </div>
                       <div class="workout-actions">
-                        <button class="btn-icon" onclick="gymLog.viewExerciseDetails('${workout.exercise}')" title="View Details">📊</button>
-                        <button class="btn-icon" onclick="gymLog.editWorkout('${workout.id}')" title="Edit">✏️</button>
+                        <button class="btn-icon" onclick="gymLog.viewExerciseDetails('${workout.exercise}')" title="View details" aria-label="View details"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-6"/><path d="M13 17V7"/><path d="M18 17v-3"/></svg></button>
+                        <button class="btn-icon" onclick="gymLog.editWorkout('${workout.id}')" title="Edit" aria-label="Edit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
                         <button class="btn-icon" onclick="gymLog.deleteWorkout('${workout.id}')" title="Delete">×</button>
                       </div>
                     </div>

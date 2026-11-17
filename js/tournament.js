@@ -1599,14 +1599,14 @@ class Tournament {
     };
 
     let html = '<div class="now-playing-container">';
-    html += '<div class="now-playing-header">🎮 Now Playing</div>';
+    html += '<div class="now-playing-header">Now playing</div>';
     html += '<div class="now-playing-brackets">';
 
     // Grand Final 2 (highest priority)
     if (hasGrandFinal2) {
       html += `
         <div class="now-playing-section grand-final">
-          <div class="now-playing-section-title">⭐ Grand Final 2</div>
+          <div class="now-playing-section-title">Grand final 2</div>
           <div class="now-playing-matches">
             ${renderMatchPill(nowPlaying.grandFinal2)}
           </div>
@@ -1617,7 +1617,7 @@ class Tournament {
     else if (hasGrandFinal) {
       html += `
         <div class="now-playing-section grand-final">
-          <div class="now-playing-section-title">⭐ Grand Final</div>
+          <div class="now-playing-section-title">Grand final</div>
           <div class="now-playing-matches">
             ${renderMatchPill(nowPlaying.grandFinal)}
           </div>
@@ -1629,7 +1629,7 @@ class Tournament {
     if (hasWinners) {
       html += `
         <div class="now-playing-section winners">
-          <div class="now-playing-section-title">🏆 Winners Bracket</div>
+          <div class="now-playing-section-title">Winners bracket</div>
           <div class="now-playing-matches">
             ${nowPlaying.winners.map(m => renderMatchPill(m)).join('')}
           </div>
@@ -1641,7 +1641,7 @@ class Tournament {
     if (hasLosers) {
       html += `
         <div class="now-playing-section losers">
-          <div class="now-playing-section-title">💀 Losers Bracket</div>
+          <div class="now-playing-section-title">Losers bracket</div>
           <div class="now-playing-matches">
             ${nowPlaying.losers.map(m => renderMatchPill(m)).join('')}
           </div>
@@ -1653,7 +1653,7 @@ class Tournament {
     if (hasConsolation) {
       html += `
         <div class="now-playing-section consolation">
-          <div class="now-playing-section-title">🥉 Placement Matches</div>
+          <div class="now-playing-section-title">Placement matches</div>
           <div class="now-playing-matches">
             ${nowPlaying.consolation.map(m => renderMatchPill(m, m.placementFor || '')).join('')}
           </div>
@@ -1665,7 +1665,7 @@ class Tournament {
     if (hasRoundRobin) {
       html += `
         <div class="now-playing-section round-robin">
-          <div class="now-playing-section-title">🔄 Round Robin</div>
+          <div class="now-playing-section-title">Round robin</div>
           <div class="now-playing-matches">
             ${nowPlaying.roundRobin.map(m => renderMatchPill(m)).join('')}
           </div>
@@ -1966,7 +1966,7 @@ class Tournament {
     if (!consolation?.rounds || consolation.rounds.length === 0) return '';
     
     let html = '<div class="consolation-bracket-container">';
-    html += '<h3 class="bracket-section-title consolation-title">🏆 Placement Matches</h3>';
+    html += '<h3 class="bracket-section-title consolation-title">Placement Matches</h3>';
     html += '<div class="consolation-bracket">';
     
     consolation.rounds.forEach((round, roundIdx) => {
@@ -2165,7 +2165,7 @@ class Tournament {
 
         ${winner ? `
           <div class="tournament-winner">
-            <div class="winner-crown">👑</div>
+            <div class="winner-crown">Champion</div>
             <h3>${this.currentTournament.bracket.type === 'round-robin' ? 'Current Leader' : 'Winner'}: ${winner}</h3>
           </div>
         ` : ''}
@@ -2251,7 +2251,7 @@ class Tournament {
     } else {
       container.innerHTML = `
         <div class="tournament-header">
-          <h2>Tournament Generator</h2>
+          <h1>Tournament</h1>
         </div>
 
         <div id="tournament-message" class="message" style="display:none;"></div>
@@ -2319,7 +2319,7 @@ class Tournament {
         </form>
 
         <div class="tournament-list">
-          <h3>Your Tournaments</h3>
+          <h2 class="tournament-list-title">Your Tournaments</h2>
           ${this.tournaments.length === 0
             ? '<p class="empty-state">No tournaments yet. Create one above!</p>'
             : this.tournaments.map(t => {

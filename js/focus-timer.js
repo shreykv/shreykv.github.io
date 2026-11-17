@@ -692,7 +692,7 @@ class FocusTimer {
     if (this.viewMode === 'timer') {
       container.innerHTML = `
         <div class="focus-timer-header">
-          <h2>Focus Timer</h2>
+          <h1>Focus Timer</h1>
           <div class="focus-timer-actions">
             <button class="btn ${this.viewMode === 'timer' ? 'active' : ''}" onclick="focusTimer.viewMode = 'timer'; focusTimer.render();">Timer</button>
             <button class="btn ${this.viewMode === 'tasks' ? 'active' : ''}" onclick="focusTimer.viewMode = 'tasks'; focusTimer.render();">Tasks</button>
@@ -827,7 +827,7 @@ class FocusTimer {
       // Tasks view
       container.innerHTML = `
         <div class="focus-timer-header">
-          <h2>Focus Timer</h2>
+          <h1>Focus Timer</h1>
           <div class="focus-timer-actions">
             <button class="btn ${this.viewMode === 'timer' ? 'active' : ''}" onclick="focusTimer.viewMode = 'timer'; focusTimer.render();">Timer</button>
             <button class="btn ${this.viewMode === 'tasks' ? 'active' : ''}" onclick="focusTimer.viewMode = 'tasks'; focusTimer.render();">Tasks</button>
@@ -914,14 +914,8 @@ class FocusTimer {
             : filtered.map(task => {
                 const overdue = this.isOverdue(task.dueDate);
                 const timeStats = this.getTaskTimeStats(task.id);
-                const priorityBorders = {
-                  high: 'rgba(239, 68, 68, 0.8)',
-                  medium: 'rgba(245, 158, 11, 0.8)',
-                  low: 'rgba(34, 197, 94, 0.8)'
-                };
                 return `
-                  <div class="task-card ${task.completed ? 'completed' : ''} ${overdue ? 'overdue' : ''}" 
-                       style="border-left: 4px solid ${priorityBorders[task.priority] || priorityBorders.medium}">
+                  <div class="task-card ${task.completed ? 'completed' : ''} ${overdue ? 'overdue' : ''}">
                     <div class="task-main">
                       <div class="task-checkbox" onclick="focusTimer.toggleTask('${task.id}')">
                         <div class="checkbox ${task.completed ? 'checked' : ''}">
@@ -935,15 +929,15 @@ class FocusTimer {
                           <span class="task-category">${task.category}</span>
                           <span class="task-priority priority-${task.priority}">${task.priority}</span>
                           ${task.dueDate ? `<span class="task-due ${overdue ? 'overdue' : ''}">Due: ${new Date(task.dueDate).toLocaleDateString()}</span>` : ''}
-                          ${timeStats.total > 0 ? `<span class="task-time">⏱️ ${this.formatTime(timeStats.total)}</span>` : ''}
+                          ${timeStats.total > 0 ? `<span class="task-time">Tracked ${this.formatTime(timeStats.total)}</span>` : ''}
                         </div>
                       </div>
                     </div>
                     <div class="task-actions">
                       ${!task.completed ? `
-                        <button class="btn-icon" onclick="focusTimer.startTimer(25, '${task.id}'); focusTimer.viewMode = 'timer'; focusTimer.render();" title="Start 25min Timer">⏱️</button>
+                        <button class="btn-icon" onclick="focusTimer.startTimer(25, '${task.id}'); focusTimer.viewMode = 'timer'; focusTimer.render();" title="Start a 25-minute timer" aria-label="Start a 25-minute timer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg></button>
                       ` : ''}
-                      <button class="btn-icon" onclick="focusTimer.editTask('${task.id}')" title="Edit">✏️</button>
+                      <button class="btn-icon" onclick="focusTimer.editTask('${task.id}')" title="Edit" aria-label="Edit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
                       <button class="btn-icon" onclick="focusTimer.deleteTask('${task.id}')" title="Delete">×</button>
                     </div>
                   </div>

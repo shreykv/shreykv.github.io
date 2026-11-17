@@ -11,7 +11,7 @@ web
 One site, three audiences, one owner (Shrey Vasisht, NC State student).
 
 - **Portfolio visitors:** recruiters and hiring managers, research and lab contacts, and potential collaborators. They arrive from LinkedIn, GitHub, or a résumé link, usually skimming on desktop between other candidates, and need to judge quickly whether Shrey is credible and worth contacting. No single conversion outranks the others; the goal is a credible professional presence that leads to a message.
-- **Personal hub user:** primarily Shrey himself, signed in, using his own tools (gym log, tournament generator, counters, focus timer, stock screener) in day-to-day life. Parts of the hub, the stock screener especially, double as portfolio demos that visitors are linked into.
+- **Personal hub user:** primarily Shrey himself, signed in, using his own tools (gym log, tournament generator, counters, focus timer, stock screener) in day-to-day life. The stock screener doubles as a portfolio demo and is public: visitors reach `#/personal/screener` without an account and see a visitor nav (Back to Portfolio, Sign in). Every other hub route needs a sign-in. Sign Up stays open so other people can use the tools.
 - **Pour Decisions crews:** groups of friends on a night out, each person on their own phone, standing in a bar, logging drinks with one hand and checking standings between rounds. Today that is Shrey's own crew; the product is built so any group of strangers can pick it up without help.
 
 ## Product Purpose

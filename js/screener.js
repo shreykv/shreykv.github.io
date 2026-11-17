@@ -20,6 +20,12 @@ class Screener {
     if (!container) return;
 
     container.innerHTML = this.renderShell();
+    if (!container.dataset.retryBound) {
+      container.dataset.retryBound = '1';
+      container.addEventListener('click', e => {
+        if (e.target.closest('[data-screener-retry]')) this.retry();
+      });
+    }
     await this.loadLatest();
     this.renderStrategies();
     await this.renderPerformance();
@@ -32,21 +38,33 @@ class Screener {
     } catch (err) {
       console.error('Screener load failed:', err);
       this.latest = [];
-      this.error = err.message || 'Failed to load picks.';
+      this.error = 'Couldn’t load this week’s picks. Check your connection and try again.';
     }
+  }
+
+  async retry() {
+    const container = document.getElementById('screener-strategies');
+    const metaEl = document.getElementById('screener-meta');
+    if (container) container.innerHTML = '<div class="screener-loading">Loading…</div>';
+    if (metaEl) metaEl.innerHTML = '<span class="muted">Loading latest picks…</span>';
+    await this.loadLatest();
+    this.renderStrategies();
+    await this.renderPerformance();
   }
 
   // ==========================================================================
   // Strategy metadata — must stay in sync with strategies.py.
   // `criteria[].field` is the camelCase column name api.js produces.
-  // `format`: 'pct' → x*100 + %; 'ratio' → 2 decimals; 'currency-b' → $X.XXB/M.
+  // `format`: 'pct' → x*100 + %; 'pct-points' → already a percentage (yfinance
+  // reports dividend yield as 4.77, not 0.0477); 'ratio' → 2 decimals;
+  // 'currency-b' → $X.XXB/M.
   // ==========================================================================
 
   static STRATEGY_INFO = {
     buffett: {
       name: 'Value Investing',
       subtitle: 'Underpriced companies with solid fundamentals',
-      color: '#f59e0b',
+      color: 'rgba(255,255,255,.85)',
       summary:
         'Seeks stocks that appear underpriced by the market. Solid fundamentals — ' +
         'low P/E, strong returns on equity, a healthy balance sheet, and a positive ' +
@@ -57,14 +75,14 @@ class Screener {
         { field: 'roe',             label: 'ROE',            description: 'ROE > 20%',                 format: 'pct'        },
         { field: 'debtToEquity',    label: 'D/E',            description: 'Debt-to-equity 0–0.5',      format: 'ratio'      },
         { field: 'freeCashFlow',    label: 'FCF (TTM)',      description: 'Free cash flow > 0',        format: 'currency-b' },
-        { field: 'dividendYield',   label: 'Div Yield',      description: 'Dividend yield > 0',        format: 'pct'        },
+        { field: 'dividendYield',   label: 'Div Yield',      description: 'Dividend yield > 0',        format: 'pct-points' },
         { field: 'revenueGrowth5y', label: 'Rev Growth 5Y',  description: 'Revenue growth (5Y) > 20%', format: 'pct'        },
       ],
     },
     lower_risk: {
       name: 'Lower Risk',
       subtitle: 'Consistent growers with strong balance sheets',
-      color: '#10b981',
+      color: '#6EE7FF',
       summary:
         'Established companies with strong financial fundamentals trading at a low ' +
         'price relative to expected growth. Excludes Financial Services, Basic ' +
@@ -82,7 +100,7 @@ class Screener {
     balanced_risk: {
       name: 'Balanced Risk',
       subtitle: 'Quality growth at a fair-to-low price',
-      color: '#3b82f6',
+      color: '#A78BFA',
       summary:
         'GARP-style — growth at a reasonable price. Consistent growers trading at ' +
         'fair valuations relative to expected growth. Excludes Financial Services, ' +
@@ -109,11 +127,11 @@ class Screener {
     return `
       <section class="screener-shell">
         <header class="screener-header">
-          <h1>📈 Strategy Screener</h1>
+          <h1>Strategy Screener</h1>
           <p class="muted">
             S&amp;P 500 stocks ranked weekly against three legendary investor strategies.
           </p>
-          <div class="screener-meta" id="screener-meta">
+          <div class="screener-meta" id="screener-meta" role="status">
             <span class="muted">Loading latest picks…</span>
           </div>
         </header>
@@ -125,7 +143,7 @@ class Screener {
         <h2 class="section-title" style="margin-top:36px">Performance vs S&amp;P 500</h2>
         <div id="screener-performance">
           <div class="screener-placeholder">
-            📊 Tracking begins on first weekly snapshot. Performance chart will appear
+            Tracking begins on the first weekly snapshot. Performance chart will appear
             here once 2+ weekly snapshots have accumulated.
           </div>
         </div>
@@ -165,13 +183,22 @@ class Screener {
     const metaEl = document.getElementById('screener-meta');
     if (!container) return;
 
+    const picks = this.latest || [];
+    if (!this.error && picks.length && !picks.some(p => Screener.STRATEGY_INFO[p.strategyKey])) {
+      console.error('Screener picks are missing strategy keys:', picks[0]);
+      this.error = 'This week’s picks loaded without their strategy labels, so they can’t be sorted into tables.';
+    }
+
     if (this.error) {
-      container.innerHTML = `<div class="screener-error">⚠️ ${this.escape(this.error)}</div>`;
-      metaEl.innerHTML = '<span class="muted">Unable to fetch latest snapshot.</span>';
+      container.innerHTML = `
+        <div class="screener-error" role="alert">
+          <p>${this.escape(this.error)}</p>
+          <button type="button" class="btn" data-screener-retry>Try again</button>
+        </div>`;
+      metaEl.innerHTML = '<span class="muted">Latest snapshot unavailable</span>';
       return;
     }
 
-    const picks = this.latest || [];
     if (picks.length === 0) {
       container.innerHTML = `
         <div class="screener-empty">
@@ -193,10 +220,10 @@ class Screener {
     }
 
     // Meta strip
-    const ts = picks[0].snapshotCreatedAt;
-    const dt = new Date(ts);
+    const dt = new Date(picks[0].snapshotCreatedAt);
+    const updated = isNaN(dt) ? 'Unknown' : this.formatDate(dt);
     metaEl.innerHTML = `
-      <span><strong>Last update:</strong> ${this.formatDate(dt)}</span>
+      <span><strong>Last update:</strong> ${updated}</span>
       <span class="muted">·</span>
       <span><strong>Universe:</strong> S&amp;P 500</span>
       <span class="muted">·</span>
@@ -320,6 +347,8 @@ class Screener {
     switch (format) {
       case 'pct':
         return (v * 100).toFixed(1) + '%';
+      case 'pct-points':
+        return v.toFixed(2) + '%';
       case 'ratio':
         return v.toFixed(2);
       case 'ratio1':

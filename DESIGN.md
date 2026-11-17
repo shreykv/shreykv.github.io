@@ -18,6 +18,7 @@ colors:
   status-ok: "#22c55e"
   status-warn: "#f59e0b"
   status-danger: "#ef4444"
+  status-danger-text: "#f87171"
 typography:
   display:
     fontFamily: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
@@ -67,10 +68,6 @@ rounded:
   md: "10px"
   lg: "14px"
   full: "999px"
-  hub-control: "12px"
-  hub-tile: "16px"
-  hub-base: "18px"
-  hub-card: "26px"
 spacing:
   s-1: "4px"
   s-2: "8px"
@@ -137,13 +134,13 @@ Scope: `index.html`, `personal.html`, `css/personal.css`, and the hub apps in `j
 
 The site should read like a well-built bench instrument at night: a dark cabinet, a few precise readouts glowing in cool light, and labels you can trust. It belongs to an engineer who builds sensor rigs and test systems, so the interface should feel measured rather than decorative. Information sits in clearly bounded panels and the accents mark signal, not ornament.
 
-The portfolio (`index.html`) now carries the confirmed **crisp and technical** direction. The ground is flat near-black navy with no glows. Panels are barely-there fills with hairline edges and 14px corners, and nothing has a shadow or lifts on hover. Readout Cyan is the single lit colour, and the Snapshot readout is ruled by hairlines rather than boxed. The hub (`personal.html`, `css/personal.css`) still uses the earlier soft-glass vocabulary: 26px corners, gradient fills, ambient shadows and cyan-to-violet gradients. Those values are kept below as `hub-*` legacy tokens until the hub gets the same pass.
+The portfolio (`index.html`) now carries the confirmed **crisp and technical** direction. The ground is flat near-black navy with no glows. Panels are barely-there fills with hairline edges and 14px corners, and nothing has a shadow or lifts on hover. Readout Cyan is the single lit colour, and the Snapshot readout is ruled by hairlines rather than boxed. The hub (`personal.html`, `css/personal.css`) now follows the same rules: flat ground, flat 3% panels, solid cyan primary buttons, 8/10/14px corners, no gradients, glows, emoji or hover lifts. Its active view tabs use a cyan tint with cyan text rather than a solid fill, so only the one primary action per view is solid.
 
 The hub shares the colour tokens but is an Operate surface: dense forms, lists and charts. There the instrument metaphor means legibility and consistency first.
 
 **Key Characteristics:**
 - Flat near-black navy cabinet with faint white panels and 12% white hairlines.
-- One lit colour: Readout Cyan for actions, links and focus. Ultraviolet survives only in the hub's legacy gradients.
+- One lit colour: Readout Cyan for actions, links and focus. Ultraviolet appears only as a chart data colour in the screener.
 - A single system sans-serif; hierarchy comes from size and weight, not from a second family.
 - Content lives in hairline-bounded panels on a centered 1120px column; lists are ruled, not chipped.
 - No shadows, glows, gradients or hover lifts on the portfolio.
@@ -156,7 +153,7 @@ A cold, low-light palette: a navy-black ground, white at varying opacities for e
 - **Readout Cyan:** the signal colour. On the portfolio it is the solid fill of the primary button, the colour of text links (the contact email address, project links), the focus ring, the input focus border, the logo monogram and its outline, and the text-selection tint. The lighter **hover** step brightens the primary button. On dark it reads like an oscilloscope trace, so reserve it for things the visitor can act on or should notice first.
 
 ### Secondary
-- **Ultraviolet:** legacy. It survives only as the trailing stop of the hub's gradients and is no longer used on the portfolio. Don't introduce it in new work.
+- **Ultraviolet:** data only. The screener's three strategies are told apart by a data palette of near-white (Value Investing), Readout Cyan (Lower Risk) and Ultraviolet (Balanced Risk), shown as chart lines and as small square keys beside each strategy name. Never use it for chrome, buttons or decoration.
 
 ### Neutral
 - **Cabinet Navy:** the page ground, flat on the portfolio. The sticky nav uses it at 86% opacity (55% in the hub).
@@ -198,7 +195,11 @@ A cold, low-light palette: a navy-black ground, white at varying opacities for e
 
 A single centered column, 1120px max, with 24px page padding. The hero is a two-column grid (1.15fr / 0.85fr) pairing the pitch card with a "Snapshot" panel. About and Skills sit in a two-column row that stacks below 980px. Below 980px the nav links drop to a second row under the brand and LinkedIn button, and anchored sections offset for the taller sticky bar. The page footer sits outside every panel, after Contact.
 
-**Portfolio order follows evidence.** Working software leads; unconfirmed work follows at lower weight. "Open now" is a two-column grid (1.35fr / 1fr): the Stock Strategy Screener is the wider feature panel on the left and the personal hub sits on the right. Each live panel ends in a footer row with its cyan link on the left and its access note ("Sign-in required") on the right, so the action rows share a baseline. Pour Decisions never appears on the portfolio; it is linked only from the hub. "Write-ups pending" is not a set of cards: it is a ruled two-column list with no links, 48px below the live grid. Both stack to one column below 860px.
+**Portfolio order follows evidence.** Working software leads; unconfirmed work follows at lower weight. "Open now" is a two-column grid (1.35fr / 1fr): the Stock Strategy Screener is the wider feature panel on the left and the personal hub sits on the right. Each live panel ends in a footer row with its cyan link on the left and its access note ("Public, no sign-in" for the screener, "Sign-in required" for the hub) on the right, so the action rows share a baseline. Pour Decisions never appears on the portfolio; it is linked only from the hub. "Write-ups pending" is not a set of cards: it is a ruled two-column list with no links, 48px below the live grid. Both stack to one column below 860px.
+
+**Hub overview is a readout, not a dashboard.** `#/personal` is a left-aligned 28px "Personal hub" title, the sync status as one muted line with a status dot, then a ruled list with one row per tool (Gym Log, Focus Timer, Counters, Tournament, Stock Screener). Each row is a single link: the tool name in a 160px column, a live one-line status built from real data ("2 workouts · 1 this week · Last: Squat 5×5 @ 225 lbs, yesterday", with overdue counts in Status Danger text), and a chevron that turns cyan on hover. Empty tools say so plainly ("No workouts logged yet"). Pour Decisions sits below the list as a quiet "Elsewhere" line, never among the hub's own tools. Every hub view opens with a 28px H1 about 125px from the top.
+
+**Hub nav groups by destination.** The hub's own sections sit together after the brand. A hairline divider separates the aside: Pour Decisions (with an outbound arrow), Back to Portfolio, and the Log out button. Visitors on the public screener see only Back to Portfolio and Sign in.
 
 The contact panel is a two-column grid (1fr / 1.5fr): the heading and email address on the left, the form on the right. It stacks below 860px.
 
@@ -208,15 +209,15 @@ The contact panel is a two-column grid (1fr / 1.5fr): the heading and email addr
 
 The portfolio is flat. Panels separate from the ground with a 3% white fill and a hairline edge, and nothing carries a shadow. The only layered element is the sticky nav: 86% navy with a 12px backdrop blur, so content scrolling underneath stays legible. Hover states change border or fill brightness, never position.
 
-### Shadow Vocabulary (hub legacy only)
-- **Ambient lift** (`box-shadow: 0 10px 30px rgba(0,0,0,.35)`): on hub cards, buttons and modals, along with three radial background glows. Not used on the portfolio.
+### Shadow Vocabulary
+- **Layer shadow** (`0 20px 60px rgba(0,0,0,.5)` on the hub's sign-in dialog, `0 8px 24px rgba(0,0,0,.4)` on dropdown menus): only on elements that genuinely float above the page. Resting panels, buttons and cards never carry a shadow.
 
 ### Named Rules
 **The Flat Instrument Rule.** Resting surfaces are flat: hairline edge, faint fill, no shadow, no hover lift. Depth signals a real layer (nav, modal, popover), not decoration.
 
 ## Shapes
 
-A small, consistent radius scale: 8px for nav links, footer links, the logo square and focus rings; 10px for buttons and inputs; 14px for every panel; fully round only for pills and tags. Every panel has a 1px hairline border. The logo is a 30px outlined square with an "SV" monogram in Readout Cyan. The hub still uses its legacy radii (12, 16, 18 and 26px, recorded as `hub-*` tokens).
+A small, consistent radius scale: 8px for nav links, footer links, the logo square and focus rings; 10px for buttons and inputs; 14px for every panel; fully round only for pills and tags. Every panel has a 1px hairline border. The logo is a 30px outlined square with an "SV" monogram in Readout Cyan. The hub uses the same scale; 2px and 4px appear only on colour keys and progress bars.
 
 **The Three Corners Rule.** 8, 10 or 14px, or fully round for chips. No new radius values.
 

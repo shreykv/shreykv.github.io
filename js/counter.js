@@ -372,9 +372,13 @@ class Counter {
         <div class="counter-header">
           <h2>Counter Analytics</h2>
           <div class="counter-actions">
-            <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" onclick="counter.viewMode = 'analytics'; counter.render();">Analytics</button>
-            <button class="btn ${this.viewMode === 'counters' ? 'active' : ''}" onclick="counter.viewMode = 'counters'; counter.render();">Counters</button>
-            <button class="btn" onclick="counter.exportData()">Export</button>
+            <div class="view-tabs">
+              <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" onclick="counter.viewMode = 'analytics'; counter.render();">Analytics</button>
+              <button class="btn ${this.viewMode === 'counters' ? 'active' : ''}" onclick="counter.viewMode = 'counters'; counter.render();">Counters</button>
+            </div>
+            <div class="tool-aside">
+              <button class="btn" onclick="counter.exportData()">Export</button>
+            </div>
           </div>
         </div>
 
@@ -414,12 +418,16 @@ class Counter {
     } else {
       container.innerHTML = `
         <div class="counter-header">
-          <h2>Interactive Counter</h2>
+          <h1>Counters</h1>
           <div class="counter-actions">
-            <button class="btn ${this.viewMode === 'counters' ? 'active' : ''}" onclick="counter.viewMode = 'counters'; counter.render();">Counters</button>
-            <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" onclick="counter.viewMode = 'analytics'; counter.render();">Analytics</button>
-            <button class="btn" onclick="counter.exportData()">Export</button>
-            <button class="btn" id="clear-counters">Clear All</button>
+            <div class="view-tabs">
+              <button class="btn ${this.viewMode === 'counters' ? 'active' : ''}" onclick="counter.viewMode = 'counters'; counter.render();">Counters</button>
+              <button class="btn ${this.viewMode === 'analytics' ? 'active' : ''}" onclick="counter.viewMode = 'analytics'; counter.render();">Analytics</button>
+            </div>
+            <div class="tool-aside">
+              <button class="btn" onclick="counter.exportData()">Export</button>
+              <button class="btn btn--danger" id="clear-counters">Clear all</button>
+            </div>
           </div>
         </div>
 
@@ -475,7 +483,7 @@ class Counter {
                              class="counter-input">
                     </div>
                     ${hasGoal && counter.value >= counter.goal ? `
-                      <div class="goal-achieved">🎉 Goal Achieved!</div>
+                      <div class="goal-achieved">Goal reached</div>
                     ` : ''}
                     <div class="counter-controls">
                       <button class="btn counter-btn" onclick="counter.decrement('${counter.id}')">−</button>
