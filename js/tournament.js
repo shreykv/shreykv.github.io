@@ -12,6 +12,12 @@ class Tournament {
     };
     this.draggedItem = null;
     this.draggedList = null;
+
+    // Manual setup board (seed order / doubles pairings) before create
+    this.setupSeedOrder = [];
+    this.setupTeams = [];
+    this.setupDirty = false;
+    this.setupDrag = null; // { type: 'seed'|'team'|'player', ... }
     
     this.init();
   }
@@ -81,7 +87,6 @@ class Tournament {
   handleSeedingModeChange(e) {
     const seedingMode = e.target.value;
     const rankingsContainer = document.getElementById('power-rankings-container');
-    const teamsPreview = document.getElementById('teams-preview');
     
     if (seedingMode === 'ranked') {
       // Initialize rankings with current participants
@@ -99,47 +104,211 @@ class Tournament {
       }
     }
     
-    // Update teams preview if in doubles mode
-    this.updateTeamsPreview();
+    this.setupDirty = false;
+    this.rebuildSetupFromMode();
   }
 
   handleGameModeChange(e) {
-    this.updateTeamsPreview();
+    this.setupDirty = false;
+    this.rebuildSetupFromMode();
   }
 
-  updateTeamsPreview() {
-    const teamsPreview = document.getElementById('teams-preview');
-    const gameModeSelect = document.getElementById('game-mode');
-    const seedingModeSelect = document.getElementById('seeding-mode');
-    
-    if (!teamsPreview || !gameModeSelect || !seedingModeSelect) return;
-    
-    const isDoubles = gameModeSelect.value === 'doubles';
-    const isRanked = seedingModeSelect.value === 'ranked';
-    
+  getGameMode() {
+    return document.getElementById('game-mode')?.value || 'singles';
+  }
+
+  getSeedingMode() {
+    return document.getElementById('seeding-mode')?.value || 'random';
+  }
+
+  // Build default seed order / doubles teams from current mode settings
+  rebuildSetupFromMode() {
+    const participants = this.getParticipants();
+    const isDoubles = this.getGameMode() === 'doubles';
+    const isRanked = this.getSeedingMode() === 'ranked';
+
     if (isDoubles) {
-      teamsPreview.style.display = 'block';
-      
-      if (isRanked) {
-        // Generate teams based on power rankings
-        const teams = this.generateDoublesPairs();
-        this.renderTeamsPreview(teams);
+      if (isRanked && participants.length >= 2) {
+        this.setupTeams = this.generateDoublesPairs();
       } else {
-        // Show message that teams will be randomly paired
-        teamsPreview.innerHTML = `
-          <h4>Teams Preview</h4>
-          <p class="teams-preview-note">Teams will be randomly paired when tournament is created.</p>
-        `;
+        this.setupTeams = this.generateRandomDoublesPairs(participants);
       }
+      this.setupSeedOrder = this.setupTeams.map(t => t.players.join(' & '));
     } else {
-      teamsPreview.style.display = 'none';
+      this.setupTeams = [];
+      if (isRanked && this.powerRankings.offense.length > 0) {
+        this.setupSeedOrder = this.getBalancedMatchupOrder(
+          participants,
+          this.powerRankings
+        );
+      } else {
+        this.setupSeedOrder = [...participants].sort(() => Math.random() - 0.5);
+      }
     }
+
+    this.setupDirty = false;
+    this.updateSetupPreview();
+  }
+
+  // Keep setup board in sync when participants are added/removed
+  syncSetupWithParticipants() {
+    const participants = this.getParticipants();
+    const isDoubles = this.getGameMode() === 'doubles';
+
+    if (isDoubles ? this.setupTeams.length === 0 : this.setupSeedOrder.length === 0) {
+      this.rebuildSetupFromMode();
+      return;
+    }
+
+    const currentMembers = (isDoubles
+      ? this.setupTeams.flatMap(t => t.players)
+      : this.setupSeedOrder).slice().sort().join('\0');
+    const nextMembers = participants.slice().sort().join('\0');
+
+    // No membership change — just re-render
+    if (currentMembers === nextMembers) {
+      this.updateSetupPreview();
+      return;
+    }
+
+    // Auto mode: rebuild from seeding rules when the roster changes
+    if (!this.setupDirty) {
+      this.rebuildSetupFromMode();
+      return;
+    }
+
+    if (isDoubles) {
+      // Remove deleted players from teams
+      this.setupTeams = this.setupTeams
+        .map(team => ({
+          ...team,
+          players: team.players.filter(p => participants.includes(p))
+        }))
+        .filter(team => team.players.length > 0);
+
+      // Collect players already on a team
+      const assigned = new Set(this.setupTeams.flatMap(t => t.players));
+      const unassigned = participants.filter(p => !assigned.has(p));
+
+      // Fill incomplete teams first, then form new pairs
+      unassigned.forEach(player => {
+        const incomplete = this.setupTeams.find(t => t.players.length < 2);
+        if (incomplete) {
+          incomplete.players.push(player);
+          incomplete.isSolo = false;
+          incomplete.name = `Team ${this.setupTeams.indexOf(incomplete) + 1}`;
+        } else {
+          this.setupTeams.push({
+            name: `Team ${this.setupTeams.length + 1}`,
+            players: [player],
+            isSolo: true
+          });
+        }
+      });
+
+      this.setupTeams.forEach((team, idx) => {
+        team.name = `Team ${idx + 1}`;
+        team.isSolo = team.players.length === 1;
+        if (this.getSeedingMode() === 'ranked') {
+          const scores = this.calculateCombinedScores();
+          const scoreMap = Object.fromEntries(scores.map(s => [s.player, s.total]));
+          team.combinedScore = team.players.reduce((sum, p) => sum + (scoreMap[p] || 0), 0);
+        } else {
+          delete team.combinedScore;
+        }
+      });
+      this.setupSeedOrder = this.setupTeams.map(t => t.players.join(' & '));
+    } else {
+      this.setupSeedOrder = this.setupSeedOrder.filter(p => participants.includes(p));
+      participants.forEach(p => {
+        if (!this.setupSeedOrder.includes(p)) this.setupSeedOrder.push(p);
+      });
+    }
+
+    this.updateSetupPreview();
+  }
+
+  shuffleSetup() {
+    const participants = this.getParticipants();
+    if (this.getGameMode() === 'doubles') {
+      this.setupTeams = this.generateRandomDoublesPairs(participants);
+      this.setupSeedOrder = this.setupTeams.map(t => t.players.join(' & '));
+    } else {
+      this.setupSeedOrder = [...participants].sort(() => Math.random() - 0.5);
+    }
+    this.setupDirty = true;
+    this.updateSetupPreview();
+  }
+
+  resetSetup() {
+    this.setupDirty = false;
+    this.rebuildSetupFromMode();
+  }
+
+  generateRandomDoublesPairs(participants) {
+    const shuffled = [...participants].sort(() => Math.random() - 0.5);
+    const teams = [];
+    for (let i = 0; i < shuffled.length; i += 2) {
+      const teamPlayers = [shuffled[i]];
+      if (shuffled[i + 1]) teamPlayers.push(shuffled[i + 1]);
+      teams.push({
+        name: `Team ${teams.length + 1}`,
+        players: teamPlayers,
+        isSolo: teamPlayers.length === 1
+      });
+    }
+    return teams;
+  }
+
+  updateSetupPreview() {
+    const container = document.getElementById('teams-preview');
+    if (!container) return;
+
+    const participants = this.getParticipants();
+    const isDoubles = this.getGameMode() === 'doubles';
+    const minNeeded = isDoubles ? 2 : 2;
+
+    if (participants.length < minNeeded) {
+      container.style.display = 'none';
+      return;
+    }
+
+    container.style.display = 'block';
+
+    if (isDoubles) {
+      this.renderTeamsPreview(this.setupTeams);
+    } else {
+      this.renderSeedOrderPreview(this.setupSeedOrder);
+    }
+  }
+
+  // Used by ranking drag handlers: refresh auto setup, or keep manual edits
+  updateTeamsPreview() {
+    if (!this.setupDirty) {
+      this.rebuildSetupFromMode();
+      return;
+    }
+    if (this.getGameMode() === 'doubles' && this.getSeedingMode() === 'ranked') {
+      const scores = this.calculateCombinedScores();
+      const scoreMap = Object.fromEntries(scores.map(s => [s.player, s.total]));
+      this.setupTeams.forEach(team => {
+        team.combinedScore = team.players.reduce((sum, p) => sum + (scoreMap[p] || 0), 0);
+      });
+    }
+    this.updateSetupPreview();
   }
 
   addParticipant() {
     const input = document.getElementById('participants');
     const name = input.value.trim();
     if (!name) return;
+
+    // Prevent duplicate names (breaks seeding / pairing)
+    if (this.getParticipants().includes(name)) {
+      this.showMessage('That participant is already added.', 'error');
+      input.value = '';
+      return;
+    }
 
     const list = document.getElementById('participant-list');
     if (list) {
@@ -171,7 +340,7 @@ class Tournament {
     if (seedingModeSelect && seedingModeSelect.value === 'ranked') {
       this.renderPowerRankings();
     }
-    this.updateTeamsPreview();
+    this.syncSetupWithParticipants();
   }
 
   syncPowerRankingsWithParticipants() {
@@ -196,7 +365,7 @@ class Tournament {
     if (seedingModeSelect && seedingModeSelect.value === 'ranked') {
       this.renderPowerRankings();
     }
-    this.updateTeamsPreview();
+    this.syncSetupWithParticipants();
   }
 
   getParticipants() {
@@ -427,33 +596,351 @@ class Tournament {
     return teams;
   }
 
+  renderSetupActions(title, note) {
+    return `
+      <div class="setup-preview-header">
+        <h4>${title}</h4>
+        <div class="setup-preview-actions">
+          <button type="button" class="btn btn-sm" onclick="tournament.shuffleSetup()">Shuffle</button>
+          <button type="button" class="btn btn-sm" onclick="tournament.resetSetup()">Reset</button>
+        </div>
+      </div>
+      <p class="teams-preview-note">${note}${this.setupDirty ? ' <em>(manually adjusted)</em>' : ''}</p>
+    `;
+  }
+
+  renderSeedOrderPreview(order) {
+    const container = document.getElementById('teams-preview');
+    if (!container) return;
+
+    if (!order || order.length === 0) {
+      container.innerHTML = `
+        <h4>Bracket Order</h4>
+        <p class="empty-state">Add participants to set bracket order.</p>
+      `;
+      return;
+    }
+
+    const isRanked = this.getSeedingMode() === 'ranked';
+    const note = isRanked
+      ? 'Drag to adjust who plays whom. Adjacent seeds face off (1 vs 2, 3 vs 4…). Reset restores ranked order.'
+      : 'Drag to adjust who plays whom. Adjacent seeds face off (1 vs 2, 3 vs 4…). Shuffle for a new random order.';
+
+    container.innerHTML = `
+      ${this.renderSetupActions('Bracket Order', note)}
+      <div class="seed-order-list" id="seed-order-list">
+        ${order.map((player, idx) => {
+          const matchGroup = Math.floor(idx / 2) + 1;
+          const side = idx % 2 === 0 ? 'A' : 'B';
+          return `
+            <div class="seed-order-item" draggable="true" data-index="${idx}" data-player="${this.escapeAttr(player)}">
+              <span class="seed-order-num">Seed ${idx + 1}</span>
+              <span class="ranking-drag-handle" aria-hidden="true">≡</span>
+              <span class="seed-order-name">${this.escapeHtml(player)}</span>
+              <span class="seed-order-match">Match ${matchGroup}${side}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    this.setupSeedOrderListeners();
+  }
+
   renderTeamsPreview(teams) {
     const container = document.getElementById('teams-preview');
     if (!container) return;
 
-    if (teams.length === 0) {
+    if (!teams || teams.length === 0) {
       container.innerHTML = `
-        <h4>Teams Preview</h4>
+        <h4>Teams &amp; Seeding</h4>
         <p class="empty-state">Add at least 2 participants to form teams.</p>
       `;
       return;
     }
 
+    const isRanked = this.getSeedingMode() === 'ranked';
+    const note = isRanked
+      ? 'Drag players between teams to re-pair, or drag a team card to change seed order. Reset restores ranked pairings.'
+      : 'Drag players between teams to re-pair, or drag a team card to change seed order. Shuffle for new random pairs.';
+
     container.innerHTML = `
-      <h4>Teams Preview</h4>
-      <p class="teams-preview-note">Best player paired with worst player for balanced teams.</p>
-      <div class="teams-grid">
-        ${teams.map(team => `
-          <div class="team-card ${team.isSolo ? 'solo-team' : ''}">
-            <div class="team-name">${team.name}</div>
-            <div class="team-players">
-              ${team.players.map(p => `<span class="team-player">${p}</span>`).join(' & ')}
+      ${this.renderSetupActions('Teams & Seeding', note)}
+      <div class="teams-grid setup-teams-grid" id="setup-teams-grid">
+        ${teams.map((team, teamIdx) => `
+          <div class="team-card setup-team-card ${team.isSolo ? 'solo-team' : ''}"
+               draggable="true"
+               data-team-index="${teamIdx}">
+            <div class="team-card-top">
+              <span class="ranking-drag-handle" aria-hidden="true">≡</span>
+              <div class="team-name">${this.escapeHtml(team.name)}</div>
+              <span class="team-seed-label">Seed ${teamIdx + 1}</span>
             </div>
-            <div class="team-score">Combined: ${team.combinedScore} pts</div>
+            <div class="team-players setup-team-players" data-team-index="${teamIdx}">
+              ${team.players.map((p, playerIdx) => `
+                <div class="team-player setup-team-player"
+                     draggable="true"
+                     data-team-index="${teamIdx}"
+                     data-player-index="${playerIdx}"
+                     data-player="${this.escapeAttr(p)}">
+                  <span class="ranking-drag-handle" aria-hidden="true">≡</span>
+                  <span>${this.escapeHtml(p)}</span>
+                </div>
+              `).join('')}
+              ${team.players.length < 2 ? `
+                <div class="team-player-slot" data-team-index="${teamIdx}" data-empty="true">
+                  Drop player
+                </div>
+              ` : ''}
+            </div>
+            ${team.combinedScore != null ? `<div class="team-score">Combined: ${team.combinedScore} pts</div>` : ''}
           </div>
         `).join('')}
       </div>
     `;
+
+    this.setupTeamsDragListeners();
+  }
+
+  escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  escapeAttr(str) {
+    return this.escapeHtml(str).replace(/'/g, '&#39;');
+  }
+
+  setupSeedOrderListeners() {
+    const list = document.getElementById('seed-order-list');
+    if (!list) return;
+
+    list.querySelectorAll('.seed-order-item').forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        this.setupDrag = { type: 'seed', index: Number(item.dataset.index) };
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', item.dataset.player);
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        list.querySelectorAll('.seed-order-item').forEach(el => el.classList.remove('drag-over'));
+        this.setupDrag = null;
+      });
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+      });
+      item.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        if (this.setupDrag?.type === 'seed') item.classList.add('drag-over');
+      });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        item.classList.remove('drag-over');
+        if (!this.setupDrag || this.setupDrag.type !== 'seed') return;
+        const from = this.setupDrag.index;
+        const to = Number(item.dataset.index);
+        if (from === to) return;
+        const [moved] = this.setupSeedOrder.splice(from, 1);
+        this.setupSeedOrder.splice(to, 0, moved);
+        this.setupDirty = true;
+        this.updateSetupPreview();
+      });
+    });
+  }
+
+  setupTeamsDragListeners() {
+    const grid = document.getElementById('setup-teams-grid');
+    if (!grid) return;
+
+    // Team card reorder
+    grid.querySelectorAll('.setup-team-card').forEach(card => {
+      card.addEventListener('dragstart', (e) => {
+        // If starting from a player, let player handler own the drag
+        if (e.target.closest('.setup-team-player')) return;
+        this.setupDrag = { type: 'team', teamIndex: Number(card.dataset.teamIndex) };
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', `team:${card.dataset.teamIndex}`);
+      });
+      card.addEventListener('dragend', () => {
+        card.classList.remove('dragging');
+        grid.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        this.setupDrag = null;
+      });
+      card.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+      });
+      card.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        if (this.setupDrag?.type === 'team' || this.setupDrag?.type === 'player') {
+          card.classList.add('drag-over');
+        }
+      });
+      card.addEventListener('dragleave', (e) => {
+        if (!card.contains(e.relatedTarget)) card.classList.remove('drag-over');
+      });
+      card.addEventListener('drop', (e) => {
+        // Exact player/slot drops are handled on those targets
+        if (e.target.closest('.setup-team-player') || e.target.closest('.team-player-slot')) return;
+        e.preventDefault();
+        card.classList.remove('drag-over');
+        if (!this.setupDrag) return;
+
+        const to = Number(card.dataset.teamIndex);
+
+        if (this.setupDrag.type === 'team') {
+          const from = this.setupDrag.teamIndex;
+          if (from === to) return;
+          const [moved] = this.setupTeams.splice(from, 1);
+          this.setupTeams.splice(to, 0, moved);
+          this.renumberSetupTeams();
+          this.setupDirty = true;
+          this.updateSetupPreview();
+          return;
+        }
+
+        if (this.setupDrag.type === 'player') {
+          const fromTeam = this.setupDrag.teamIndex;
+          const fromPlayer = this.setupDrag.playerIndex;
+          if (fromTeam === to) return;
+          const moved = this.setupTeams[fromTeam].players[fromPlayer];
+          if (this.setupTeams[to].players.length < 2) {
+            this.setupTeams[fromTeam].players.splice(fromPlayer, 1);
+            this.setupTeams[to].players.push(moved);
+            this.setupTeams = this.setupTeams.filter(t => t.players.length > 0);
+          } else {
+            // Swap with the first player on the target team
+            const swapped = this.setupTeams[to].players[0];
+            this.setupTeams[to].players[0] = moved;
+            this.setupTeams[fromTeam].players[fromPlayer] = swapped;
+          }
+          this.refreshSetupTeamMeta();
+          this.setupDirty = true;
+          this.updateSetupPreview();
+        }
+      });
+    });
+
+    // Player swap / move
+    const onPlayerDragStart = (el, e) => {
+      e.stopPropagation();
+      this.setupDrag = {
+        type: 'player',
+        teamIndex: Number(el.dataset.teamIndex),
+        playerIndex: Number(el.dataset.playerIndex),
+        player: el.dataset.player
+      };
+      el.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', el.dataset.player);
+    };
+
+    grid.querySelectorAll('.setup-team-player').forEach(el => {
+      el.addEventListener('dragstart', (e) => onPlayerDragStart(el, e));
+      el.addEventListener('dragend', () => {
+        el.classList.remove('dragging');
+        grid.querySelectorAll('.drag-over').forEach(node => node.classList.remove('drag-over'));
+        this.setupDrag = null;
+      });
+      el.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'move';
+      });
+      el.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.setupDrag?.type === 'player') el.classList.add('drag-over');
+      });
+      el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+      el.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        el.classList.remove('drag-over');
+        if (!this.setupDrag || this.setupDrag.type !== 'player') return;
+        const fromTeam = this.setupDrag.teamIndex;
+        const fromPlayer = this.setupDrag.playerIndex;
+        const toTeam = Number(el.dataset.teamIndex);
+        const toPlayer = Number(el.dataset.playerIndex);
+        if (fromTeam === toTeam && fromPlayer === toPlayer) return;
+
+        // Swap players between slots
+        const a = this.setupTeams[fromTeam].players[fromPlayer];
+        const b = this.setupTeams[toTeam].players[toPlayer];
+        this.setupTeams[fromTeam].players[fromPlayer] = b;
+        this.setupTeams[toTeam].players[toPlayer] = a;
+        this.refreshSetupTeamMeta();
+        this.setupDirty = true;
+        this.updateSetupPreview();
+      });
+    });
+
+    grid.querySelectorAll('.team-player-slot').forEach(slot => {
+      slot.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'move';
+      });
+      slot.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        if (this.setupDrag?.type === 'player') slot.classList.add('drag-over');
+      });
+      slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+      slot.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        slot.classList.remove('drag-over');
+        if (!this.setupDrag || this.setupDrag.type !== 'player') return;
+        const fromTeam = this.setupDrag.teamIndex;
+        const fromPlayer = this.setupDrag.playerIndex;
+        const toTeam = Number(slot.dataset.teamIndex);
+        if (fromTeam === toTeam) return;
+        if (this.setupTeams[toTeam].players.length >= 2) return;
+
+        const [moved] = this.setupTeams[fromTeam].players.splice(fromPlayer, 1);
+        this.setupTeams[toTeam].players.push(moved);
+
+        // Drop empty teams
+        this.setupTeams = this.setupTeams.filter(t => t.players.length > 0);
+        this.refreshSetupTeamMeta();
+        this.setupDirty = true;
+        this.updateSetupPreview();
+      });
+    });
+  }
+
+  renumberSetupTeams() {
+    this.setupTeams.forEach((team, idx) => {
+      team.name = `Team ${idx + 1}`;
+      team.isSolo = team.players.length === 1;
+    });
+    this.setupSeedOrder = this.setupTeams.map(t => t.players.join(' & '));
+  }
+
+  refreshSetupTeamMeta() {
+    const isRanked = this.getSeedingMode() === 'ranked';
+    let scoreMap = {};
+    if (isRanked) {
+      const scores = this.calculateCombinedScores();
+      scoreMap = Object.fromEntries(scores.map(s => [s.player, s.total]));
+    }
+    this.setupTeams.forEach((team, idx) => {
+      team.name = `Team ${idx + 1}`;
+      team.isSolo = team.players.length === 1;
+      if (isRanked) {
+        team.combinedScore = team.players.reduce((sum, p) => sum + (scoreMap[p] || 0), 0);
+      } else {
+        delete team.combinedScore;
+      }
+    });
+    this.setupSeedOrder = this.setupTeams.map(t => t.players.join(' & '));
   }
 
   async handleCreateTournament(e) {
@@ -479,37 +966,40 @@ class Tournament {
       }
     }
 
-    // Determine final participants (teams for doubles, players for singles)
+    // Use the (possibly manually adjusted) setup board — do not rebuild
+    // here or random previews would reshuffle on create.
     let finalParticipants;
     let teams = null;
     let powerRankingsData = null;
 
     if (gameMode === 'doubles') {
+      if (!this.setupTeams.length) {
+        this.rebuildSetupFromMode();
+      }
+      teams = this.setupTeams.map((t, idx) => ({
+        name: `Team ${idx + 1}`,
+        players: [...t.players],
+        isSolo: t.players.length === 1,
+        ...(t.combinedScore != null ? { combinedScore: t.combinedScore } : {})
+      }));
+      finalParticipants = teams.map(t => t.players.join(' & '));
       if (seedingMode === 'ranked') {
-        teams = this.generateDoublesPairs();
-        finalParticipants = teams.map(t => t.players.join(' & '));
-        powerRankingsData = { ...this.powerRankings };
-      } else {
-        // Random pairing for doubles
-        const shuffled = [...participants].sort(() => Math.random() - 0.5);
-        teams = [];
-        for (let i = 0; i < shuffled.length; i += 2) {
-          const teamPlayers = [shuffled[i]];
-          if (shuffled[i + 1]) teamPlayers.push(shuffled[i + 1]);
-          teams.push({
-            name: `Team ${teams.length + 1}`,
-            players: teamPlayers,
-            isSolo: teamPlayers.length === 1
-          });
-        }
-        finalParticipants = teams.map(t => t.players.join(' & '));
+        powerRankingsData = {
+          offense: [...this.powerRankings.offense],
+          defense: [...this.powerRankings.defense]
+        };
       }
     } else {
-      // Singles mode
-      if (seedingMode === 'ranked') {
-        powerRankingsData = { ...this.powerRankings };
+      if (!this.setupSeedOrder.length) {
+        this.rebuildSetupFromMode();
       }
-      finalParticipants = participants;
+      finalParticipants = [...this.setupSeedOrder];
+      if (seedingMode === 'ranked') {
+        powerRankingsData = {
+          offense: [...this.powerRankings.offense],
+          defense: [...this.powerRankings.defense]
+        };
+      }
     }
 
     // Get consolation option (only for single elimination)
@@ -526,7 +1016,15 @@ class Tournament {
       finalParticipants: finalParticipants,
       teams: teams,
       powerRankings: powerRankingsData,
-      bracket: this.generateBracket(finalParticipants, formData.get('type'), seedingMode, powerRankingsData, hasConsolation),
+      // Preserve the order from the setup board (already shuffled / ranked / manually set)
+      bracket: this.generateBracket(
+        finalParticipants,
+        formData.get('type'),
+        seedingMode,
+        powerRankingsData,
+        hasConsolation,
+        { preserveOrder: true }
+      ),
       createdAt: new Date().toISOString()
     };
 
@@ -534,8 +1032,11 @@ class Tournament {
       const created = await api.createTournament(tournament);
       await this.loadTournaments();
       
-      // Reset power rankings state
+      // Reset creation state
       this.powerRankings = { offense: [], defense: [] };
+      this.setupSeedOrder = [];
+      this.setupTeams = [];
+      this.setupDirty = false;
       
       this.viewTournament(created.id);
       this.showMessage('Tournament created!', 'success');
@@ -545,10 +1046,12 @@ class Tournament {
     }
   }
 
-  generateBracket(participants, type, seedingMode = 'random', powerRankings = null, hasConsolation = false) {
+  generateBracket(participants, type, seedingMode = 'random', powerRankings = null, hasConsolation = false, options = {}) {
     let orderedParticipants;
     
-    if (seedingMode === 'ranked' && powerRankings) {
+    if (options.preserveOrder) {
+      orderedParticipants = [...participants];
+    } else if (seedingMode === 'ranked' && powerRankings) {
       // Order by combined scores for balanced matchups
       orderedParticipants = this.getBalancedMatchupOrder(participants, powerRankings);
     } else {
@@ -2312,7 +2815,7 @@ class Tournament {
             <div id="power-rankings-lists"></div>
           </div>
 
-          <!-- Teams Preview (for doubles mode) -->
+          <!-- Setup board: bracket order (singles) or teams & seeding (doubles) -->
           <div id="teams-preview" class="teams-preview" style="display: none;"></div>
 
           <button type="submit" class="btn primary">Create Tournament</button>

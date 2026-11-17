@@ -2421,7 +2421,7 @@ select#category-selector option:hover {
   text-align: right;
 }
 
-/* Teams Preview */
+/* Teams / Setup Preview */
 .teams-preview {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -2431,15 +2431,40 @@ select#category-selector option:hover {
 }
 
 .teams-preview h4 {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 16px;
   font-weight: 600;
+}
+
+.setup-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.setup-preview-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
 }
 
 .teams-preview-note {
   color: var(--muted);
   font-size: 13px;
   margin: 0 0 16px;
+}
+
+.teams-preview-note em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
 }
 
 .teams-grid {
@@ -2466,6 +2491,43 @@ select#category-selector option:hover {
   opacity: 0.8;
 }
 
+.setup-team-card {
+  cursor: grab;
+  text-align: left;
+  user-select: none;
+}
+
+.setup-team-card.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.setup-team-card.drag-over {
+  border-color: var(--accent);
+  background: rgba(110, 231, 255, 0.12);
+}
+
+.team-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.team-card-top .team-name {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.team-seed-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(110, 231, 255, 0.12);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
 .team-name {
   font-weight: 700;
   color: var(--accent);
@@ -2485,9 +2547,109 @@ select#category-selector option:hover {
   color: var(--text);
 }
 
+.setup-team-player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: grab;
+  text-align: left;
+}
+
+.setup-team-player:hover {
+  border-color: var(--accent);
+}
+
+.setup-team-player.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.setup-team-player.drag-over {
+  border-color: var(--accent);
+  background: rgba(110, 231, 255, 0.15);
+}
+
+.team-player-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.team-player-slot.drag-over {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(110, 231, 255, 0.1);
+}
+
 .team-score {
   font-size: 12px;
   color: var(--muted);
+}
+
+/* Singles bracket order */
+.seed-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.seed-order-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.18s ease;
+}
+
+.seed-order-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+}
+
+.seed-order-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.seed-order-item.drag-over {
+  border-color: var(--accent);
+  background: rgba(110, 231, 255, 0.15);
+}
+
+.seed-order-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 56px;
+}
+
+.seed-order-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.seed-order-match {
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 /* Tournament Badges */
