@@ -58,7 +58,7 @@ class Tournament {
       const url = this.getShareUrl(this.currentTournament.shareCode);
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        this.showMessage('Share link copied to clipboard.', 'success');
+        this.showMessage('Share link copied. Scan the QR code below.', 'success');
       } else {
         window.prompt('Copy this share link:', url);
       }
@@ -66,6 +66,22 @@ class Tournament {
     } catch (error) {
       console.error('Error sharing tournament:', error);
       this.showMessage('Could not create share link. Run the share migration if columns are missing.', 'error');
+    }
+  }
+
+  async copyShareLink() {
+    if (!this.currentTournament?.shareCode) return;
+    const url = this.getShareUrl(this.currentTournament.shareCode);
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        this.showMessage('Share link copied to clipboard.', 'success');
+      } else {
+        window.prompt('Copy this share link:', url);
+      }
+    } catch (error) {
+      console.error('Clipboard failed:', error);
+      window.prompt('Copy this share link:', url);
     }
   }
 
@@ -83,6 +99,58 @@ class Tournament {
     } catch (error) {
       console.error('Error stopping share:', error);
       this.showMessage('Could not stop sharing.', 'error');
+    }
+  }
+
+  renderSharePanel() {
+    if (this.spectatorMode) return '';
+    const code = this.currentTournament?.shareCode;
+    if (!this.currentTournament?.isPublic || !code) return '';
+    const url = this.getShareUrl(code);
+    return `
+      <div class="tournament-share-panel" id="tournament-share-panel">
+        <div class="tournament-share-qr">
+          <canvas id="tournament-share-qr-canvas" width="180" height="180" aria-label="QR code for tournament share link"></canvas>
+        </div>
+        <div class="tournament-share-meta">
+          <h3 class="tournament-share-title">Share with spectators</h3>
+          <p class="teams-preview-note">Anyone can scan this code or open the link to follow the bracket (read-only).</p>
+          <div class="tournament-share-code">Code <strong>${this.escapeHtml(code)}</strong></div>
+          <div class="tournament-share-url" title="${this.escapeAttr(url)}">${this.escapeHtml(url)}</div>
+          <div class="tournament-share-actions">
+            <button type="button" class="btn primary" onclick="tournament.copyShareLink()">Copy Link</button>
+            <button type="button" class="btn" onclick="tournament.stopSharingTournament()">Stop Sharing</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async paintShareQr() {
+    const canvas = document.getElementById('tournament-share-qr-canvas');
+    const code = this.currentTournament?.shareCode;
+    if (!canvas || !code || !this.currentTournament?.isPublic) return;
+
+    const url = this.getShareUrl(code);
+    if (typeof QRCode === 'undefined' || typeof QRCode.toCanvas !== 'function') {
+      canvas.replaceWith(Object.assign(document.createElement('p'), {
+        className: 'teams-preview-note',
+        textContent: 'QR library failed to load. Use the link instead.'
+      }));
+      return;
+    }
+
+    try {
+      await QRCode.toCanvas(canvas, url, {
+        width: 180,
+        margin: 2,
+        color: {
+          dark: '#071018',
+          light: '#ffffff'
+        }
+      });
+    } catch (error) {
+      console.error('QR render failed:', error);
     }
   }
 
@@ -2746,7 +2814,7 @@ class Tournament {
       const shareActions = this.spectatorMode
         ? `<span class="tournament-badge live-share">Spectator</span>`
         : `
-            <button class="btn" type="button" onclick="tournament.shareTournament()">${isShared ? 'Copy Share Link' : 'Share'}</button>
+            <button class="btn" type="button" onclick="tournament.shareTournament()">${isShared ? 'Show QR / Copy' : 'Share'}</button>
             ${isShared ? `<button class="btn" type="button" onclick="tournament.stopSharingTournament()">Stop Sharing</button>` : ''}
           `;
       const ownerOnlyActions = this.spectatorMode
@@ -2780,6 +2848,8 @@ class Tournament {
         </div>
 
         <div id="tournament-message" class="message" style="display:none;"></div>
+
+        ${isShared && !this.spectatorMode ? this.renderSharePanel() : ''}
 
         ${winner ? `
           <div class="tournament-winner">
@@ -2866,6 +2936,7 @@ class Tournament {
       
       // Setup click handlers for bracket matches using event delegation
       this.setupBracketClickHandlers(container);
+      this.paintShareQr();
     } else {
       container.innerHTML = `
         <div class="tournament-header">

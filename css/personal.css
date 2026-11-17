@@ -2691,6 +2691,80 @@ select#category-selector option:hover {
   background: rgba(74, 222, 128, 0.12);
 }
 
+.tournament-share-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin: 16px 0 20px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tournament-share-qr {
+  flex: none;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  line-height: 0;
+}
+
+.tournament-share-qr canvas {
+  display: block;
+  width: 180px;
+  height: 180px;
+}
+
+.tournament-share-meta {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.tournament-share-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.tournament-share-code {
+  margin: 10px 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.tournament-share-code strong {
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  font-size: 15px;
+}
+
+.tournament-share-url {
+  font-size: 12px;
+  color: var(--muted);
+  word-break: break-all;
+  margin-bottom: 12px;
+  max-width: 42ch;
+}
+
+.tournament-share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 760px) {
+  .tournament-share-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tournament-share-qr {
+    align-self: center;
+  }
+}
+
 /* Tournament Card Badges */
 .tournament-card-meta {
   display: flex;
