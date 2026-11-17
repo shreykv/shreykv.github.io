@@ -201,6 +201,8 @@ A single centered column, 1120px max, with 24px page padding. The hero is a two-
 
 **Hub nav groups by destination.** The hub's own sections sit together after the brand. A hairline divider separates the aside: Pour Decisions (with an outbound arrow), Back to Portfolio, and the Log out button. Visitors on the public screener see only Back to Portfolio and Sign in.
 
+**Hub phone chrome (≤760px).** Section links leave the top bar and become a fixed six-tab bar at the bottom (icon + short label, safe-area padding, Focus shortened from Focus Timer). The top bar keeps only the SV monogram and one trailing action: Log out when signed in, or Back to Portfolio + Sign in for visitors. Name, email badge, Pour Decisions, and Back to Portfolio hide from the signed-in phone top bar so nothing clips. Forms use 16px inputs (no iOS zoom), gym Log Workout sticks above the tab bar, and Export / Clear all sit in a full-width row under the view tabs rather than inside the tab strip. Screener tables keep horizontal scroll inside each strategy panel.
+
 The contact panel is a two-column grid (1fr / 1.5fr): the heading and email address on the left, the form on the right. It stacks below 860px.
 
 **Spacing scale (portfolio):** 4, 8, 12, 16, 24, 32, 48, 64px as `--s-1` to `--s-8`. Section headings get 64px above them and 24px below (16px inside a panel). Panels pad 24px (32px for the hero card and the feature panel, both dropping to 24px on phones). Live panels sit 16px apart. The older `xs`–`xl` values describe the hub's tighter rhythm, which also uses auto-fit form rows (200px minimum per column).
@@ -252,7 +254,7 @@ Solid and precise; they change colour on hover and never move.
 - **Hub selects:** forced to a dark scheme with a custom white caret and hard-coded navy option fills.
 
 ### Navigation
-A sticky top bar: 86% navy with a 12px backdrop blur and a hairline bottom rule. On the left sit the brand (outlined "SV" monogram and name). Muted 15px text links follow, then an outlined "LinkedIn" secondary button that opens in a new tab. Links brighten and gain a 5% white fill on hover. The hub uses the older pattern with an active state. Below 980px the links move to a second row (scrollable if they ever outgrow it). A cyan "Skip to projects" link appears at top left on keyboard focus.
+A sticky top bar: 86% navy with a 12px backdrop blur and a hairline bottom rule. On the left sit the brand (outlined "SV" monogram and name). Muted 15px text links follow, then an outlined "LinkedIn" secondary button that opens in a new tab. Links brighten and gain a 5% white fill on hover. The hub uses the older pattern with an active state; on phones its section links become a bottom tab bar (see Layout). Below 980px the portfolio links move to a second row (scrollable if they ever outgrow it). A cyan "Skip to projects" link appears at top left on keyboard focus.
 
 ### Snapshot Readout (signature)
 A 2×2 grid ruled by hairlines rather than boxed: a top rule, a rule under each row and a vertical rule between columns. Each cell is a faint 12px caption above a short value ("Core areas: Sensors • Embedded • Test engineering"). A full-width "Role" row sits on top. This is the component closest to the Instrument Panel idea and the one to grow from. The Skills list, the screener's facts table and the pending-projects list use the same ruled treatment.

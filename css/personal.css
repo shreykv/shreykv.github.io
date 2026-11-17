@@ -30,7 +30,10 @@
   display: flex;
   gap: 2px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .personal-nav-aside {
@@ -3592,11 +3595,8 @@ select#category-selector option:hover {
   border-color: rgba(239, 68, 68, 0.6);
 }
 
-.nav-short {
-  display: none;
-}
-
-/* Phone: sections move to a bottom tab bar within thumb reach */
+/* Phone: sections move to a bottom tab bar within thumb reach.
+   Base .nav-ico hide also lives in personal.html inline styles. */
 .nav-ico {
   display: none;
 }
@@ -3701,10 +3701,6 @@ select#category-selector option:hover {
     display: none;
   }
 
-  .nav-short {
-    display: inline;
-  }
-
   body:not(.visitor) .personal-nav-aside > a {
     display: none;
   }
@@ -3719,8 +3715,13 @@ select#category-selector option:hover {
     padding: 8px 10px;
   }
 
-  body.visitor .brand > span {
+  /* Phone top bar: monogram + one action; name/email move out of the way */
+  .brand > span {
     display: none;
+  }
+
+  body:not(.visitor) .user-badge {
+    display: none !important;
   }
 
   body:not(.visitor) .personal-container {
@@ -3760,11 +3761,7 @@ select#category-selector option:hover {
   }
 }
 
-@media (max-width: 360px) {
-  .personal-nav-links a {
-    font-size: 10px;
-  }
-}
+/* Keep tab labels at the 11px floor even on narrow phones */
 
 /* Touch screens: 44px targets */
 @media (pointer: coarse) {

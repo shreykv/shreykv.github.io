@@ -255,6 +255,14 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    /* Phone-only chrome: keep desktop top nav text-only even if CSS cache is stale */
+    .nav-ico{display:none}
+    @media (max-width: 760px){
+      .nav-ico{display:block}
+      .nav-long{display:none}
+      .brand > span{display:none}
+      body:not(.visitor) .user-badge{display:none !important}
+    }
   </style>
 </head>
 <body class="visitor">
@@ -342,7 +350,7 @@
       </div>
       <div class="personal-nav-aside">
         <a href="/pour-decisions/" class="nav-external">Pour Decisions<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
-        <a href="/" class="visitor-keep" aria-label="Back to Portfolio"><span class="nav-long">Back to Portfolio</span><span class="nav-short">Portfolio</span></a>
+        <a href="/" class="visitor-keep">Back to Portfolio</a>
         <span id="user-badge" class="user-badge" style="display:none;">
           <span class="user-email"></span>
         </span>
