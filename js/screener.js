@@ -13,6 +13,9 @@ class Screener {
   constructor() {
     this.latest = null;
     this.error = null;
+    this.snapshots = [];
+    this.selectedSnapshotId = null;
+    this.tickerFilter = '';
   }
 
   async init() {
@@ -20,20 +23,61 @@ class Screener {
     if (!container) return;
 
     container.innerHTML = this.renderShell();
-    if (!container.dataset.retryBound) {
-      container.dataset.retryBound = '1';
-      container.addEventListener('click', e => {
-        if (e.target.closest('[data-screener-retry]')) this.retry();
-      });
-    }
-    await this.loadLatest();
+    this.bindShellEvents(container);
+    await this.loadSnapshots();
+    this.renderToolbar();
+    await this.loadPicks();
     this.renderStrategies();
     await this.renderPerformance();
   }
 
-  async loadLatest() {
+  bindShellEvents(container) {
+    if (container.dataset.screenerBound) return;
+    container.dataset.screenerBound = '1';
+    container.addEventListener('click', e => {
+      if (e.target.closest('[data-screener-retry]')) this.retry();
+    });
+    container.addEventListener('change', e => {
+      if (e.target.id === 'screener-week') {
+        this.selectedSnapshotId = e.target.value || null;
+        this.reloadTables();
+      }
+    });
+    container.addEventListener('input', e => {
+      if (e.target.id === 'screener-ticker-filter') {
+        this.tickerFilter = e.target.value || '';
+        this.renderStrategies();
+      }
+    });
+  }
+
+  async loadSnapshots() {
     try {
-      this.latest = await api.getLatestScreenerPicks();
+      this.snapshots = await api.getScreenerSnapshots(104);
+      if (!this.selectedSnapshotId && this.snapshots.length) {
+        this.selectedSnapshotId = this.snapshots[0].id;
+      }
+    } catch (err) {
+      console.error('Screener snapshots failed:', err);
+      this.snapshots = [];
+    }
+  }
+
+  async loadPicks() {
+    try {
+      if (this.selectedSnapshotId) {
+        this.latest = await api.getScreenerPicksBySnapshotId(this.selectedSnapshotId);
+        // Attach snapshot date for meta if picks lack it
+        const snap = this.snapshots.find(s => s.id === this.selectedSnapshotId);
+        if (snap && this.latest.length && !this.latest[0].snapshotCreatedAt) {
+          this.latest.forEach(p => { p.snapshotCreatedAt = snap.createdAt; });
+        }
+      } else {
+        this.latest = await api.getLatestScreenerPicks();
+        if (this.latest.length && this.latest[0].snapshotId) {
+          this.selectedSnapshotId = this.latest[0].snapshotId;
+        }
+      }
       this.error = null;
     } catch (err) {
       console.error('Screener load failed:', err);
@@ -42,12 +86,23 @@ class Screener {
     }
   }
 
+  async reloadTables() {
+    const container = document.getElementById('screener-strategies');
+    const metaEl = document.getElementById('screener-meta');
+    if (container) container.innerHTML = '<div class="screener-loading">Loading…</div>';
+    if (metaEl) metaEl.innerHTML = '<span class="muted">Loading picks…</span>';
+    await this.loadPicks();
+    this.renderStrategies();
+  }
+
   async retry() {
     const container = document.getElementById('screener-strategies');
     const metaEl = document.getElementById('screener-meta');
     if (container) container.innerHTML = '<div class="screener-loading">Loading…</div>';
     if (metaEl) metaEl.innerHTML = '<span class="muted">Loading latest picks…</span>';
-    await this.loadLatest();
+    await this.loadSnapshots();
+    this.renderToolbar();
+    await this.loadPicks();
     this.renderStrategies();
     await this.renderPerformance();
   }
@@ -131,6 +186,7 @@ class Screener {
           <p class="muted">
             S&amp;P 500 stocks ranked weekly against three legendary investor strategies.
           </p>
+          <div class="screener-toolbar" id="screener-toolbar"></div>
           <div class="screener-meta" id="screener-meta" role="status">
             <span class="muted">Loading latest picks…</span>
           </div>
@@ -178,14 +234,57 @@ class Screener {
     `;
   }
 
+  renderToolbar() {
+    const toolbar = document.getElementById('screener-toolbar');
+    if (!toolbar) return;
+
+    const weekOptions = this.snapshots.length
+      ? this.snapshots.map(s => {
+          const label = this.formatDate(new Date(s.createdAt));
+          const selected = s.id === this.selectedSnapshotId ? ' selected' : '';
+          return `<option value="${this.escape(s.id)}"${selected}>${label}</option>`;
+        }).join('')
+      : '<option value="">No snapshots yet</option>';
+
+    toolbar.innerHTML = `
+      <label class="screener-toolbar__field">
+        <span class="screener-toolbar__label">Week</span>
+        <select id="screener-week" ${this.snapshots.length ? '' : 'disabled'}>
+          ${weekOptions}
+        </select>
+      </label>
+      <label class="screener-toolbar__field screener-toolbar__field--grow">
+        <span class="screener-toolbar__label">Filter</span>
+        <input
+          type="search"
+          id="screener-ticker-filter"
+          placeholder="Ticker or company name"
+          value="${this.escape(this.tickerFilter)}"
+          autocomplete="off"
+        >
+      </label>
+    `;
+  }
+
+  filteredPicks() {
+    const picks = this.latest || [];
+    const q = this.tickerFilter.trim().toLowerCase();
+    if (!q) return picks;
+    return picks.filter(p => {
+      const ticker = String(p.ticker || '').toLowerCase();
+      const name = String(p.name || '').toLowerCase();
+      return ticker.includes(q) || name.includes(q);
+    });
+  }
+
   renderStrategies() {
     const container = document.getElementById('screener-strategies');
     const metaEl = document.getElementById('screener-meta');
     if (!container) return;
 
-    const picks = this.latest || [];
-    if (!this.error && picks.length && !picks.some(p => Screener.STRATEGY_INFO[p.strategyKey])) {
-      console.error('Screener picks are missing strategy keys:', picks[0]);
+    const allPicks = this.latest || [];
+    if (!this.error && allPicks.length && !allPicks.some(p => Screener.STRATEGY_INFO[p.strategyKey])) {
+      console.error('Screener picks are missing strategy keys:', allPicks[0]);
       this.error = 'This week’s picks loaded without their strategy labels, so they can’t be sorted into tables.';
     }
 
@@ -199,7 +298,7 @@ class Screener {
       return;
     }
 
-    if (picks.length === 0) {
+    if (allPicks.length === 0) {
       container.innerHTML = `
         <div class="screener-empty">
           No snapshot available yet — the first weekly refresh hasn't run.
@@ -209,6 +308,8 @@ class Screener {
       metaEl.innerHTML = '<span class="muted">No data yet</span>';
       return;
     }
+
+    const picks = this.filteredPicks();
 
     // Group by strategy and sort each group by rank ascending
     const byStrategy = {};
@@ -220,22 +321,37 @@ class Screener {
     }
 
     // Meta strip
-    const dt = new Date(picks[0].snapshotCreatedAt);
+    const snap = this.snapshots.find(s => s.id === this.selectedSnapshotId);
+    const rawDate = snap?.createdAt || allPicks[0].snapshotCreatedAt;
+    const dt = new Date(rawDate);
     const updated = isNaN(dt) ? 'Unknown' : this.formatDate(dt);
+    const filterNote = this.tickerFilter.trim()
+      ? `<span class="muted">·</span><span>Showing ${picks.length} of ${allPicks.length}</span>`
+      : '';
     metaEl.innerHTML = `
-      <span><strong>Last update:</strong> ${updated}</span>
+      <span><strong>Snapshot:</strong> ${updated}</span>
       <span class="muted">·</span>
       <span><strong>Universe:</strong> S&amp;P 500</span>
       <span class="muted">·</span>
       <span><strong>Cadence:</strong> Weekly</span>
+      ${filterNote}
     `;
 
+    if (picks.length === 0) {
+      container.innerHTML = `
+        <div class="screener-empty">
+          No tickers match “${this.escape(this.tickerFilter.trim())}” in this week’s snapshot.
+        </div>
+      `;
+      return;
+    }
+
     container.innerHTML = Screener.STRATEGY_ORDER
-      .map(key => this.renderStrategySection(key, byStrategy[key] || []))
+      .map(key => this.renderStrategySection(key, byStrategy[key] || [], allPicks.filter(p => p.strategyKey === key).length))
       .join('');
   }
 
-  renderStrategySection(key, picks) {
+  renderStrategySection(key, picks, unfilteredCount = null) {
     const info = Screener.STRATEGY_INFO[key];
     if (!info) return '';
 
@@ -243,12 +359,22 @@ class Screener {
       .map(c => `<li>${this.escape(c.description)}</li>`)
       .join('');
 
-    const body = picks.length
-      ? this.renderPicksTable(info, picks)
-      : `<p class="screener-strategy__empty">No stocks currently pass the minimum criteria.</p>`;
+    const totalForStrategy = unfilteredCount == null ? picks.length : unfilteredCount;
+    let body;
+    if (picks.length) {
+      body = this.renderPicksTable(info, picks);
+    } else if (totalForStrategy > 0 && this.tickerFilter.trim()) {
+      body = `<p class="screener-strategy__empty">No matches for this filter.</p>`;
+    } else {
+      body = `<p class="screener-strategy__empty">No stocks currently pass the minimum criteria.</p>`;
+    }
 
     const countLine = picks.length
-      ? `<div class="screener-strategy__count">${picks.length} stock${picks.length === 1 ? '' : 's'} meeting minimum criteria</div>`
+      ? `<div class="screener-strategy__count">${picks.length} stock${picks.length === 1 ? '' : 's'}${
+          this.tickerFilter.trim() && totalForStrategy !== picks.length
+            ? ` of ${totalForStrategy} matching filter`
+            : ' meeting minimum criteria'
+        }</div>`
       : '';
 
     return `

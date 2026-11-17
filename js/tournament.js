@@ -18,14 +18,110 @@ class Tournament {
     this.setupTeams = [];
     this.setupDirty = false;
     this.setupDrag = null; // { type: 'seed'|'team'|'player', ... }
+
+    // Read-only spectator mode for shared links
+    this.spectatorMode = false;
     
     this.init();
   }
 
   async init() {
+    if (this.spectatorMode) {
+      this.render();
+      return;
+    }
     await this.loadTournaments();
     this.render();
     this.setupEventListeners();
+  }
+
+  isInteractive() {
+    return !this.spectatorMode;
+  }
+
+  getShareUrl(code) {
+    const base = `${window.location.origin}${window.location.pathname}`;
+    return `${base}#/personal/tournament/watch/${code}`;
+  }
+
+  async shareTournament() {
+    if (!this.currentTournament || this.spectatorMode) return;
+    try {
+      if (!this.currentTournament.shareCode || !this.currentTournament.isPublic) {
+        this.currentTournament.shareCode = api.generateShareCode();
+        this.currentTournament.isPublic = true;
+        const updated = await api.updateTournament(this.currentTournament);
+        Object.assign(this.currentTournament, updated);
+        const idx = this.tournaments.findIndex(t => t.id === this.currentTournament.id);
+        if (idx >= 0) this.tournaments[idx] = this.currentTournament;
+      }
+      const url = this.getShareUrl(this.currentTournament.shareCode);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        this.showMessage('Share link copied to clipboard.', 'success');
+      } else {
+        window.prompt('Copy this share link:', url);
+      }
+      this.render();
+    } catch (error) {
+      console.error('Error sharing tournament:', error);
+      this.showMessage('Could not create share link. Run the share migration if columns are missing.', 'error');
+    }
+  }
+
+  async stopSharingTournament() {
+    if (!this.currentTournament || this.spectatorMode) return;
+    try {
+      this.currentTournament.isPublic = false;
+      this.currentTournament.shareCode = null;
+      const updated = await api.updateTournament(this.currentTournament);
+      Object.assign(this.currentTournament, updated);
+      const idx = this.tournaments.findIndex(t => t.id === this.currentTournament.id);
+      if (idx >= 0) this.tournaments[idx] = this.currentTournament;
+      this.showMessage('Sharing turned off.', 'success');
+      this.render();
+    } catch (error) {
+      console.error('Error stopping share:', error);
+      this.showMessage('Could not stop sharing.', 'error');
+    }
+  }
+
+  async openSpectator(code) {
+    this.spectatorMode = true;
+    this.viewMode = 'bracket';
+    this.tournaments = [];
+    this.currentTournament = null;
+    try {
+      const tournament = await api.getTournamentByShareCode(code);
+      if (!tournament) {
+        this.currentTournament = null;
+        this.renderSpectatorMissing(code);
+        return;
+      }
+      this.currentTournament = tournament;
+      this.render();
+    } catch (error) {
+      console.error('Error loading shared tournament:', error);
+      this.renderSpectatorMissing(code, true);
+    }
+  }
+
+  renderSpectatorMissing(code, errored = false) {
+    const container = document.getElementById('tournament-content');
+    if (!container) return;
+    container.innerHTML = `
+      <div class="tournament-header">
+        <h1>Shared Tournament</h1>
+      </div>
+      <div class="screener-empty">
+        ${errored
+          ? 'Couldn’t load this shared bracket. Check your connection and try again.'
+          : `No public tournament found for code <strong>${this.escapeHtml(code || '')}</strong>.`}
+      </div>
+      <p style="margin-top:16px;">
+        <a class="btn" href="#/personal/tournament">Back to Tournament</a>
+      </p>
+    `;
   }
 
   async loadTournaments() {
@@ -1404,6 +1500,7 @@ class Tournament {
   }
 
   async viewTournament(id) {
+    this.spectatorMode = false;
     this.currentTournament = this.tournaments.find(t => t.id === id);
     this.viewMode = 'bracket';
     this.render();
@@ -1413,6 +1510,7 @@ class Tournament {
   // This avoids issues with special characters in player names in onclick handlers
   async recordMatchResultByIndex(matchId, playerIndex) {
     console.log('recordMatchResultByIndex called:', matchId, playerIndex);
+    if (this.spectatorMode) return;
     if (!this.currentTournament) {
       console.error('No current tournament');
       return;
@@ -2326,6 +2424,7 @@ class Tournament {
 
   // Setup click handlers for bracket matches using event delegation
   setupBracketClickHandlers(container) {
+    if (this.spectatorMode) return;
     container.addEventListener('click', (e) => {
       // Find the clicked bracket-player or match-player element
       const playerEl = e.target.closest('[data-match-id][data-clickable="true"]');
@@ -2374,8 +2473,8 @@ class Tournament {
         // This enables progression when a match has one determined player and one TBD
         const player1Determined = match.player1 !== 'TBD' && match.player1 !== null;
         const player2Determined = match.player2 !== 'TBD' && match.player2 !== null && match.player2 !== 'BYE';
-        const canClickPlayer1 = player1Determined && !match.winner;
-        const canClickPlayer2 = player2Determined && !match.winner;
+        const canClickPlayer1 = this.isInteractive() && player1Determined && !match.winner;
+        const canClickPlayer2 = this.isInteractive() && player2Determined && !match.winner;
         
         // Escape player names for display
         const escapedPlayer1 = this.escapeForAttr(match.player1);
@@ -2423,8 +2522,8 @@ class Tournament {
         ${bracket.rounds[0].map(match => {
           const escapedPlayer1 = this.escapeForAttr(match.player1);
           const escapedPlayer2 = this.escapeForAttr(match.player2);
-          const canClick1 = !match.winner;
-          const canClick2 = !match.winner;
+          const canClick1 = this.isInteractive() && !match.winner;
+          const canClick2 = this.isInteractive() && !match.winner;
           return `
           <div class="match">
             <div class="match-players">
@@ -2484,8 +2583,8 @@ class Tournament {
       round.forEach(match => {
         const player1Determined = match.player1 !== 'TBD' && match.player1 !== null;
         const player2Determined = match.player2 !== 'TBD' && match.player2 !== null && match.player2 !== 'BYE';
-        const canClickPlayer1 = player1Determined && !match.winner;
-        const canClickPlayer2 = player2Determined && !match.winner;
+        const canClickPlayer1 = this.isInteractive() && player1Determined && !match.winner;
+        const canClickPlayer2 = this.isInteractive() && player2Determined && !match.winner;
         
         const escapedPlayer1 = this.escapeForAttr(match.player1);
         const escapedPlayer2 = this.escapeForAttr(match.player2);
@@ -2558,8 +2657,8 @@ class Tournament {
       }
       
       const grandFinal = bracket.grandFinal[0];
-      const canClickPlayer1 = grandFinal.player1 && !grandFinal.winner;
-      const canClickPlayer2 = grandFinal.player2 && !grandFinal.winner;
+      const canClickPlayer1 = this.isInteractive() && grandFinal.player1 && !grandFinal.winner;
+      const canClickPlayer2 = this.isInteractive() && grandFinal.player2 && !grandFinal.winner;
       const escapedGF1 = this.escapeForAttr(grandFinal.player1);
       const escapedGF2 = this.escapeForAttr(grandFinal.player2);
       
@@ -2594,8 +2693,8 @@ class Tournament {
       
       if (bracket.grandFinal2) {
         const grandFinal2 = bracket.grandFinal2[0];
-        const canClickPlayer1_2 = grandFinal2.player1 && !grandFinal2.winner;
-        const canClickPlayer2_2 = grandFinal2.player2 && !grandFinal2.winner;
+        const canClickPlayer1_2 = this.isInteractive() && grandFinal2.player1 && !grandFinal2.winner;
+        const canClickPlayer2_2 = this.isInteractive() && grandFinal2.player2 && !grandFinal2.winner;
         const escapedGF2_1 = this.escapeForAttr(grandFinal2.player1);
         const escapedGF2_2 = this.escapeForAttr(grandFinal2.player2);
         
@@ -2643,24 +2742,40 @@ class Tournament {
 
       const gameMode = this.currentTournament.gameMode || 'singles';
       const seedingMode = this.currentTournament.seedingMode || 'random';
+      const isShared = !!(this.currentTournament.isPublic && this.currentTournament.shareCode);
+      const shareActions = this.spectatorMode
+        ? `<span class="tournament-badge live-share">Spectator</span>`
+        : `
+            <button class="btn" type="button" onclick="tournament.shareTournament()">${isShared ? 'Copy Share Link' : 'Share'}</button>
+            ${isShared ? `<button class="btn" type="button" onclick="tournament.stopSharingTournament()">Stop Sharing</button>` : ''}
+          `;
+      const ownerOnlyActions = this.spectatorMode
+        ? ''
+        : `
+            <button class="btn" onclick="tournament.currentTournament = null; tournament.spectatorMode = false; tournament.render();">Back to List</button>
+            <button class="btn" onclick="tournament.deleteTournament('${this.currentTournament.id}')">Delete</button>
+          `;
       
       container.innerHTML = `
         <div class="tournament-header">
           <div>
-            <h2>${this.currentTournament.name}</h2>
+            <h2>${this.escapeHtml(this.currentTournament.name)}</h2>
             <div class="tournament-badges">
               <span class="tournament-type">${this.currentTournament.type}</span>
               <span class="tournament-badge ${gameMode}">${gameMode === 'doubles' ? 'Doubles' : 'Singles'}</span>
               <span class="tournament-badge ${seedingMode}">${seedingMode === 'ranked' ? 'Ranked' : 'Random'}</span>
               ${this.currentTournament.hasConsolation ? '<span class="tournament-badge consolation">Consolation</span>' : ''}
+              ${isShared && !this.spectatorMode ? `<span class="tournament-badge live-share">Shared · ${this.escapeHtml(this.currentTournament.shareCode)}</span>` : ''}
+              ${this.spectatorMode ? '<span class="tournament-badge live-share">Live view</span>' : ''}
             </div>
+            ${this.spectatorMode ? '<p class="teams-preview-note">Read-only bracket. Results update when the host refreshes their share.</p>' : ''}
           </div>
           <div class="tournament-header-actions">
             <button class="btn ${this.viewMode === 'bracket' ? 'active' : ''}" onclick="tournament.viewMode = 'bracket'; tournament.render();">Bracket</button>
             <button class="btn ${this.viewMode === 'stats' ? 'active' : ''}" onclick="tournament.viewMode = 'stats'; tournament.render();">Stats</button>
             ${this.currentTournament.teams ? `<button class="btn ${this.viewMode === 'teams' ? 'active' : ''}" onclick="tournament.viewMode = 'teams'; tournament.render();">Teams</button>` : ''}
-            <button class="btn" onclick="tournament.currentTournament = null; tournament.render();">Back to List</button>
-            <button class="btn" onclick="tournament.deleteTournament('${this.currentTournament.id}')">Delete</button>
+            ${shareActions}
+            ${ownerOnlyActions}
           </div>
         </div>
 

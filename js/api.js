@@ -354,7 +354,9 @@ class API {
           final_participants: tournament.finalParticipants,
           teams: tournament.teams,
           power_rankings: tournament.powerRankings,
-          bracket: tournament.bracket
+          bracket: tournament.bracket,
+          share_code: tournament.shareCode || null,
+          is_public: tournament.isPublic || false
         })
         .select()
         .single();
@@ -384,7 +386,9 @@ class API {
           final_participants: tournament.finalParticipants,
           teams: tournament.teams,
           power_rankings: tournament.powerRankings,
-          bracket: tournament.bracket
+          bracket: tournament.bracket,
+          share_code: tournament.shareCode || null,
+          is_public: !!tournament.isPublic
         })
         .eq('id', tournament.id)
         .select()
@@ -415,6 +419,40 @@ class API {
       return { success: true };
     }
     return this.request('/api/tournaments', { method: 'DELETE', body: { id } });
+  }
+
+  // Public read for shared brackets (anon RLS: is_public + share_code)
+  async getTournamentByShareCode(code) {
+    const clean = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+    if (!clean) return null;
+
+    if (this.isSupabaseEnabled()) {
+      const supabase = this.getSupabase();
+      const { data, error } = await supabase
+        .from('tournaments')
+        .select('*')
+        .eq('share_code', clean)
+        .eq('is_public', true)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching shared tournament:', error);
+        throw error;
+      }
+      return data ? this.toCamelCase(data) : null;
+    }
+
+    const all = await this.request('/api/tournaments', { method: 'GET' }) || [];
+    return all.find(t => t.shareCode === clean && t.isPublic) || null;
+  }
+
+  generateShareCode(length = 6) {
+    const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    const bytes = new Uint32Array(length);
+    crypto.getRandomValues(bytes);
+    let out = '';
+    for (let i = 0; i < length; i++) out += alphabet[bytes[i] % alphabet.length];
+    return out;
   }
 
   // ==========================================================================
@@ -636,9 +674,9 @@ class API {
 
   async saveHabits(data) {
     if (this.isSupabaseEnabled()) {
-      // For Supabase, we handle habits and entries separately
-      // This method is kept for backward compatibility
-      console.log('Using saveHabits with Supabase - consider using individual methods');
+      // Habits/entries are written via createHabit / deleteHabit / toggleHabitEntry.
+      // Keep localStorage in sync only when running offline.
+      return { success: true };
     }
     return this.request('/api/habits', { method: 'POST', body: data });
   }
@@ -665,6 +703,18 @@ class API {
       }
       return this.toCamelCase(data);
     }
+
+    const existing = await this.getHabits();
+    const created = {
+      id: Date.now().toString(),
+      name: habit.name,
+      category: habit.category || 'General',
+      color: habit.color || '#6EE7FF',
+      createdAt: new Date().toISOString()
+    };
+    existing.habits.push(created);
+    await this.saveHabits(existing);
+    return created;
   }
 
   async deleteHabit(id) {
@@ -682,6 +732,12 @@ class API {
       }
       return { success: true };
     }
+
+    const existing = await this.getHabits();
+    existing.habits = (existing.habits || []).filter(h => h.id !== id);
+    existing.entries = (existing.entries || []).filter(e => e.habitId !== id);
+    await this.saveHabits(existing);
+    return { success: true };
   }
 
   async toggleHabitEntry(habitId, date) {
@@ -689,32 +745,59 @@ class API {
       const supabase = this.getSupabase();
       const userId = this.getUserId();
       
-      // Check if entry exists
-      const { data: existing } = await supabase
+      // Check if entry exists (maybeSingle avoids 406 when no row)
+      const { data: existing, error: lookupError } = await supabase
         .from('habit_entries')
         .select('id')
         .eq('habit_id', habitId)
         .eq('date', date)
-        .single();
+        .maybeSingle();
+
+      if (lookupError) {
+        console.error('Error looking up habit entry:', lookupError);
+        throw lookupError;
+      }
       
       if (existing) {
-        // Delete entry
-        await supabase
+        const { error } = await supabase
           .from('habit_entries')
           .delete()
           .eq('id', existing.id);
+        if (error) {
+          console.error('Error deleting habit entry:', error);
+          throw error;
+        }
       } else {
-        // Create entry
-        await supabase
+        const { error } = await supabase
           .from('habit_entries')
           .insert({
             user_id: userId,
             habit_id: habitId,
             date
           });
+        if (error) {
+          console.error('Error creating habit entry:', error);
+          throw error;
+        }
       }
       return { success: true };
     }
+
+    const existing = await this.getHabits();
+    const idx = (existing.entries || []).findIndex(e => e.habitId === habitId && e.date === date);
+    if (idx >= 0) {
+      existing.entries.splice(idx, 1);
+    } else {
+      existing.entries = existing.entries || [];
+      existing.entries.push({
+        id: `${date}-${habitId}`,
+        habitId,
+        date,
+        completedAt: new Date().toISOString()
+      });
+    }
+    await this.saveHabits(existing);
+    return { success: true };
   }
 
   // ==========================================================================
@@ -1117,6 +1200,33 @@ class API {
         throw new Error('snapshots');
       }
       return this.toCamelCase(data) || [];
+    }
+    return [];
+  }
+
+  async getScreenerPicksBySnapshotId(snapshotId) {
+    if (!snapshotId) return [];
+    if (this.isSupabaseEnabled()) {
+      const supabase = this.getSupabase();
+      const { data, error } = await supabase
+        .from('screener_picks')
+        .select('*')
+        .eq('snapshot_id', snapshotId)
+        .order('strategy_key', { ascending: true })
+        .order('rank', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching screener picks by snapshot:', error);
+        throw new Error('picks');
+      }
+      return (data || []).map(row => {
+        const mapped = this.screenerRow(row);
+        // Match latest-view field used by renderStrategies meta
+        if (!mapped.snapshotCreatedAt && mapped.createdAt) {
+          mapped.snapshotCreatedAt = mapped.createdAt;
+        }
+        return mapped;
+      });
     }
     return [];
   }

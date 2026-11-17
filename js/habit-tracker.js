@@ -5,7 +5,7 @@ class HabitTracker {
     this.entries = []; // Daily habit completions
     this.viewMode = 'calendar'; // 'calendar' or 'list' or 'stats'
     this.currentDate = new Date().toISOString().split('T')[0];
-    this.init();
+    // init() is called from the route handler (same pattern as gym-log)
   }
 
   async init() {

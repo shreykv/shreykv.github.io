@@ -58,9 +58,15 @@ CREATE TABLE IF NOT EXISTS tournaments (
   teams JSONB, -- Team compositions for doubles
   power_rankings JSONB, -- { offense: [], defense: [] }
   bracket JSONB NOT NULL, -- Complete bracket structure
+  share_code TEXT, -- 6-char public spectator code (null when not shared)
+  is_public BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tournaments_share_code
+  ON tournaments (share_code)
+  WHERE share_code IS NOT NULL;
 
 -- =============================================================================
 -- 3. COUNTER TABLES
@@ -223,6 +229,11 @@ CREATE POLICY "Users can delete own workout templates" ON workout_templates
 -- =============================================================================
 CREATE POLICY "Users can view own tournaments" ON tournaments
   FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Anyone can view shared tournaments" ON tournaments
+  FOR SELECT
+  TO anon, authenticated
+  USING (is_public = true AND share_code IS NOT NULL);
 
 CREATE POLICY "Users can insert own tournaments" ON tournaments
   FOR INSERT WITH CHECK (auth.uid() = user_id);

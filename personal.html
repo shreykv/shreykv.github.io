@@ -346,6 +346,7 @@
         <a href="#/personal/focus-timer" data-route="#/personal/focus-timer" id="nav-focus-timer"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg><span>Focus<span class="nav-long"> Timer</span></span></a>
         <a href="#/personal/counter" data-route="#/personal/counter" id="nav-counter"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h14"/><path d="M5 15h14"/><path d="M10 4 8 20"/><path d="M16 4l-2 16"/></svg><span>Counters</span></a>
         <a href="#/personal/tournament" data-route="#/personal/tournament" id="nav-tournament"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h5v6H4"/><path d="M4 19h5v-6"/><path d="M9 8h4v8H9"/><path d="M13 12h7"/></svg><span>Tournament</span></a>
+        <a href="#/personal/habits" data-route="#/personal/habits" id="nav-habits"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Habits</span></a>
         <a href="#/personal/screener" data-route="#/personal/screener" id="nav-screener"><svg class="nav-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span>Screener</span></a>
       </div>
       <div class="personal-nav-aside">
@@ -383,6 +384,7 @@
   <script src="js/tournament.js"></script>
   <script src="js/counter.js"></script>
   <script src="js/focus-timer.js"></script>
+  <script src="js/habit-tracker.js"></script>
   <script src="js/migrate-data.js"></script>
   <script src="js/screener-performance.js"></script>
   <script src="js/screener.js"></script>
@@ -567,9 +569,8 @@
     }
 
     // ==========================================================================
-    // Access: the screener reads public tables, so visitors (e.g. recruiters
-    // following the portfolio link) see it without an account. Everything
-    // else holds private, per-user data and needs a sign-in.
+    // Access: the screener and shared tournament watch links are public.
+    // Everything else holds private, per-user data and needs a sign-in.
     // ==========================================================================
 
     let signedIn = false;
@@ -585,7 +586,8 @@
     }
 
     function onPublicRoute() {
-      return router.getCurrentPath() === '/personal/screener';
+      const path = router.getCurrentPath();
+      return path === '/personal/screener' || path.startsWith('/personal/tournament/watch/');
     }
 
     document.querySelector('.auth-visitor a[href^="#"]').addEventListener('click', e => {
@@ -712,6 +714,14 @@
               : ['No tournaments yet']
           },
           {
+            route: '#/personal/habits', name: 'Habits',
+            status: s.habits.total
+              ? [plural(s.habits.total, 'habit', 'habits'),
+                 `${s.habits.completedToday}/${s.habits.total} today`,
+                 s.habits.bestStreak ? `Best streak: ${s.habits.bestStreak}d` : '']
+              : ['No habits yet']
+          },
+          {
             route: '#/personal/screener', name: 'Stock Screener',
             status: ['S&amp;P 500 picks, updated weekly', 'Public']
           }
@@ -754,7 +764,8 @@
           gymLog: { totalWorkouts: 0, thisWeek: 0, recentWorkout: null },
           focusTimer: { totalSessions: 0, todayTime: 0, todayFormatted: '0m', weeklyTime: 0, weeklyFormatted: '0m', activeTasks: 0, overdueTasks: 0 },
           counters: { total: 0, totalValue: 0, goalsCompleted: 0, topCounter: null },
-          tournaments: { total: 0, inProgress: 0 }
+          tournaments: { total: 0, inProgress: 0 },
+          habits: { total: 0, completedToday: 0, bestStreak: 0 }
         };
         
         try {
@@ -830,6 +841,33 @@
             stats.tournaments.inProgress = tournaments.filter(t => !t.winner).length;
           }
         } catch (e) { console.warn('Could not load tournament stats:', e); }
+
+        try {
+          const habitData = await api.getHabits();
+          const habits = habitData?.habits || [];
+          const entries = habitData?.entries || [];
+          stats.habits.total = habits.length;
+          const todayStr = new Date().toISOString().split('T')[0];
+          stats.habits.completedToday = habits.filter(h =>
+            entries.some(e => e.habitId === h.id && e.date === todayStr)
+          ).length;
+          // Lightweight streak: consecutive days ending today/yesterday per habit
+          let best = 0;
+          habits.forEach(h => {
+            const dates = new Set(entries.filter(e => e.habitId === h.id).map(e => e.date));
+            let streak = 0;
+            const cursor = new Date();
+            cursor.setHours(0, 0, 0, 0);
+            const todayKey = cursor.toISOString().split('T')[0];
+            if (!dates.has(todayKey)) cursor.setDate(cursor.getDate() - 1);
+            while (dates.has(cursor.toISOString().split('T')[0])) {
+              streak++;
+              cursor.setDate(cursor.getDate() - 1);
+            }
+            if (streak > best) best = streak;
+          });
+          stats.habits.bestStreak = best;
+        } catch (e) { console.warn('Could not load habit stats:', e); }
         
         return stats;
       }
@@ -869,10 +907,21 @@
         gymLog.init();
       }));
 
+      // Public spectator view — register before the signed-in tournament route.
+      router.register('/personal/tournament/watch/:code', () => {
+        authModal.style.display = 'none';
+        document.getElementById('app-content').innerHTML = '<div id="tournament-content"></div>';
+        document.title = 'Shared Tournament — Shrey Vasisht';
+        updateActiveNav('nav-tournament');
+        const params = router.getParams('/personal/tournament/watch/:code');
+        tournament.openSpectator(params.code);
+      });
+
       router.register('/personal/tournament', requireSignIn(() => {
         document.getElementById('app-content').innerHTML = '<div id="tournament-content"></div>';
         document.title = 'Tournament — Shrey Vasisht';
         updateActiveNav('nav-tournament');
+        tournament.spectatorMode = false;
         tournament.init();
       }));
 
@@ -888,6 +937,13 @@
         document.title = 'Focus Timer — Shrey Vasisht';
         updateActiveNav('nav-focus-timer');
         focusTimer.init();
+      }));
+
+      router.register('/personal/habits', requireSignIn(() => {
+        document.getElementById('app-content').innerHTML = '<div id="habit-tracker-content"></div>';
+        document.title = 'Habits — Shrey Vasisht';
+        updateActiveNav('nav-habits');
+        habitTracker.init();
       }));
 
       // Public: no sign-in check.
@@ -937,6 +993,7 @@
     window.tournament = tournament;
     window.counter = counter;
     window.focusTimer = focusTimer;
+    window.habitTracker = habitTracker;
   </script>
 </body>
 </html>
